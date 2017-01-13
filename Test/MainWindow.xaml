@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="770" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
+        Title="MainWindow" Height="640" Width="770" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />

@@ -20,6 +20,8 @@ namespace Test
     /// </summary>
     public partial class MainWindow : Window
     {
+        Basisklasse bk = new Basisklasse();
+
         public MainWindow()
         {
             InitializeComponent();
@@ -29,6 +31,12 @@ namespace Test
         {
             Window1 form1 = new Window1();
             form1.Show();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try { bk.Connection(); }
+            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
     }
 }
