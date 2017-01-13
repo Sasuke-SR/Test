@@ -105,10 +105,7 @@
                         <TextBox Height="20" Width="120"  Margin="98,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="160,0,0,10">
-                    <Button   BorderBrush="Black" BorderThickness="1px"  Width="180" Height="25" FontSize="12" Content="Überstunden Erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" />
-                    <Button Margin="0,10,0,0"  BorderBrush="Black" BorderThickness="1px"  Width="180" Height="25" FontSize="12" Content="Überstunden Verwerfen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" />
-                </StackPanel>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="160,0,0,10"/>
             </Grid>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="6" Margin="0,0,0,5">
@@ -128,6 +125,21 @@
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Summe der Überstundenvergütung:" />
                         <TextBox Width="100" Height="20" Margin="25,0,0,0" />
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Brutto Gesamt:" FontSize="12"/>
+                        <TextBox Height="20" Width="100" Margin="35,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Bonus" FontSize="12" />
+                        <TextBox Height="20" Width="100" Margin="81,0,10,0" />
+                        <TextBox Height="20" Width="150" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <Label Content="Endlohnung:" FontSize="12" />
+                        <TextBox Height="20" Width="100" Margin="47,0,0,0" />
                     </StackPanel>
                 </StackPanel>
             </Grid>
