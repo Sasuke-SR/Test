@@ -29,14 +29,20 @@ namespace Test
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Window1 form1 = new Window1();
-            form1.Show();
+            Window2 nAbrechnung = new Window2();
+            nAbrechnung.ShowDialog();
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try { bk.Connection(); }
             catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Window3 nLohnG = new Window3();
+            nLohnG.ShowDialog();
         }
     }
 }
