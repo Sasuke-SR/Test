@@ -19,8 +19,9 @@
             </Grid.RowDefinitions>
             <StackPanel Grid.Row="0">
                 <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Lohnabrechnung erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Click="Button_Click"/>
-                <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Personalgruppe erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" />
+                <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Abteilung erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Click="Button_Click_2" />
                 <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Content="Lohngruppe erstellen" Click="Button_Click_1" />
+                <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Personal erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Click="Button_Click_3" />
                 <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Überstunden erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" />
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="0,15,0,0">

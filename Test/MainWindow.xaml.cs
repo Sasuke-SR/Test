@@ -44,5 +44,17 @@ namespace Test
             Window3 nLohnG = new Window3();
             nLohnG.ShowDialog();
         }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            Window4 nAbteilung = new Window4();
+            nAbteilung.ShowDialog(); 
+        }
+
+        private void Button_Click_3(object sender, RoutedEventArgs e)
+        {
+            Window5 nPersonal = new Window5();
+            nPersonal.ShowDialog();
+        }
     }
 }
