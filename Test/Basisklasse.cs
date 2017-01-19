@@ -13,11 +13,9 @@ namespace Test
         OleDbCommand cmd;
         OleDbDataReader dr;
 
-        public void Connection()
-        {try {con.Open(); } catch(Exception a) { throw a; }}
+        public void Connection() {try {con.Open(); } catch(Exception a) { throw a; }}
 
-        public void CloseCon()
-        { try { con.Close(); } catch (Exception a) { throw a; } }
+        public void CloseCon() { try { con.Close(); } catch (Exception a) { throw a; } }
 
     }
 }

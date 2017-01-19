@@ -56,5 +56,17 @@ namespace Test
             Window5 nPersonal = new Window5();
             nPersonal.ShowDialog();
         }
+
+        private void Button_Click_4(object sender, RoutedEventArgs e)
+        {
+            Window6 nUGruppe = new Window6();
+            nUGruppe.ShowDialog();
+        }
+
+        private void Button_Click_5(object sender, RoutedEventArgs e)
+        {
+            Window7 nUStunden = new Window7();
+            nUStunden.Show();
+        }
     }
 }
