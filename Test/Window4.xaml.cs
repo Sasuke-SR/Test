@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data.OleDb;
 
 namespace Test
 {
@@ -19,9 +20,95 @@ namespace Test
     /// </summary>
     public partial class Window4 : Window
     {
+        Basisklasse bk = new Basisklasse();
+        OleDbDataReader dr;
         public Window4()
         {
             InitializeComponent();
+        }
+
+
+        private void listView_Load()
+        {
+            dr = bk.Select("SELECT * FROM ABTEILUNG");
+            List<Abteil> items = new List<Abteil>();
+            while (dr.Read())
+            {
+                items.Add(new Abteil() { nr = dr.GetInt32(0), bez = dr.GetString(1) });
+                list.ItemsSource = items;
+            }
+        }
+
+        public class Abteil
+        {
+            public int nr { get; set; }
+            public string bez { get; set; }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    string query = string.Format("INSERT INTO Abteilung (Abt_Bez) VALUES ('{0}');",textBox_Name.Text);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
+                    bk.Insert(query);
+                    MessageBox.Show("Die Abteilung wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                    bk.CloseCon();
+                    //Neu Laden der Forms
+                    textBox_Name.Text = "";
+                    #region Form neuladen
+                    try
+                    {
+                        bk.Connection();
+                        try
+                        {
+                            dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
+                            dr.Read();
+                            if (dr.Read() == false)
+                            { Abteilung_Nr.Content = "1"; }
+                            else
+                            {
+                                int _tmp = dr.GetInt32(0) + 1;
+                                Abteilung_Nr.Content = _tmp.ToString();
+                            }
+                        }
+                        catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                    }
+                    catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                    #endregion 
+
+                }
+                catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+            }
+            catch { MessageBox.Show("Verbindung war nicht erfolgreich", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
+                    dr.Read();
+                    if (dr.Read() == false)
+                    { Abteilung_Nr.Content  = "1";  }
+                    else
+                    { int _tmp = dr.GetInt32(0) + 1;
+                        Abteilung_Nr.Content = _tmp.ToString(); }
+                    bk.CloseCon();
+                }
+                catch { MessageBox.Show("Fehler","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+            }
+            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.","",MessageBoxButton.OK,MessageBoxImage.Error); }
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            this.Close();
         }
     }
 }

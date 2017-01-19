@@ -17,5 +17,26 @@ namespace Test
 
         public void CloseCon() { try { con.Close(); } catch (Exception a) { throw a; } }
 
+        public OleDbDataReader Select(string query)
+        {
+            try
+            {
+                cmd = new OleDbCommand(query,con);
+                dr = cmd.ExecuteReader();
+            }
+            catch (Exception a) { throw a; }
+            return dr;
+        }
+
+        public void Insert(string query)
+        {
+            try
+            {
+                cmd = new OleDbCommand(query, con);
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception a) { throw a; }
+        }
+
     }
 }
