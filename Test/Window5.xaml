@@ -20,11 +20,11 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Name:" />
-                    <TextBox Height="20" Width="120" Margin="50,0,0,0"/>
+                    <TextBox x:Name="tbName" Height="20" Width="120" Margin="50,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Nachname:" />
-                    <TextBox Height="20" Width="120" Margin="24,0,0,0" />
+                    <TextBox x:Name="tbNName" Height="20" Width="120" Margin="24,0,0,0" />
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -32,18 +32,18 @@
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Abteilungsnummer:" />
-                    <ComboBox Height="20" Width="80" Margin="20,0,0,0" />
+                    <ComboBox x:Name="cbAbtNr" Height="20" Width="80" Margin="20,0,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                     <Label FontSize="12" Content="Lohngruppe:" />
-                    <ComboBox Height="20" Width="80" Margin="57,0,0,0" />
-                    <TextBox Height="20" Width="120" Margin="10,0,0,0" />
+                    <ComboBox x:Name="cbLg" Height="20" Width="80" Margin="57,0,0,0" />
+                    <TextBox x:Name="tbLgName" Height="20" Width="120" Margin="10,0,0,0" />
                 </StackPanel>
             </StackPanel>
         </Border>
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,14,0,0">
-            <Button BorderThickness="1" BorderBrush="Black" Content="Personal erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+            <Button x:Name="bPers" BorderThickness="1" BorderBrush="Black" Content="Personal erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

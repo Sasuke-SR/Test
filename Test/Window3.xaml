@@ -26,22 +26,22 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label FontSize="12" Content="Name der Lohngruppe:" />
-                            <TextBox x:Name="textBox_Name" Height="20" Width="120" Margin="55,0,0,0" />
+                            <TextBox x:Name="tbLgName" Height="20" Width="120" Margin="55,0,0,0" />
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label FontSize="12" Content="Stundensatz der Lohngruppe:" />
-                            <TextBox x:Name="textBox_Stundensatz" Height="20" Width="120" Margin="22 ,0,0,0" />
+                            <TextBox x:Name="tbLgBet" Height="20" Width="120" Margin="22 ,0,0,0" />
                         </StackPanel>
                     </StackPanel>
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Margin="55,0,0,0">
-                        <Button Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Content="Lohngruppe erstellen" BorderBrush="Black" BorderThickness="1"/>
+                        <Button x:Name="bLgErs" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Content="Lohngruppe erstellen" BorderBrush="Black" BorderThickness="1"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-            <ListView Margin="5" Width="Auto" Height="200" />
+            <ListView x:Name="lvLg" Margin="5" Width="Auto" Height="200" />
         </Border>
-        <Button BorderThickness="1" BorderBrush="Black" Grid.Row="2" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Margin="0,10,0,0" Click="Button_Click"/>
+        <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Grid.Row="2" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Margin="0,10,0,0" Click="Button_Click"/>
     </Grid>
 </Window>
