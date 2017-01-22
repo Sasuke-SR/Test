@@ -20,20 +20,20 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Überstunden Bezeichnung:" />
-                    <TextBox Height="20" Width="120" Margin="20,0,0,0"/>
+                    <TextBox x:Name="tbUeBez" Height="20" Width="120" Margin="20,0,0,0"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Überstunden Betrag:" />
-                    <TextBox Height="20" Width="120" Margin="53,0,0,0" />
+                    <TextBox x:Name="tbUeBet" Height="20" Width="120" Margin="53,0,0,0" />
                 </StackPanel>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="0,0,0,0">
-            <ListView Width="Auto" Height="110" />
+            <ListView x:Name="lvUeGr" Width="Auto" Height="110" />
         </Border>
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,14,0,0">
-            <Button BorderThickness="1" BorderBrush="Black" Content="Gruppe erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+            <Button x:Name="bGrErs" BorderThickness="1" BorderBrush="Black" Content="Gruppe erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
     </Grid>
 </Window>

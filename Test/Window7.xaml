@@ -22,33 +22,33 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Überstundengruppe:" />
-                        <ComboBox Height="20" Width="120" Margin="20,0,0,0" />
+                        <ComboBox x:Name="cbUeStdGr" Height="20" Width="120" Margin="20,0,0,0" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Überstunden:" />
-                        <TextBox Height="20" Width="120" Margin="60,0,0,0" />
+                        <TextBox x:Name="tbUeStd" Height="20" Width="120" Margin="60,0,0,0" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Datum:" />
-                        <TextBox Height="20" Width="120" Margin="93,0,0,0" />
+                        <TextBox x:Name="tbUeStdDat" Height="20" Width="120" Margin="93,0,0,0" />
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="15,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Personal:" />
-                        <ComboBox Height="20" Width="120" Margin="50,0,0,0"/>
+                        <ComboBox x:Name="cbPer" Height="20" Width="120" Margin="50,0,0,0"/>
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
             <StackPanel Margin="5">
-                <ListView Width="Auto" Height="220" />
+                <ListView x:Name="lvUeStd" Width="Auto" Height="220" />
             </StackPanel>
         </Border>
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,14,0,0">
-            <Button BorderThickness="1" BorderBrush="Black" Content="Überstunden erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+            <Button x:Name="bUeStdErs" BorderThickness="1" BorderBrush="Black" Content="Überstunden erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+            <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
         </StackPanel>
     </Grid>
 </Window>
