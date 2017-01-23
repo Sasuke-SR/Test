@@ -40,6 +40,62 @@ namespace Test {
     /// </summary>
     public partial class Window5 : System.Windows.Window, System.Windows.Markup.IComponentConnector {
         
+        
+        #line 23 "..\..\Window5.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.TextBox tbName;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 27 "..\..\Window5.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.TextBox tbNName;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 35 "..\..\Window5.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.ComboBox cbAbtNr;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 39 "..\..\Window5.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.ComboBox cbLg;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 40 "..\..\Window5.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.TextBox tbLgName;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 45 "..\..\Window5.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button bPers;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 46 "..\..\Window5.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button bMainWin;
+        
+        #line default
+        #line hidden
+        
         private bool _contentLoaded;
         
         /// <summary>
@@ -68,6 +124,30 @@ namespace Test {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+            switch (connectionId)
+            {
+            case 1:
+            this.tbName = ((System.Windows.Controls.TextBox)(target));
+            return;
+            case 2:
+            this.tbNName = ((System.Windows.Controls.TextBox)(target));
+            return;
+            case 3:
+            this.cbAbtNr = ((System.Windows.Controls.ComboBox)(target));
+            return;
+            case 4:
+            this.cbLg = ((System.Windows.Controls.ComboBox)(target));
+            return;
+            case 5:
+            this.tbLgName = ((System.Windows.Controls.TextBox)(target));
+            return;
+            case 6:
+            this.bPers = ((System.Windows.Controls.Button)(target));
+            return;
+            case 7:
+            this.bMainWin = ((System.Windows.Controls.Button)(target));
+            return;
+            }
             this._contentLoaded = true;
         }
     }

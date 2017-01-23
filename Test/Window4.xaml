@@ -26,25 +26,25 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label FontSize="12" Content="Name der Abteilung:" />
-                            <TextBox x:Name="tbAbtName" Height="20" Width="120" Margin="68,0,0,0" />
+                            <TextBox x:Name="textBox_Name" Height="20" Width="120" Margin="68,0,0,0" />
                         </StackPanel>
                     </StackPanel>
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Margin="55,0,0,0">
-                        <Button x:Name="bAbtErs" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Content="Abteilung erstellen" BorderBrush="Black" BorderThickness="1" Click="Button_Click"/>
+                        <Button Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Content="Abteilung erstellen" BorderBrush="Black" BorderThickness="1" Click="Button_Click"/>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
-            <ListView x:Name="lvAbt" Margin="5" Width="Auto" Height="200">
+            <ListView x:Name="list" Margin="5" Width="Auto" Height="200">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Nr" Width="50" />
-                        <GridViewColumn Header="Bezeichnung" Width="300" />
+                        <GridViewColumn Header="Nr" Width="50" DisplayMemberBinding="{Binding nr}"/>
+                        <GridViewColumn Header="Bezeichnung" Width="300" DisplayMemberBinding="{Binding bez}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
         </Border>
-        <Button x:Name="bMainWin" Grid.Row="2" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Margin="0,12,0,0" Click="Button_Click_1"/>
+        <Button Grid.Row="2" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" Margin="0,12,0,0" Click="Button_Click_1"/>
     </Grid>
 </Window>

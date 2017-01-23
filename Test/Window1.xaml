@@ -85,9 +85,9 @@
                 </Grid.ColumnDefinitions>
                 <StackPanel Grid.Column="0">
                     <StackPanel Orientation="Horizontal">
-                    <Label FontSize="12" Content="Überstundengruppe:" />
-                    <TextBox x:Name="tbUeStdGr" Height="20" Width="120" Margin="31,0,0,0"/>
-                </StackPanel>
+                        <Label FontSize="12" Content="Überstundengruppe:" />
+                        <TextBox x:Name="tbUeStdGr" Height="20" Width="120" Margin="31,0,0,0"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Überstunden:" />
                         <TextBox x:Name="tbUeStdAnz" Height="20" Width="120"  Margin="70,0,0,0"/>

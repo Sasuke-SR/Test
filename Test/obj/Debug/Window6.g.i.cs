@@ -40,6 +40,46 @@ namespace Test {
     /// </summary>
     public partial class Window6 : System.Windows.Window, System.Windows.Markup.IComponentConnector {
         
+        
+        #line 23 "..\..\Window6.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.TextBox tbUeBez;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 27 "..\..\Window6.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.TextBox tbUeBet;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 32 "..\..\Window6.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.ListView lvUeGr;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 35 "..\..\Window6.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button bGrErs;
+        
+        #line default
+        #line hidden
+        
+        
+        #line 36 "..\..\Window6.xaml"
+        [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1823:AvoidUnusedPrivateFields")]
+        internal System.Windows.Controls.Button bMainWin;
+        
+        #line default
+        #line hidden
+        
         private bool _contentLoaded;
         
         /// <summary>
@@ -68,6 +108,24 @@ namespace Test {
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Maintainability", "CA1502:AvoidExcessiveComplexity")]
         [System.Diagnostics.CodeAnalysis.SuppressMessageAttribute("Microsoft.Performance", "CA1800:DoNotCastUnnecessarily")]
         void System.Windows.Markup.IComponentConnector.Connect(int connectionId, object target) {
+            switch (connectionId)
+            {
+            case 1:
+            this.tbUeBez = ((System.Windows.Controls.TextBox)(target));
+            return;
+            case 2:
+            this.tbUeBet = ((System.Windows.Controls.TextBox)(target));
+            return;
+            case 3:
+            this.lvUeGr = ((System.Windows.Controls.ListView)(target));
+            return;
+            case 4:
+            this.bGrErs = ((System.Windows.Controls.Button)(target));
+            return;
+            case 5:
+            this.bMainWin = ((System.Windows.Controls.Button)(target));
+            return;
+            }
             this._contentLoaded = true;
         }
     }

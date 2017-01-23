@@ -35,8 +35,8 @@ namespace Test
             while (dr.Read())
             {
                 items.Add(new Abteil() { nr = dr.GetInt32(0), bez = dr.GetString(1) });
-                list.ItemsSource = items;
             }
+            list.ItemsSource = items;
         }
 
         public class Abteil
@@ -66,13 +66,7 @@ namespace Test
                         {
                             dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
                             dr.Read();
-                            if (dr.Read() == false)
-                            { Abteilung_Nr.Content = "1"; }
-                            else
-                            {
-                                int _tmp = dr.GetInt32(0) + 1;
-                                Abteilung_Nr.Content = _tmp.ToString();
-                            }
+                            Abteilung_Nr.Content = dr.GetInt32(0).ToString();
                         }
                         catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                     }
@@ -99,6 +93,7 @@ namespace Test
                     else
                     { int _tmp = dr.GetInt32(0) + 1;
                         Abteilung_Nr.Content = _tmp.ToString(); }
+                    listView_Load();
                     bk.CloseCon();
                 }
                 catch { MessageBox.Show("Fehler","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
