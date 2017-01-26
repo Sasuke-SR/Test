@@ -57,10 +57,25 @@ namespace Test
                     dr = bk.Select("SELECT Abt_Bez FROM Abteilung;");
                     while (dr.Read())
                     {
-                        string bob = dr.GetString(1);
-                        cbAbtNr.Items.Add(bob);
+                        string bob = dr.GetString(0);
+                        cbAbtName.Items.Add(bob);
                     }
-                    cbAbtNr.Items.Refresh();
+                    cbAbtName.Items.Refresh();
+                    bk.CloseCon();
+
+                }
+                catch { MessageBox.Show("Fehler beim Bestimmen der Abteilungen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+
+                try
+                {
+                    bk.Connection();
+                    dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
+                    while (dr.Read())
+                    {
+                        string bob1 = dr.GetString(0);
+                        cbLgName.Items.Add(bob1);
+                    }
+                    cbLgName.Items.Refresh();
                     bk.CloseCon();
 
                 }
@@ -68,6 +83,76 @@ namespace Test
 
             }
             catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+        }
+
+        private void bPers_Click(object sender, RoutedEventArgs e)
+        {
+            bk.Connection();
+            try
+            {
+                bk.Insert($"INSERT INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{tbName.Text}', '{tbNName.Text}', {tbAbtNr.Text}," +
+                          $"{tbLgNr.Text});");// P_Nr ist Autowert; Oder?
+            }
+            catch
+            {
+                MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                bk.CloseCon();
+            }
+        }
+
+        private void bMainWin_Click(object sender, RoutedEventArgs e)
+        {
+            this.Close();
+        }
+
+        private void cbAbtName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    dr = bk.Select($"SELECT Abt_Nr FROM Abteilung WHERE Abt_Bez = '{cbAbtName.SelectedItem.ToString()}';");
+                    dr.Read();
+                    string sebastian = dr.GetValue(0).ToString();
+                    tbAbtNr.Text = sebastian;
+                    bk.CloseCon();
+                }
+                catch
+                {
+                    MessageBox.Show("Fehler Suchen der Abteilung", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    bk.CloseCon();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
+        private void cbLgName_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    dr = bk.Select($"SELECT L_Nr FROM Lohngruppen WHERE L_Bez = '{cbLgName.SelectedItem.ToString()}';");
+                    dr.Read();
+                    string franz = dr.GetValue(0).ToString();
+                    tbLgNr.Text = franz;
+                    bk.CloseCon();
+                }
+                catch
+                {
+                    MessageBox.Show("Fehler Suchen der ALohngruppe", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    bk.CloseCon();
+                }
+            }
+            catch
+            {
+                MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
     }
 }
