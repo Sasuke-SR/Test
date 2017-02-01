@@ -39,7 +39,7 @@ namespace Test
                     dr.Read();
                     try
                     {
-                        int inter = dr.GetInt32(0);
+                        int inter = dr.GetInt32(0) + 1;
                         lAbtNr.Content = inter;
                     }
                     catch
@@ -57,8 +57,7 @@ namespace Test
                     dr = bk.Select("SELECT Abt_Bez FROM Abteilung;");
                     while (dr.Read())
                     {
-                        string bob = dr.GetString(0);
-                        cbAbtName.Items.Add(bob);
+                        cbAbtName.Items.Add(dr.GetString(0));
                     }
                     cbAbtName.Items.Refresh();
                     bk.CloseCon();
@@ -72,8 +71,7 @@ namespace Test
                     dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
                     while (dr.Read())
                     {
-                        string bob1 = dr.GetString(0);
-                        cbLgName.Items.Add(bob1);
+                        cbLgName.Items.Add(dr.GetString(0));
                     }
                     cbLgName.Items.Refresh();
                     bk.CloseCon();
@@ -91,7 +89,7 @@ namespace Test
             try
             {
                 bk.Insert($"INSERT INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{tbName.Text}', '{tbNName.Text}', {tbAbtNr.Text}," +
-                          $"{tbLgNr.Text});");// P_Nr ist Autowert; Oder?
+                          $"{tbLgNr.Text});");
             }
             catch
             {
@@ -114,8 +112,7 @@ namespace Test
                 {
                     dr = bk.Select($"SELECT Abt_Nr FROM Abteilung WHERE Abt_Bez = '{cbAbtName.SelectedItem.ToString()}';");
                     dr.Read();
-                    string sebastian = dr.GetValue(0).ToString();
-                    tbAbtNr.Text = sebastian;
+                    tbAbtNr.Text = dr.GetValue(0).ToString();
                     bk.CloseCon();
                 }
                 catch
@@ -139,8 +136,7 @@ namespace Test
                 {
                     dr = bk.Select($"SELECT L_Nr FROM Lohngruppen WHERE L_Bez = '{cbLgName.SelectedItem.ToString()}';");
                     dr.Read();
-                    string franz = dr.GetValue(0).ToString();
-                    tbLgNr.Text = franz;
+                    tbLgNr.Text = dr.GetValue(0).ToString();
                     bk.CloseCon();
                 }
                 catch
