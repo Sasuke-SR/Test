@@ -85,17 +85,22 @@ namespace Test
 
         private void bPers_Click(object sender, RoutedEventArgs e)
         {
-            bk.Connection();
             try
             {
-                bk.Insert($"INSERT INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{tbName.Text}', '{tbNName.Text}', {tbAbtNr.Text}," +
-                          $"{tbLgNr.Text});");
+                bk.Connection();
+                try
+                {
+                    bk.Insert($"INSERT INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{tbName.Text}', '{tbNName.Text}', {tbAbtNr.Text}," +
+                              $"{tbLgNr.Text});");
+                }
+                catch
+                {
+                    MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    bk.CloseCon();
+                }
+
             }
-            catch
-            {
-                MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
-                bk.CloseCon();
-            }
+            catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
