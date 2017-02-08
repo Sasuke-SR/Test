@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="Personal erstellen" Height="250" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" >
+        Title="Personal erstellen" Height="250" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded" >
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -16,7 +16,7 @@
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Personalnummer:" />
-                    <Label FontSize="12" Content="Nr" Margin="90,0,0,0" />
+                    <Label x:Name="lAbtNr" FontSize="12" Content="Nr" Margin="90,0,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Name:" />
@@ -31,19 +31,20 @@
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
             <StackPanel Orientation="Vertical">
                 <StackPanel Orientation="Horizontal">
-                    <Label FontSize="12" Content="Abteilungsnummer:" />
-                    <ComboBox x:Name="cbAbtNr" Height="20" Width="80" Margin="20,0,0,0" />
+                    <Label FontSize="12" Content="Abteilung:" />
+                    <ComboBox x:Name="cbAbtName" Height="20" Width="100" Margin="20,5,0,0" SelectionChanged="cbAbtName_SelectionChanged" />
+                    <TextBox x:Name="tbAbtNr" Height="20" Width="30" Margin="10,5,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                     <Label FontSize="12" Content="Lohngruppe:" />
-                    <ComboBox x:Name="cbLg" Height="20" Width="80" Margin="57,0,0,0" />
-                    <TextBox x:Name="tbLgName" Height="20" Width="120" Margin="10,0,0,0" />
+                    <ComboBox x:Name="cbLgName" Height="20" Width="100" Margin="7,5,0,0" SelectionChanged="cbLgName_SelectionChanged" />
+                    <TextBox x:Name="tbLgNr" Height="20" Width="30" Margin="10,5,0,0" />
                 </StackPanel>
             </StackPanel>
         </Border>
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,14,0,0">
-            <Button x:Name="bPers" BorderThickness="1" BorderBrush="Black" Content="Personal erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+            <Button x:Name="bPers" BorderThickness="1" BorderBrush="Black" Content="Personal erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Click="bPers_Click"/>
+            <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0" Click="bMainWin_Click"/>
         </StackPanel>
     </Grid>
 </Window>

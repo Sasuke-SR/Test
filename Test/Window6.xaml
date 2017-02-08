@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-       Title="Überstundengruppe erstellen" Height="300" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" >
+       Title="Überstundengruppe erstellen" Height="300" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded" >
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -16,7 +16,7 @@
             <StackPanel Orientation="Vertical" Margin="0,0,0,5">
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Überstundengruppen Nr:" />
-                    <Label FontSize="12" Content="Nr" Margin="120,0,0,0" />
+                    <Label x:Name="lUeGrNr" FontSize="12" Content="Nr" Margin="120,0,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Überstunden Bezeichnung:" />
@@ -29,11 +29,19 @@
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="0,0,0,0">
-            <ListView x:Name="lvUeGr" Width="Auto" Height="110" />
+            <ListView x:Name="lvUeGr" Width="Auto" Height="110">
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn Header="Nr" DisplayMemberBinding="{Binding Nr}"/>
+                        <GridViewColumn Header="Bezeichnung" DisplayMemberBinding="{Binding Bezeichnung}"/>
+                        <GridViewColumn Header="Betrag" DisplayMemberBinding="{Binding Betrag}"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
         </Border>
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,14,0,0">
-            <Button x:Name="bGrErs" BorderThickness="1" BorderBrush="Black" Content="Gruppe erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-            <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0"/>
+            <Button x:Name="bGrErs" BorderThickness="1" BorderBrush="Black" Content="Gruppe erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Click="bGrErs_Click"/>
+            <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0" Click="bMainWin_Click"/>
         </StackPanel>
     </Grid>
 </Window>
