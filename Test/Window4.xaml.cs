@@ -49,30 +49,45 @@ namespace Test
         {
             try
             {
+                int _tmp = 0;
+                string _tmpFehler = "";
+                if (String.IsNullOrWhiteSpace(textBox_Name.Text))
+                {
+                    _tmpFehler += "Die Felder dürfen nicht leer sein.";
+                }
+                else
+                    _tmp = 1;
+
                 bk.Connection();
                 try
                 {
-                    string query = string.Format("INSERT INTO Abteilung (Abt_Bez) VALUES ('{0}');",textBox_Name.Text);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
-                    bk.Insert(query);
-                    MessageBox.Show("Die Abteilung wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                    bk.CloseCon();
-                    //Neu Laden der Forms
-                    textBox_Name.Text = "";
-                    #region Form neuladen
-                    try
+                    if (_tmp == 1)
                     {
-                        bk.Connection();
+                        string query = string.Format("INSERT INTO Abteilung (Abt_Bez) VALUES ('{0}');", textBox_Name.Text);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
+                        bk.Insert(query);
+                        MessageBox.Show("Die Abteilung wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                        bk.CloseCon();
+                        //Neu Laden der Forms
+                        textBox_Name.Text = "";
+                        #region Form neuladen
                         try
                         {
-                            dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
-                            dr.Read();
-                            Abteilung_Nr.Content = dr.GetInt32(0).ToString();
+                            bk.Connection();
+                            try
+                            {
+                                dr = bk.Select("SELECT last(L_Nr) FROM Abteilung");
+                                dr.Read();
+                                Abteilung_Nr.Content = dr.GetInt32(0).ToString();
+                                listView_Load();
+                            }
+                            catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                         }
-                        catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                        catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                        #endregion
                     }
-                    catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
-                    #endregion 
-
+                    else
+                        MessageBox.Show(_tmpFehler, "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    bk.CloseCon();
                 }
                 catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
             }
@@ -86,19 +101,26 @@ namespace Test
                 bk.Connection();
                 try
                 {
-                    dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
-                    dr.Read();
-                    if (dr.Read() == false)
-                    { Abteilung_Nr.Content  = "1";  }
-                    else
-                    { int _tmp = dr.GetInt32(0) + 1;
-                        Abteilung_Nr.Content = _tmp.ToString(); }
-                    listView_Load();
-                    bk.CloseCon();
+                        dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
+                        dr.Read();
+                        try
+                        {
+                            int _tmp = dr.GetInt32(0); _tmp += 1;
+                            Abteilung_Nr.Content = _tmp.ToString();
+                            listView_Load();
+                            bk.CloseCon();
+                        }
+                        catch
+                        {
+                            int _tmp = 1;
+                            Abteilung_Nr.Content = _tmp.ToString();
+                            listView_Load();
+                            bk.CloseCon();
+                        }
                 }
                 catch { MessageBox.Show("Fehler","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
             }
-            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.","",MessageBoxButton.OK,MessageBoxImage.Error); }
+            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); this.Close(); }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

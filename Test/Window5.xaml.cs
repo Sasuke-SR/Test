@@ -28,6 +28,25 @@ namespace Test
             InitializeComponent();
         }
 
+        private void Mask_Load()
+        {
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    // Letzten Personal Datensatz auslesen
+                    dr = bk.Select("SELECT last(P_Nr) FROM Personal");
+                    dr.Read();
+                    try{lAbtNr.Content = dr.GetInt32(0) + 1;}
+                    catch { lAbtNr.Content = "1"; }
+                    bk.CloseCon();
+                }
+                catch { MessageBox.Show("Es ist ein Problem aufgetretten.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            }
+            catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+        }
+
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             try
@@ -37,16 +56,9 @@ namespace Test
                 {
                     dr = bk.Select("SELECT Last(P_Nr) FROM Personal;");
                     dr.Read();
-                    try
-                    {
-                        int inter = dr.GetInt32(0) + 1;
-                        lAbtNr.Content = inter;
-                    }
-                    catch
-                    {
-                        lAbtNr.Content = "1";
-                    }
-                    
+                    try{lAbtNr.Content = dr.GetInt32(0) + 1;}
+                    catch{lAbtNr.Content = "1";}
+
                     bk.CloseCon();
                 }
                 catch { MessageBox.Show("Fehler beim bestimmen der Personal Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
@@ -57,7 +69,7 @@ namespace Test
                     dr = bk.Select("SELECT Abt_Bez FROM Abteilung;");
                     while (dr.Read())
                     {
-                        cbAbtName.Items.Add(dr.GetString(0));
+                        cbAbtName.Items.Add(dr.GetString(0).ToString());
                     }
                     cbAbtName.Items.Refresh();
                     bk.CloseCon();
@@ -69,13 +81,9 @@ namespace Test
                 {
                     bk.Connection();
                     dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
-                    while (dr.Read())
-                    {
-                        cbLgName.Items.Add(dr.GetString(0));
-                    }
+                    while (dr.Read()){cbLgName.Items.Add(dr.GetString(0).ToString());}
                     cbLgName.Items.Refresh();
                     bk.CloseCon();
-
                 }
                 catch { MessageBox.Show("Fehler beim Bestimmen der Abteilungen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
 
@@ -85,22 +93,30 @@ namespace Test
 
         private void bPers_Click(object sender, RoutedEventArgs e)
         {
+            bk.Connection();
             try
             {
-                bk.Connection();
-                try
+                if (bk.IsNumeric(tbName.Text) != true && bk.IsNumeric(tbNName.Text) != true)
                 {
-                    bk.Insert($"INSERT INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{tbName.Text}', '{tbNName.Text}', {tbAbtNr.Text}," +
-                              $"{tbLgNr.Text});");
-                }
-                catch
-                {
-                    MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    //Erstellung
+                    string _tmpQuery = String.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
+                    bk.Insert(_tmpQuery);
+                    string _tmpName = String.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
+                    MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
                     bk.CloseCon();
+                    // Neuladen der Maske
+                    Mask_Load();
+                    tbLgNr.Text = ""; tbName.Text = ""; tbNName.Text = ""; tbAbtNr.Text = ""; tbLgNr.Text = "";
+                    cbAbtName.Text = ""; cbLgName.Text = ""; cbAbtName.SelectedItem = null; cbLgName.SelectedItem = null;
                 }
+                else { bk.CloseCon(); MessageBox.Show("Die Felder 'Name' & 'Nachname' dürfen keine Numerischen Werte enthalten", "", MessageBoxButton.OK, MessageBoxImage.Error); }
 
             }
-            catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            catch
+            {
+                MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                bk.CloseCon();
+            }
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
@@ -110,49 +126,41 @@ namespace Test
 
         private void cbAbtName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            if (cbLgName.SelectedItem != null)
             {
-                bk.Connection();
                 try
                 {
-                    dr = bk.Select($"SELECT Abt_Nr FROM Abteilung WHERE Abt_Bez = '{cbAbtName.SelectedItem.ToString()}';");
-                    dr.Read();
-                    tbAbtNr.Text = dr.GetValue(0).ToString();
-                    bk.CloseCon();
+                    bk.Connection();
+                    try
+                    {
+                        dr = bk.Select($"SELECT Abt_Nr FROM Abteilung WHERE Abt_Bez = '{cbAbtName.SelectedItem.ToString()}';");
+                        dr.Read();
+                        tbAbtNr.Text = dr.GetValue(0).ToString();
+                        bk.CloseCon();
+                    }
+                    catch { MessageBox.Show("Fehler Suchen der Abteilung", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                 }
-                catch
-                {
-                    MessageBox.Show("Fehler Suchen der Abteilung", "", MessageBoxButton.OK, MessageBoxImage.Error);
-                    bk.CloseCon();
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
             }
         }
 
         private void cbLgName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            try
+            if (cbLgName.SelectedItem != null)
             {
-                bk.Connection();
                 try
                 {
-                    dr = bk.Select($"SELECT L_Nr FROM Lohngruppen WHERE L_Bez = '{cbLgName.SelectedItem.ToString()}';");
-                    dr.Read();
-                    tbLgNr.Text = dr.GetValue(0).ToString();
-                    bk.CloseCon();
+                    bk.Connection();
+                    try
+                    {
+                        dr = bk.Select($"SELECT L_Nr FROM Lohngruppen WHERE L_Bez = '{cbLgName.SelectedItem.ToString()}';");
+                        dr.Read();
+                        tbLgNr.Text = dr.GetValue(0).ToString(); ;
+                        bk.CloseCon();
+                    }
+                    catch { MessageBox.Show("Fehler Suchen der ALohngruppe", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                 }
-                catch
-                {
-                    MessageBox.Show("Fehler Suchen der ALohngruppe", "", MessageBoxButton.OK, MessageBoxImage.Error);
-                    bk.CloseCon();
-                }
-            }
-            catch
-            {
-                MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
             }
         }
     }

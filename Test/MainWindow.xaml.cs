@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Data.OleDb;
 
 namespace Test
 {
@@ -21,6 +22,94 @@ namespace Test
     public partial class MainWindow : Window
     {
         Basisklasse bk = new Basisklasse();
+        OleDbDataReader dr;
+        OleDbDataReader dr1;
+
+        #region Public Klassen
+        public class Personal
+        {
+            public int pNr { get; set; }
+            public string pVName { get; set; }
+            public string pNName { get; set; }
+            public string pAbteilung { get; set; }
+        }
+
+        public class Abteilungen
+        {
+            public int aNr {get;set;}
+            public string aName { get; set; }
+        }
+        #endregion
+
+        #region ListView's
+        private void pListView_Load()
+        {
+            dr = bk.Select("SELECT * FROM Personal");
+            List<Personal> items = new List<Personal>();
+            try
+            {
+                while (dr.Read())
+                {
+                    string _tmpquery = String.Format("SELECT * FROM Abteilung WHERE Abt_Nr = {0}", dr.GetInt32(3));
+                    dr1 = bk.Select(_tmpquery);
+                    dr1.Read();
+
+                    items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1) });
+                }
+            }
+            catch (Exception a) { throw a; }
+            list3.ItemsSource = items;
+        }
+
+        private void pListView_Search(string query, int status)
+        {
+            try
+            {
+                if (status == 0)
+                {
+                    dr = bk.Select(query);
+                    List<Personal> items = new List<Personal>();
+                    try
+                    {
+                        while (dr.Read())
+                        {
+                            string _tmpquery = String.Format("SELECT * FROM Abteilung WHERE Abt_Nr = {0}", dr.GetInt32(3));
+                            dr1 = bk.Select(_tmpquery);
+                            dr1.Read();
+                            items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1) });
+                        }
+                    }
+                    catch (Exception a) { throw a; }
+                    list3.ItemsSource = items;
+                }
+                else
+                {
+                    try
+                    {
+                        dr1 = bk.Select($"Select * FROM Abteilung WHERE Abt_Bez LIKE '%{tbSuche.Text}%'");
+                        dr1.Read();
+                        int aID = dr1.GetInt32(0);
+                        dr = bk.Select($"SELECT * FROM Personal WHERE P_Abteilungs_Nr LIKE '%{aID}%'");
+                        List<Personal> items = new List<Personal>();
+                        try
+                        {
+                            while (dr.Read())
+                            {
+                                string _tmpquery = String.Format("SELECT * FROM Abteilung WHERE Abt_Nr = {0}", dr.GetInt32(3));
+                                dr1 = bk.Select(_tmpquery);
+                                dr1.Read();
+                                items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1) });
+                            }
+                        }
+                        catch (Exception a) { throw a; }
+                        list3.ItemsSource = items;
+                    }
+                    catch(Exception a) { throw a; }
+                }
+            }
+            catch(Exception a) { throw a; }
+        }
+        #endregion
 
         public MainWindow()
         {
@@ -35,7 +124,17 @@ namespace Test
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            try { bk.Connection(); }
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    pListView_Load();
+                    bk.CloseCon();
+                }
+                catch
+                { MessageBox.Show("Die Listen konnten nicht geladen werden.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+            }
             catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
 
@@ -67,6 +166,88 @@ namespace Test
         {
             Window7 nUStunden = new Window7();
             nUStunden.Show();
+        }
+
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            string tabItem = ((sender as TabControl).SelectedItem as TabItem).Header as string;
+            switch (tabItem)
+            {
+                case "Lohnabrechnungen":
+                    cbSuche.Items.Clear();
+                    cbSuche.Items.Insert(0, "Nummer");
+                    cbSuche.Items.Insert(1, "Monat");
+                    cbSuche.Items.Insert(2, "Lohngruppe");
+                    cbSuche.Items.Insert(3, "Brutto-Summe");
+                    cbSuche.Items.Insert(4, "Netto-Summe");
+                    break;
+                case "Überstunden":
+                    break;
+                case "Personal":
+                    cbSuche.Items.Clear();
+                    cbSuche.Items.Insert(0, "Nummer");
+                    cbSuche.Items.Insert(1, "Nachname");
+                    cbSuche.Items.Insert(2, "Vorname");
+                    cbSuche.Items.Insert(3, "Abteilung");
+                    tbSuche.Text = "";
+                    cbSuche.SelectedIndex = 0;
+                    break;
+            }
+        }
+
+        private void tbSuche_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    if (tbSuche.Text != "")
+                    {
+                        if (tcPersonal.IsSelected == true)
+                        {
+                            switch (cbSuche.SelectedIndex)
+                            {
+                                case 0:
+                                    list3.ItemsSource = null;
+                                    list3.Items.Clear();
+                                    pListView_Search($"SELECT * FROM Personal WHERE P_Nr LIKE '%{tbSuche.Text}%'",0);
+                                    break;
+                                case 1:
+                                    list3.ItemsSource = null;
+                                    list3.Items.Clear();
+                                    pListView_Search($"SELECT * FROM Personal WHERE P_NName LIKE '%{tbSuche.Text}%'",0);
+                                    break;
+                                case 2:
+                                    list3.ItemsSource = null;
+                                    list3.Items.Clear();
+                                    pListView_Search($"SELECT * FROM Personal WHERE P_VName LIKE '%{tbSuche.Text}%'",0);
+                                    break;
+                                case 3:
+                                    list3.ItemsSource = null;
+                                    list3.Items.Clear();
+                                    pListView_Search("",1);
+                                    break;
+
+                            }
+                        }
+                        else if (tcUStunden.IsSelected == true)
+                        { }
+                        else if (tcPersonal.IsSelected == true)
+                        { }
+                        bk.CloseCon();
+                    }
+                    else
+                    { pListView_Load(); bk.CloseCon(); }
+                }
+                catch { bk.CloseCon(); }
+            }
+            catch { MessageBox.Show("Verbindung konnte nicht hergestellt werden.","",MessageBoxButton.OK,MessageBoxImage.Error); }
+        }
+
+        private void cbSuche_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            tbSuche.Text = "";
         }
     }
 }

@@ -38,5 +38,16 @@ namespace Test
             catch(Exception a) { throw a; }
         }
 
+
+        public bool IsNumeric(string x)
+        {
+            double result;
+            double.TryParse(x, out result);
+            if (result == 0)
+                return false; 
+            else
+                return true;
+        }
+
     }
 }

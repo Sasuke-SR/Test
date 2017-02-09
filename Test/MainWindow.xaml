@@ -5,13 +5,46 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="MainWindow" Height="640" Width="770" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded">
+        Title="MainWindow" Height="Auto" Width="Auto" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
-        <ListView Background="White" Width="400" BorderBrush="Black" BorderThickness="1px"/>
+        <TabControl Width="700" SelectionChanged="TabControl_SelectionChanged">
+            <TabItem x:Name="tcLohnabrechnung" Header="Lohnabrechnungen">
+                <ListView x:Name="list" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Nr" Width="50" DisplayMemberBinding="{Binding nr}"/>
+                            <GridViewColumn Header="Bezeichnung" Width="300" DisplayMemberBinding="{Binding bez}"/>
+                            <GridViewColumn Header="Test" Width="250" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem x:Name="tcUStunden" Header="Überstunden">
+                <ListView x:Name="list2" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Nr" />
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+            <TabItem x:Name="tcPersonal" Header="Personal">
+                <ListView x:Name="list3" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0">
+                    <ListView.View>
+                        <GridView>
+                            <GridViewColumn Header="Nr" Width="40" DisplayMemberBinding="{Binding pNr}"/>
+                            <GridViewColumn Header="Nachname" Width="110" DisplayMemberBinding="{Binding pNName}"/>
+                            <GridViewColumn Header="Vorname" Width="110" DisplayMemberBinding="{Binding pVName}"/>
+                            <GridViewColumn Header="Abteilung" Width="110" DisplayMemberBinding="{Binding pAbteilung}"/>
+                        </GridView>
+                    </ListView.View>
+                </ListView>
+            </TabItem>
+        </TabControl>
         <Grid Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center">
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -26,9 +59,9 @@
                 <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Überstunden erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Click="Button_Click_5" />
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="0,15,0,0">
-                <Label Content="Datensatz suchen"/>
-                <TextBox Height="20"  />
-                <ComboBox Height="20" />
+                <Label Content="Suche:"/>
+                <TextBox x:Name="tbSuche" Height="23" TextChanged="tbSuche_TextChanged"  />
+                <ComboBox x:Name="cbSuche" Height="23" SelectionChanged="cbSuche_SelectionChanged" Margin="0,1,0,0"/>
             </StackPanel>
         </Grid>
     </Grid>
