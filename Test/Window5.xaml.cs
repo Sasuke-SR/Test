@@ -146,7 +146,7 @@ namespace Test
 
         private void cbLgName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbLgName.SelectedItem != null)
+            if (cbAbtName.SelectedItem != null)
             {
                 try
                 {
