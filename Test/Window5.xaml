@@ -33,12 +33,12 @@
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Abteilung:" />
                     <ComboBox x:Name="cbAbtName" Height="20" Width="100" Margin="20,5,0,0" SelectionChanged="cbAbtName_SelectionChanged" />
-                    <TextBox x:Name="tbAbtNr" Height="20" Width="30" Margin="10,5,0,0" />
+                    <TextBox x:Name="tbAbtNr" Height="20" Width="30" Margin="10,5,0,0" IsReadOnly="True"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                     <Label FontSize="12" Content="Lohngruppe:" />
                     <ComboBox x:Name="cbLgName" Height="20" Width="100" Margin="7,5,0,0" SelectionChanged="cbLgName_SelectionChanged" />
-                    <TextBox x:Name="tbLgNr" Height="20" Width="30" Margin="10,5,0,0" />
+                    <TextBox x:Name="tbLgNr" Height="20" Width="30" Margin="10,5,0,0" IsReadOnly="True" />
                 </StackPanel>
             </StackPanel>
         </Border>
