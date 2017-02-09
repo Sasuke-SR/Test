@@ -96,20 +96,24 @@ namespace Test
             bk.Connection();
             try
             {
-                if (bk.IsNumeric(tbName.Text) != true && bk.IsNumeric(tbNName.Text) != true)
+                if (!string.IsNullOrWhiteSpace(tbName.Text) && !string.IsNullOrWhiteSpace(tbNName.Text) && !string.IsNullOrWhiteSpace(tbAbtNr.Text) && !string.IsNullOrWhiteSpace(tbLgNr.Text))
                 {
-                    //Erstellung
-                    string _tmpQuery = String.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
-                    bk.Insert(_tmpQuery);
-                    string _tmpName = String.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
-                    MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
-                    bk.CloseCon();
-                    // Neuladen der Maske
-                    Mask_Load();
-                    tbLgNr.Text = ""; tbName.Text = ""; tbNName.Text = ""; tbAbtNr.Text = ""; tbLgNr.Text = "";
-                    cbAbtName.Text = ""; cbLgName.Text = ""; cbAbtName.SelectedItem = null; cbLgName.SelectedItem = null;
+                    if (bk.IsAllowed(tbName.Text, true, false, true) && bk.IsAllowed(tbNName.Text, true, false, true))
+                    {
+                        //Erstellung
+                        string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
+                        bk.Insert(_tmpQuery);
+                        string _tmpName = string.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
+                        MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        bk.CloseCon();
+                        // Neuladen der Maske
+                        Mask_Load();
+                        tbLgNr.Text = ""; tbName.Text = ""; tbNName.Text = ""; tbAbtNr.Text = ""; tbLgNr.Text = "";
+                        cbAbtName.Text = ""; cbLgName.Text = ""; cbAbtName.SelectedItem = null; cbLgName.SelectedItem = null;
+                    }
+                    else { bk.CloseCon(); MessageBox.Show("Die Felder 'Name' & 'Nachname' dürfen keine Numerischen Werte oder Sonderzeichen enthalten.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
                 }
-                else { bk.CloseCon(); MessageBox.Show("Die Felder 'Name' & 'Nachname' dürfen keine Numerischen Werte enthalten", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                else { bk.CloseCon(); MessageBox.Show("Es muss ein Name, ein Nachname, eine Abteilung und eine Lohngruppe angegeben werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
 
             }
             catch

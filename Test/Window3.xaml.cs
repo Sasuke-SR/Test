@@ -93,7 +93,7 @@ namespace Test
                 }
                 else { _tmp = 1; }
 
-                if (bk.IsNumeric(tbLgBet.Text) == false)
+                if (bk.IsAllowed(tbLgBet.Text, false, true, true) == false)
                 { _tmpFehler += "Im Feld Lohn dürfen nur Numerische Zahlen stehen"; _tmp = 0; }
                 else
                     _tmp = 1;
