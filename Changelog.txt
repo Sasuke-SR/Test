@@ -1,0 +1,4 @@
+﻿Bugs:
+- Numerische Text-Felder müssen geprüft werden ob sie keine Numerischen werte enthalten
+- Textfelder dürfen nicht leer gelassen werden
+- TextBoxen schreibschützen
