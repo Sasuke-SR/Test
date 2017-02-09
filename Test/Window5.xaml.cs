@@ -126,7 +126,7 @@ namespace Test
 
         private void cbAbtName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbLgName.SelectedItem != null)
+            if (cbAbtName.SelectedItem != null)
             {
                 try
                 {
@@ -146,7 +146,7 @@ namespace Test
 
         private void cbLgName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbAbtName.SelectedItem != null)
+            if (cbLgName.SelectedItem != null)
             {
                 try
                 {
