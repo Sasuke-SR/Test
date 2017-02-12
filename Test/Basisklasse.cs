@@ -49,11 +49,15 @@ namespace Test
         //        return true;
         //}
 
-        public bool IsAllowed(string y, bool allowLetters, bool allowDigits, bool allowPunctuation)
+        public bool IsAllowed(string y, bool allowLetters, bool allowDigits, bool allowSpace)
         {
             foreach (char c in y)
             {
-                if (char.IsLetter(c) != allowLetters && char.IsDigit(c) != allowDigits && char.IsPunctuation(c) != allowPunctuation )
+                if ((allowLetters && char.IsLetter(c)) || (allowDigits && char.IsDigit(c)) || (allowSpace && c == ' '))// problem space ist kein puntuation
+                {
+                    //das Symbol ist in Ordnung
+                }
+                else
                 {
                     return false;
                 }
