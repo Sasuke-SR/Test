@@ -71,25 +71,31 @@ namespace Test
 
         private void bGrErs_Click(object sender, RoutedEventArgs e)
         {
-            try
+            if (bk.IsAllowed(tbUeBez.Text, true, true, true) && bk.IsAllowed(tbUeBet.Text, false, true, false, ",."))
             {
-                bk.Connection();
                 try
                 {
-                    bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.')});");
+                    bk.Connection();
                     try
                     {
-                        lvUeGr.ItemsSource = null;
-                        fillLv();
-                        tbUeBet.Text = "";
-                        tbUeBez.Text = "";
-                        figureOutNr();
+                        bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.')});");
+                        try
+                        {
+                            lvUeGr.ItemsSource = null;
+                            fillLv();
+                            tbUeBet.Text = "";
+                            tbUeBez.Text = "";
+                            figureOutNr();
+                            bk.CloseCon();
+                        }
+                        catch (Exception ex) { bk.CloseCon(); throw ex; }
                     }
-                    catch (Exception ex) { throw ex; }
+                    catch { MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
                 }
-                catch { MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
             }
-            catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            else { MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden."); }
+            
 
         }
 
