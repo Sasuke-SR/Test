@@ -26,11 +26,11 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Überstunden:" />
-                        <TextBox x:Name="tbUeStd" Height="20" Width="120" Margin="60,0,0,0" />
+                        <TextBox x:Name="tbUeStd" Height="20" Width="120" Margin="60,0,0,0" FontSize="11"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Datum:" />
-                        <TextBox x:Name="tbUeStdDat" Height="20" Width="120" Margin="93,0,0,0" />
+                        <TextBox x:Name="tbUeStdDat" Height="20" Width="120" Margin="93,0,0,0"  FontSize="11"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Margin="15,0,0,0">

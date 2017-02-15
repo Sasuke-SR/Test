@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="MainWindow" Height="Auto" Width="Auto" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded">
+        Title="Lohnabrechnung Verwaltungs - System" Height="Auto" Width="Auto" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto" />
@@ -57,6 +57,7 @@
                 <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Personal erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Click="Button_Click_3" />
                 <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Überstundengruppen erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Click="Button_Click_4" />
                 <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Überstunden erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Click="Button_Click_5" />
+                <Button BorderBrush="Black" BorderThickness="1px"  Width="200" Height="30" FontSize="12" Content="Bonus erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Background="{DynamicResource Weiß/Grau}" Margin="0,5,0,0" Click="Button_Click_6" />
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="0,15,0,0">
                 <Label Content="Suche:"/>

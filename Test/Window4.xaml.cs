@@ -30,6 +30,7 @@ namespace Test
 
         private void listView_Load()
         {
+            // Abteilungen
             dr = bk.Select("SELECT * FROM ABTEILUNG");
             List<Abteil> items = new List<Abteil>();
             while (dr.Read())
@@ -75,10 +76,22 @@ namespace Test
                             bk.Connection();
                             try
                             {
-                                dr = bk.Select("SELECT last(L_Nr) FROM Abteilung");
+                                dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
                                 dr.Read();
-                                Abteilung_Nr.Content = dr.GetInt32(0).ToString();
-                                listView_Load();
+                                try
+                                {
+                                    int _tmpA = dr.GetInt32(0); _tmp += 1;
+                                    Abteilung_Nr.Content = _tmp.ToString();
+                                    listView_Load();
+                                    bk.CloseCon();
+                                }
+                                catch
+                                {
+                                    int _tmpA = 1;
+                                    Abteilung_Nr.Content = _tmp.ToString();
+                                    listView_Load();
+                                    bk.CloseCon();
+                                }
                             }
                             catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                         }

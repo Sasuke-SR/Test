@@ -38,6 +38,15 @@ namespace Test
             catch(Exception a) { throw a; }
         }
 
+        public void Update(string query)
+        {
+            try
+            {
+                cmd = new OleDbCommand(query, con);
+                cmd.ExecuteNonQuery();
+            }
+            catch(Exception a) { throw a; }
+        }
 
         public bool IsNumeric(string x)
         {
@@ -47,6 +56,55 @@ namespace Test
                 return false; 
             else
                 return true;
+        }
+
+        #region IsAllowed
+
+        public bool IsAllowed(string stringToCheck, bool allowLetters)
+        {
+            return IsAllowed(stringToCheck, allowLetters, false);
+        }
+
+        public bool IsAllowed(string stringToCheck, bool allowLetters, bool allowDigits)
+        {
+            return IsAllowed(stringToCheck, allowLetters, allowDigits, false);
+        }
+
+        public bool IsAllowed(string stringToCheck, bool allowLetters, bool allowDigits, bool allowSpace)
+        {
+            return IsAllowed(stringToCheck, allowLetters, allowDigits, allowSpace, ""); //geht zum dem, mit der string überladung und nicht der unter diesem
+        }
+
+        public bool IsAllowed(string stringToCheck, bool allowLetters, bool allowDigits, bool allowSpace, char allowThis)
+        {
+            return IsAllowed(stringToCheck, allowLetters, allowDigits, allowSpace, allowThis.ToString());
+        }
+
+        public bool IsAllowed(string stringToCheck, bool allowLetters, bool allowDigits, bool allowSpace, string allowThese)
+        {
+            foreach (char c in stringToCheck)
+            {
+                if ((allowLetters && char.IsLetter(c)) || (allowDigits && char.IsDigit(c)) || (allowSpace && c == ' '))
+                {
+                    //das Symbol ist in Ordnung
+                }
+                else
+                {
+                    foreach (char c2 in allowThese)
+                    {
+                        if (c == c2)
+                        { return true; }
+                    }
+                    return false;
+                }
+            }
+            return true;
+        }
+        #endregion IsAllowed
+
+        public void TheInevitableMethodOfIndefiniteRecursion()
+        {
+            TheInevitableMethodOfIndefiniteRecursion();
         }
 
     }
