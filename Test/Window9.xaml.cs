@@ -82,9 +82,9 @@ namespace Test
         private void bSave_Click(object sender, RoutedEventArgs e)
         {
             string _Error = "";
-            if (!String.IsNullOrWhiteSpace(tbBez.Text) && !String.IsNullOrWhiteSpace(tbBP.Text))
+            if (!string.IsNullOrWhiteSpace(tbBez.Text) && !string.IsNullOrWhiteSpace(tbBP.Text))
             {
-                if (bk.IsNumeric(tbBP.Text) == true)
+                if (bk.IsAllowed(tbBP.Text, false, true, true, "%,."))
                 {
                     if (checkMonat.SelectedItem != null)
                     {
@@ -109,7 +109,8 @@ namespace Test
                                 catch { }
                                 if (BAktivE != true && cBStatus.IsChecked == false)
                                 {
-                                    bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text}',B_Zuschlag={tbBP.Text},B_Monat={_tmp},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
+                                    string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
+                                    bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text}',B_Zuschlag={_tmpBP},B_Monat={_tmp},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
                                     MessageBox.Show("Dieser Bonus wurde erfolgreich geändert","",MessageBoxButton.OK,MessageBoxImage.Error);
                                     bk.CloseCon();
                                     this.Close();
