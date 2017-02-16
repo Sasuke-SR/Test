@@ -23,7 +23,12 @@ namespace Test
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
-
+        private class Person
+        {
+            public int pNr { get; set; }
+            public string vName { get; set; }
+            public string nName { get; set; }
+        }
         public Window7()
         {
             InitializeComponent();
@@ -68,8 +73,13 @@ namespace Test
 
                 try
                 {
+                    List<Person> zBobs; // Hier wird gerade dran gearbeitet
                     bk.Connection();
-                    dr = bk.Select("SELECT P_Nr FROM Personal;"); //Hier geht sweiter
+                    dr = bk.Select("SELECT P_Nr, P_VName, P_NName FROM Personal;");
+                    while(dr.Read())
+                    {
+                        cbPer.Items.Add(dr.GetString(0));
+                    }
                 }
                 catch
                 {

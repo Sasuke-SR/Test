@@ -23,6 +23,7 @@ namespace Test
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
+
         public Window5()
         {
             InitializeComponent();
@@ -81,6 +82,7 @@ namespace Test
                 {
                     bk.Connection();
                     dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
+
                     while (dr.Read()){ cbLgName.Items.Add(dr.GetString(0).ToString()); }
                     cbLgName.Items.Refresh();
                     bk.CloseCon();
