@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Data;
+using System.Data.OleDb;
 
 namespace Test
 {
@@ -19,9 +21,66 @@ namespace Test
     /// </summary>
     public partial class Window7 : Window
     {
+        Basisklasse bk = new Basisklasse();
+        OleDbDataReader dr;
+
         public Window7()
         {
             InitializeComponent();
+        }
+
+        private void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    dr = bk.Select("SELECT Last(US_Nr) FROM UStunden;");
+                    dr.Read();
+                    try
+                    {
+                        lUeStdNr.Content = dr.GetInt32(0) + 1;
+                    }
+                    catch
+                    {
+                        lUeStdNr.Content = 1;
+                    }
+                    bk.CloseCon();
+                }
+                catch (Exception ex1)
+                { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen-Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex1); return; }
+
+                try
+                {
+                    bk.Connection();
+                    dr = bk.Select("SELECT US_Bez FROM UStunden;");
+                    while(dr.Read())
+                    {
+                        cbUeStdGr.Items.Add(dr.GetString(1));
+                    }
+                    cbUeStdGr.Items.Refresh();
+                    bk.CloseCon();
+
+                }
+                catch (Exception ex2)
+                { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex2); return; }
+
+                try
+                {
+                    bk.Connection();
+                    dr = bk.Select("SELECT P_Nr FROM Personal;"); //Hier geht sweiter
+                }
+                catch
+                {
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex);
+            }
         }
     }
 }

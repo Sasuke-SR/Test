@@ -20,11 +20,11 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Name:" />
-                    <TextBox x:Name="tbName" Height="20" Width="120" Margin="50,0,0,0"/>
+                    <TextBox x:Name="tbName" Height="20" Width="120" Margin="50,0,0,0" FontSize="11"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Nachname:" />
-                    <TextBox x:Name="tbNName" Height="20" Width="120" Margin="24,0,0,0" />
+                    <TextBox x:Name="tbNName" Height="20" Width="120" Margin="24,0,0,0" FontSize="11"/>
                 </StackPanel>
             </StackPanel>
         </Border>
@@ -38,7 +38,7 @@
                 <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                     <Label FontSize="12" Content="Lohngruppe:" />
                     <ComboBox x:Name="cbLgName" Height="20" Width="100" Margin="7,5,0,0" SelectionChanged="cbLgName_SelectionChanged" />
-                    <TextBox x:Name="tbLgNr" Height="20" Width="30" Margin="10,5,0,0" IsReadOnly="True" />
+                    <TextBox x:Name="tbLgNr" Height="20" Width="30" Margin="10,5,0,0" IsReadOnly="True"/>
                 </StackPanel>
             </StackPanel>
         </Border>

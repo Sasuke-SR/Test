@@ -81,7 +81,7 @@ namespace Test
                 {
                     bk.Connection();
                     dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
-                    while (dr.Read()){cbLgName.Items.Add(dr.GetString(0).ToString());}
+                    while (dr.Read()){ cbLgName.Items.Add(dr.GetString(0).ToString()); }
                     cbLgName.Items.Refresh();
                     bk.CloseCon();
                 }
