@@ -38,7 +38,7 @@ namespace Test
                     // Letzten Personal Datensatz auslesen
                     dr = bk.Select("SELECT last(P_Nr) FROM Personal");
                     dr.Read();
-                    try{lAbtNr.Content = dr.GetInt32(0) + 1;}
+                    try{ lAbtNr.Content = dr.GetInt32(0) + 1; }
                     catch { lAbtNr.Content = "1"; }
                     bk.CloseCon();
                 }
@@ -96,12 +96,12 @@ namespace Test
             bk.Connection();
             try
             {
-                if (bk.IsNumeric(tbName.Text) != true && bk.IsNumeric(tbNName.Text) != true)
+                if (bk.IsAllowed(tbName.Text, true, false, true, "'.") && bk.IsAllowed(tbNName.Text, true, false, true, "'."))
                 {
                     //Erstellung
-                    string _tmpQuery = String.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
+                    string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
                     bk.Insert(_tmpQuery);
-                    string _tmpName = String.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
+                    string _tmpName = string.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
                     MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
                     bk.CloseCon();
                     // Neuladen der Maske
@@ -126,7 +126,7 @@ namespace Test
 
         private void cbAbtName_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (cbLgName.SelectedItem != null)
+            if (cbAbtName.SelectedItem != null)
             {
                 try
                 {
