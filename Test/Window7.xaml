@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-       Title="Überstunden erstellen" Height="455" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" >
+       Title="Überstunden erstellen" Height="455" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded" >
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -18,7 +18,7 @@
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Überstunden Nr:" />
-                        <TextBlock Height="20" Margin="140,0,0,0" Text="Nr"/>
+                        <Label x:Name="lUeStdNr" Margin="140,0,0,0" Content="Nr" FontSize="12"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Überstundengruppe:" />
