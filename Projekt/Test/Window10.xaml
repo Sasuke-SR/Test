@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-       Title="Personal bearbeiten2w" Height="270" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded">
-    <Grid Margin="10">
+       Title="Personal bearbeiten" Height="270" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded">
+    <Grid Margin="14">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
