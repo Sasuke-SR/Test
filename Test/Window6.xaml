@@ -20,11 +20,11 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Überstunden Bezeichnung:" />
-                    <TextBox x:Name="tbUeBez" Height="20" Width="120" Margin="20,0,0,0"/>
+                    <TextBox x:Name="tbUeBez" Height="20" Width="120" Margin="20,0,0,0" FontSize="11"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Überstunden Betrag:" />
-                    <TextBox x:Name="tbUeBet" Height="20" Width="120" Margin="53,0,0,0" />
+                    <TextBox x:Name="tbUeBet" Height="20" Width="120" Margin="53,0,0,0" FontSize="11"/>
                 </StackPanel>
             </StackPanel>
         </Border>

@@ -87,13 +87,13 @@ namespace Test
                 string _tmpFehler = "";
 
                 tbLgBet.Text = tbLgBet.Text.Replace(",", ".");
-                if (String.IsNullOrWhiteSpace(tbLgName.Text) || String.IsNullOrWhiteSpace(tbLgBet.Text))
+                if (string.IsNullOrWhiteSpace(tbLgName.Text) || string.IsNullOrWhiteSpace(tbLgBet.Text))
                 {
                     _tmpFehler += "Die Felder dürfen nicht leer sein.\n";
                 }
                 else { _tmp = 1; }
 
-                if (bk.IsAllowed(tbLgBet.Text, false, true, true) == false)
+                if (bk.IsAllowed(tbLgBet.Text, false, true, false, ",.") == false)
                 { _tmpFehler += "Im Feld Lohn dürfen nur Numerische Zahlen stehen"; _tmp = 0; }
                 else
                     _tmp = 1;

@@ -249,5 +249,17 @@ namespace Test
         {
             tbSuche.Text = "";
         }
+
+        private void Button_Click_6(object sender, RoutedEventArgs e)
+        {
+            Window8 nBonus = new Window8();
+            nBonus.ShowDialog();
+        }
+
+        private void button_Click_7(object sender, RoutedEventArgs e)
+        {
+            Window10 sth = new Window10();
+            sth.ShowDialog();
+        }
     }
 }

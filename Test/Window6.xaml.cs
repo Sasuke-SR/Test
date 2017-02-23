@@ -78,7 +78,7 @@ namespace Test
                     bk.Connection();
                     try
                     {
-                        bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.')});");
+                        bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.').Trim()});");
                         try
                         {
                             lvUeGr.ItemsSource = null;
@@ -95,7 +95,7 @@ namespace Test
                 catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
             }
             else { MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden."); }
-            
+
 
         }
 

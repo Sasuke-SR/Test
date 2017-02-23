@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="Abteilung erstellen" Height="400" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded" >
+        Title="Abteilung erstellen" Height="375" Width="600" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}" Loaded="Window_Loaded" >
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -26,7 +26,7 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label FontSize="12" Content="Name der Abteilung:" />
-                            <TextBox x:Name="textBox_Name" Height="20" Width="120" Margin="68,0,0,0" />
+                            <TextBox x:Name="textBox_Name" Height="20" Width="120" Margin="68,0,0,0" FontSize="11"/>
                         </StackPanel>
                     </StackPanel>
                     <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Column="1" Margin="55,0,0,0">
