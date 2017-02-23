@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Data.OleDb;
+using System.Collections;
+using System.ComponentModel;
 
 namespace Test
 {
@@ -32,6 +34,7 @@ namespace Test
             public string pVName { get; set; }
             public string pNName { get; set; }
             public string pAbteilung { get; set; }
+            public string pStatus { get; set; }
         }
 
         public class Abteilungen
@@ -50,11 +53,11 @@ namespace Test
             {
                 while (dr.Read())
                 {
-                    string _tmpquery = String.Format("SELECT * FROM Abteilung WHERE Abt_Nr = {0}", dr.GetInt32(3));
-                    dr1 = bk.Select(_tmpquery);
+                    string _tmp = "";
+                    dr1 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}");
                     dr1.Read();
-
-                    items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1) });
+                    if (dr1.GetBoolean(5) == true) { _tmp = "Gefeuert"; } else _tmp = "Angestellt";
+                    items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1), pStatus = _tmp });
                 }
             }
             catch (Exception a) { throw a; }
@@ -73,10 +76,11 @@ namespace Test
                     {
                         while (dr.Read())
                         {
-                            string _tmpquery = String.Format("SELECT * FROM Abteilung WHERE Abt_Nr = {0}", dr.GetInt32(3));
-                            dr1 = bk.Select(_tmpquery);
+                            string _tmp = "";
+                            dr1 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}");
                             dr1.Read();
-                            items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1) });
+                            if (dr1.GetBoolean(5) == true) { _tmp = "Gefeuert"; } else _tmp = "Angestellt";
+                            items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1), pStatus = _tmp });
                         }
                     }
                     catch (Exception a) { throw a; }
@@ -95,10 +99,11 @@ namespace Test
                         {
                             while (dr.Read())
                             {
-                                string _tmpquery = String.Format("SELECT * FROM Abteilung WHERE Abt_Nr = {0}", dr.GetInt32(3));
-                                dr1 = bk.Select(_tmpquery);
+                                string _tmp = "";
+                                dr1 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}");
                                 dr1.Read();
-                                items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1) });
+                                if (dr1.GetBoolean(5) == true) { _tmp = "Gefeuert"; } else _tmp = "Angestellt";
+                                items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1), pStatus = _tmp });
                             }
                         }
                         catch (Exception a) { throw a; }
@@ -154,6 +159,13 @@ namespace Test
         {
             Window5 nPersonal = new Window5();
             nPersonal.ShowDialog();
+            try
+            {
+                bk.Connection();
+                try { pListView_Load(); bk.CloseCon(); }
+                catch { MessageBox.Show("Es ist ein Fehler aufgetreten.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+            }
+            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
 
         private void Button_Click_4(object sender, RoutedEventArgs e)
@@ -189,7 +201,7 @@ namespace Test
                     cbSuche.Items.Insert(1, "Nachname");
                     cbSuche.Items.Insert(2, "Vorname");
                     cbSuche.Items.Insert(3, "Abteilung");
-                    tbSuche.Text = "";
+                    //tbSuche.Text = "";
                     cbSuche.SelectedIndex = 0;
                     break;
             }
@@ -212,21 +224,25 @@ namespace Test
                                     list3.ItemsSource = null;
                                     list3.Items.Clear();
                                     pListView_Search($"SELECT * FROM Personal WHERE P_Nr LIKE '%{tbSuche.Text}%'",0);
+                                    bk.CloseCon();
                                     break;
                                 case 1:
                                     list3.ItemsSource = null;
                                     list3.Items.Clear();
                                     pListView_Search($"SELECT * FROM Personal WHERE P_NName LIKE '%{tbSuche.Text}%'",0);
+                                    bk.CloseCon();
                                     break;
                                 case 2:
                                     list3.ItemsSource = null;
                                     list3.Items.Clear();
                                     pListView_Search($"SELECT * FROM Personal WHERE P_VName LIKE '%{tbSuche.Text}%'",0);
+                                    bk.CloseCon();
                                     break;
                                 case 3:
                                     list3.ItemsSource = null;
                                     list3.Items.Clear();
                                     pListView_Search("",1);
+                                    bk.CloseCon();
                                     break;
 
                             }
@@ -235,7 +251,6 @@ namespace Test
                         { }
                         else if (tcPersonal.IsSelected == true)
                         { }
-                        bk.CloseCon();
                     }
                     else
                     { pListView_Load(); bk.CloseCon(); }
@@ -247,13 +262,35 @@ namespace Test
 
         private void cbSuche_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            tbSuche.Text = "";
+            tbSuche.IsReadOnly = false;
         }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
             Window8 nBonus = new Window8();
             nBonus.ShowDialog();
+        }
+
+        private void list3_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (list3.SelectedItem != null)
+            {
+                string _tmp = "";
+                foreach (Personal item in list3.SelectedItems) { _tmp = item.pNr.ToString(); }
+                Window10 bPersonal = new Window10(int.Parse(_tmp));
+                bPersonal.ShowDialog();
+                try
+                {
+                    bk.Connection();
+                    try
+                    {
+                        pListView_Load();
+                        bk.CloseCon();
+                    }
+                    catch { MessageBox.Show("Die ListView konnte nicht geladen werden", ""); bk.CloseCon(); }
+                }
+                catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden", ""); }
+            }
         }
     }
 }

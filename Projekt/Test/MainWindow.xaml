@@ -33,13 +33,14 @@
                 </ListView>
             </TabItem>
             <TabItem x:Name="tcPersonal" Header="Personal">
-                <ListView x:Name="list3" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0">
+                <ListView x:Name="list3" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0" SelectionChanged="list3_SelectionChanged">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Nr" Width="40" DisplayMemberBinding="{Binding pNr}"/>
                             <GridViewColumn Header="Nachname" Width="110" DisplayMemberBinding="{Binding pNName}"/>
                             <GridViewColumn Header="Vorname" Width="110" DisplayMemberBinding="{Binding pVName}"/>
-                            <GridViewColumn Header="Abteilung" Width="110" DisplayMemberBinding="{Binding pAbteilung}"/>
+                            <GridViewColumn Header="Abteilung" Width="140" DisplayMemberBinding="{Binding pAbteilung}"/>
+                            <GridViewColumn Header="Beschäftigungsstatus" Width="120" DisplayMemberBinding="{Binding pStatus}" />
                         </GridView>
                     </ListView.View>
                 </ListView>
@@ -61,7 +62,7 @@
             </StackPanel>
             <StackPanel Grid.Row="1" Margin="0,15,0,0">
                 <Label Content="Suche:"/>
-                <TextBox x:Name="tbSuche" Height="23" TextChanged="tbSuche_TextChanged"  />
+                <TextBox x:Name="tbSuche" Height="23" TextChanged="tbSuche_TextChanged" IsReadOnly="True" />
                 <ComboBox x:Name="cbSuche" Height="23" SelectionChanged="cbSuche_SelectionChanged" Margin="0,1,0,0"/>
             </StackPanel>
         </Grid>

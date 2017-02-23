@@ -27,7 +27,7 @@ namespace Test
         {
             public int Nr { get; set; }
             public string Bezeichnung { get; set; }
-            public double Betrag { get; set; }
+            public string Betrag { get; set; }
         }
 
         public Window6()
@@ -71,30 +71,35 @@ namespace Test
 
         private void bGrErs_Click(object sender, RoutedEventArgs e)
         {
-            if (bk.IsAllowed(tbUeBez.Text, true, true, true) && bk.IsAllowed(tbUeBet.Text, false, true, false, ",."))
+            if (bk.IsAllowed(tbUeBez.Text, true, true, true) && bk.IsAllowed(tbUeBet.Text, false, true, false, ",.€"))
             {
-                try
+                if (!String.IsNullOrWhiteSpace(tbUeBet.Text) && !String.IsNullOrWhiteSpace(tbUeBez.Text))
                 {
-                    bk.Connection();
                     try
                     {
-                        bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.')});");
+                        bk.Connection();
                         try
                         {
-                            lvUeGr.ItemsSource = null;
-                            fillLv();
-                            tbUeBet.Text = "";
-                            tbUeBez.Text = "";
-                            figureOutNr();
-                            bk.CloseCon();
+                            bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.').Replace("€", "").Trim()});");
+                            MessageBox.Show("Die Überstundengruppe wurde erfolgreich erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                            try
+                            {
+                                lvUeGr.ItemsSource = null;
+                                fillLv();
+                                tbUeBet.Text = "";
+                                tbUeBez.Text = "";
+                                figureOutNr();
+                                bk.CloseCon();
+                            }
+                            catch { MessageBox.Show("Es ist ein Fehler aufgetreten","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
                         }
-                        catch (Exception ex) { bk.CloseCon(); throw ex; }
+                        catch { MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
                     }
-                    catch { MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                    catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
                 }
-                catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                else MessageBox.Show("Die Eingabe Felder dürfen nicht Leer sein.\n", "");
             }
-            else { MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden."); }
+            else {MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden.", ""); }
 
 
         }
@@ -105,7 +110,7 @@ namespace Test
             List<UStundenGr> usgListe = new List<UStundenGr>();
             while (dr.Read())
             {
-                UStundenGr UsGr = new UStundenGr() { Nr = dr.GetInt32(0), Bezeichnung = dr.GetString(1), Betrag = dr.GetDouble(2) };
+                UStundenGr UsGr = new UStundenGr() { Nr = dr.GetInt32(0), Bezeichnung = dr.GetString(1), Betrag = dr.GetDouble(2).ToString("C") };
                 usgListe.Add(UsGr);
             }
             lvUeGr.ItemsSource = usgListe;

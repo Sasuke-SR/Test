@@ -39,7 +39,7 @@ namespace Test
                     // Letzten Personal Datensatz auslesen
                     dr = bk.Select("SELECT last(P_Nr) FROM Personal");
                     dr.Read();
-                    try{ lAbtNr.Content = dr.GetInt32(0) + 1; }
+                    try { lAbtNr.Content = dr.GetInt32(0) + 1; }
                     catch { lAbtNr.Content = "1"; }
                     bk.CloseCon();
                 }
@@ -57,8 +57,8 @@ namespace Test
                 {
                     dr = bk.Select("SELECT Last(P_Nr) FROM Personal;");
                     dr.Read();
-                    try{lAbtNr.Content = dr.GetInt32(0) + 1;}
-                    catch{lAbtNr.Content = "1";}
+                    try { lAbtNr.Content = dr.GetInt32(0) + 1; }
+                    catch { lAbtNr.Content = "1"; }
 
                     bk.CloseCon();
                 }
@@ -83,7 +83,7 @@ namespace Test
                     bk.Connection();
                     dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
 
-                    while (dr.Read()){ cbLgName.Items.Add(dr.GetString(0).ToString()); }
+                    while (dr.Read()) { cbLgName.Items.Add(dr.GetString(0).ToString()); }
                     cbLgName.Items.Refresh();
                     bk.CloseCon();
                 }
@@ -98,20 +98,24 @@ namespace Test
             bk.Connection();
             try
             {
-                if (bk.IsAllowed(tbName.Text, true, false, true, "'.") && bk.IsAllowed(tbNName.Text, true, false, true, "'."))
+                if (!String.IsNullOrWhiteSpace(tbName.Text) && !String.IsNullOrWhiteSpace(tbNName.Text))
                 {
-                    //Erstellung
-                    string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
-                    bk.Insert(_tmpQuery);
-                    string _tmpName = string.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
-                    MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
-                    bk.CloseCon();
-                    // Neuladen der Maske
-                    Mask_Load();
-                    tbLgNr.Text = ""; tbName.Text = ""; tbNName.Text = ""; tbAbtNr.Text = ""; tbLgNr.Text = "";
-                    cbAbtName.Text = ""; cbLgName.Text = ""; cbAbtName.SelectedItem = null; cbLgName.SelectedItem = null;
+                    if (bk.IsAllowed(tbName.Text, true, false, true, "'.") && bk.IsAllowed(tbNName.Text, true, false, true, "'."))
+                    {
+                        //Erstellung
+                        string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
+                        bk.Insert(_tmpQuery);
+                        string _tmpName = string.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
+                        MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        bk.CloseCon();
+                        // Neuladen der Maske
+                        Mask_Load();
+                        tbLgNr.Text = ""; tbName.Text = ""; tbNName.Text = ""; tbAbtNr.Text = ""; tbLgNr.Text = "";
+                        cbAbtName.Text = ""; cbLgName.Text = ""; cbAbtName.SelectedItem = null; cbLgName.SelectedItem = null;
+                    }
+                    else { bk.CloseCon(); MessageBox.Show("Es dürfen keine Sonderzeichen so wie Numerische Werte eingegeben werden", "", MessageBoxButton.OK, MessageBoxImage.Error); }
                 }
-                else { bk.CloseCon(); MessageBox.Show("Die Felder 'Name' & 'Nachname' dürfen keine Numerischen Werte enthalten", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                else MessageBox.Show("Die Felder dürfen nicht Leer sein","");
 
             }
             catch

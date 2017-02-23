@@ -52,7 +52,7 @@
             </StackPanel>
         </Border>
         <StackPanel Grid.Row="2" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="0,14,0,0">
-            <Button x:Name="bUeStdErs" BorderThickness="1" BorderBrush="Black" Content="Überstunden erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Click="bUeStdErs_Click"/>
+            <Button x:Name="bUeStdErs" BorderThickness="1" BorderBrush="Black" Content="Bonus erstellen" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Click="bUeStdErs_Click"/>
             <Button x:Name="bMainWin" BorderThickness="1" BorderBrush="Black" Content="Zurück zum Hauptfenster" Height="25" Width="160" Background="{DynamicResource Weiß/Grau}" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="5,0,0,0" Click="bMainWin_Click"/>
         </StackPanel>
     </Grid>

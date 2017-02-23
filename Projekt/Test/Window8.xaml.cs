@@ -127,11 +127,11 @@ namespace Test
         private void bUeStdErs_Click(object sender, RoutedEventArgs e)
         {
             string _Error = "";
-            if (!string.IsNullOrWhiteSpace(tbBBez.Text) && !string.IsNullOrWhiteSpace(tbBSatz.Text))
+            if (!String.IsNullOrWhiteSpace(tbBBez.Text) && !String.IsNullOrWhiteSpace(tbBSatz.Text))
             {
                 if (cbBStatus.SelectedItem != null || cbBMonat.SelectedItem != null)
                 {
-                    if (bk.IsAllowed(tbBSatz.Text, false, true, true, "%,."))
+                    if (bk.IsAllowed(tbBSatz.Text,true,true,false,"%,."))
                     {
                         try
                         {
@@ -151,7 +151,7 @@ namespace Test
                                 {
                                     int _mon = cbBMonat.SelectedIndex + 1;
                                     switch (cbBStatus.SelectedIndex) { case 0: status = false; break; case 1: status = true; break; }
-                                    string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(",", ".").Trim();
+                                    string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(".", ",").Trim();
                                     bk.Insert($"INSERT INTO Bonus(B_Bez,B_Zuschlag,B_Monat,B_Aktiv) VALUES ('{tbBBez.Text}',{double.Parse(_tmpstring1)},{_mon},{status})");
                                     MessageBox.Show("Der Bonus wurde erfolgreich erstellt", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                                     lvBonus.ItemsSource = null;
@@ -166,7 +166,8 @@ namespace Test
                                     {
                                         int _mon = cbBMonat.SelectedIndex + 1;
                                         switch (cbBStatus.SelectedIndex) { case 0: status = false; break; case 1: status = true; break; }
-                                        bk.Insert($"INSERT INTO Bonus(B_Bez,B_Zuschlag,B_Monat,B_Aktiv) VALUES ({tbBBez.Text},{double.Parse(tbBSatz.Text)},{_mon},{status})");
+                                        string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(",", ".").Trim();
+                                        bk.Insert($"INSERT INTO Bonus(B_Bez,B_Zuschlag,B_Monat,B_Aktiv) VALUES ('{tbBBez.Text}',{_tmpstring1},{_mon},{status})"); 
                                         MessageBox.Show("Der Bonus wurde erfolgreich erstellt", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                                         lvBonus.ItemsSource = null;
                                         lvBonus.Items.Clear();
@@ -177,13 +178,13 @@ namespace Test
                                     else MessageBox.Show("Es existiert schon ein Aktiver Bonus", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();
                                 }
                             }
-                            catch { MessageBox.Show("Dieser Bonus konnte erstellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                            catch { MessageBox.Show("Dieser Bonus konnte nicht erstellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                         }
                         catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                     }
-                    else _Error += "Der Prozentsatz darf keine ungewöhnlivhen Zeichen enthalten.\n";
+                    else _Error += "Der Prozentsatz muss Numerisch sein\n";
                 }
-                else _Error += "Die ComboBoxen dürfen nicht leer sein.\n";
+                else _Error += "Die ComboBoxen dürfen nicht leer sein\n";
             }
             else { _Error += "Die Textfelder dürfen nicht leer sein"; MessageBox.Show(_Error, "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }

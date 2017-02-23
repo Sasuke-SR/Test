@@ -33,7 +33,7 @@ namespace Test
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
             // Laden der Boxen
-            checkMonat.Items.Insert(0,"Januar");
+            checkMonat.Items.Insert(0, "Januar");
             checkMonat.Items.Insert(1, "Februar");
             checkMonat.Items.Insert(2, "März");
             checkMonat.Items.Insert(3, "April");
@@ -64,9 +64,9 @@ namespace Test
                     checkMonat.SelectedIndex = _index;
                     bk.CloseCon();
                 }
-                catch { MessageBox.Show("Es ist ein Fehler aufgetreten.","",MessageBoxButton.OK,MessageBoxImage.Error); }
+                catch { MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
             }
-            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.","",MessageBoxButton.OK,MessageBoxImage.Error); }
+            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
@@ -111,7 +111,7 @@ namespace Test
                                 {
                                     string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
                                     bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text}',B_Zuschlag={_tmpBP},B_Monat={_tmp},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
-                                    MessageBox.Show("Dieser Bonus wurde erfolgreich geändert","",MessageBoxButton.OK,MessageBoxImage.Error);
+                                    MessageBox.Show("Dieser Bonus wurde erfolgreich geändert", "", MessageBoxButton.OK, MessageBoxImage.Error);
                                     bk.CloseCon();
                                     this.Close();
                                 }

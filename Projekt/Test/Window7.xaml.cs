@@ -43,24 +43,17 @@ namespace Test
                 {
                     dr = bk.Select("SELECT Last(US_Nr) FROM UStunden;");
                     dr.Read();
-                    try
-                    {
-                        lUeStdNr.Content = dr.GetInt32(0) + 1;
-                    }
-                    catch
-                    {
-                        lUeStdNr.Content = 1;
-                    }
+                    try {lUeStdNr.Content = dr.GetInt32(0) + 1; }
+                    catch {lUeStdNr.Content = 1; }
                     bk.CloseCon();
                 }
-                catch (Exception ex1)
-                { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen-Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex1); return; }
+                catch (Exception ex1) { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen-Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex1); return; }
 
                 try
                 {
                     bk.Connection();
                     dr = bk.Select("SELECT US_Bez FROM UStunden;");
-                    while(dr.Read())
+                    while (dr.Read())
                     {
                         cbUeStdGr.Items.Add(dr.GetString(1));
                     }
@@ -68,29 +61,22 @@ namespace Test
                     bk.CloseCon();
 
                 }
-                catch (Exception ex2)
-                { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex2); return; }
+                catch (Exception ex2) { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex2); return; }
 
                 try
                 {
                     List<Person> zBobs; // Hier wird gerade dran gearbeitet
                     bk.Connection();
                     dr = bk.Select("SELECT P_Nr, P_VName, P_NName FROM Personal;");
-                    while(dr.Read())
+                    while (dr.Read())
                     {
                         cbPer.Items.Add(dr.GetString(0));
                     }
                 }
-                catch
-                {
-
-                }
+                catch { }
 
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex);
-            }
+            catch (Exception ex) { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex); }
         }
     }
 }

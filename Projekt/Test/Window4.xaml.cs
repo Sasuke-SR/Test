@@ -64,39 +64,42 @@ namespace Test
                 {
                     if (_tmp == 1)
                     {
-                        string query = string.Format("INSERT INTO Abteilung (Abt_Bez) VALUES ('{0}');", textBox_Name.Text);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
-                        bk.Insert(query);
-                        MessageBox.Show("Die Abteilung wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        bk.CloseCon();
-                        //Neu Laden der Forms
-                        textBox_Name.Text = "";
-                        #region Form neuladen
-                        try
+                        if (bk.IsAllowed(textBox_Name.Text, true, true, true, "-.,"))
                         {
-                            bk.Connection();
+                            string query = string.Format("INSERT INTO Abteilung (Abt_Bez) VALUES ('{0}');", textBox_Name.Text);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
+                            bk.Insert(query);
+                            MessageBox.Show("Die Abteilung wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            bk.CloseCon();
+                            //Neu Laden der Forms
+                            textBox_Name.Text = "";
+                            #region Form neuladen
                             try
                             {
-                                dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
-                                dr.Read();
+                                bk.Connection();
                                 try
                                 {
-                                    int _tmpA = dr.GetInt32(0); _tmp += 1;
-                                    Abteilung_Nr.Content = _tmp.ToString();
-                                    listView_Load();
-                                    bk.CloseCon();
+                                    dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
+                                    dr.Read();
+                                    try
+                                    {
+                                        int _tmpA = dr.GetInt32(0); _tmp += 1;
+                                        Abteilung_Nr.Content = _tmp.ToString();
+                                        listView_Load();
+                                        bk.CloseCon();
+                                    }
+                                    catch
+                                    {
+                                        Abteilung_Nr.Content = "1";
+                                        listView_Load();
+                                        bk.CloseCon();
+                                    }
                                 }
-                                catch
-                                {
-                                    int _tmpA = 1;
-                                    Abteilung_Nr.Content = _tmp.ToString();
-                                    listView_Load();
-                                    bk.CloseCon();
-                                }
+                                catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                             }
-                            catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                            #endregion
                         }
-                        catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
-                        #endregion
+                        else MessageBox.Show("Es dürfen keine Sonderzeichen eingegeben werden.","",MessageBoxButton.OK,MessageBoxImage.Error);
                     }
                     else
                         MessageBox.Show(_tmpFehler, "", MessageBoxButton.OK, MessageBoxImage.Error);

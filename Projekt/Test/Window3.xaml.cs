@@ -83,62 +83,47 @@ namespace Test
         {
             try
             {
-                int _tmp = 0;
-                string _tmpFehler = "";
-
-                tbLgBet.Text = tbLgBet.Text.Replace(",", ".");
-                if (String.IsNullOrWhiteSpace(tbLgName.Text) || String.IsNullOrWhiteSpace(tbLgBet.Text))
-                {
-                    _tmpFehler += "Die Felder dürfen nicht leer sein.\n";
-                }
-                else { _tmp = 1; }
-
-                if (bk.IsNumeric(tbLgBet.Text) == false)
-                { _tmpFehler += "Im Feld Lohn dürfen nur Numerische Zahlen stehen"; _tmp = 0; }
-                else
-                    _tmp = 1;
-
                 bk.Connection();
                 try
                 {
-                    if (_tmp == 1)
+                    if (!String.IsNullOrWhiteSpace(tbLgBet.Text) && !String.IsNullOrWhiteSpace(tbLgName.Text))
                     {
-                        #region Lohngruppe erstellen
-                        string query = string.Format("INSERT INTO Lohngruppen (L_Bez,L_Lohn) VALUES ('{0}',{1});", tbLgName.Text, tbLgBet.Text);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
-                        bk.Insert(query);
-                        MessageBox.Show("Die Lohngruppe wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                        bk.CloseCon();
-                        //Neu Laden der Forms
-                        tbLgName.Text = "";
-                        tbLgBet.Text = "";
-                        #endregion
-                        #region Form neuladen
-                        try
+                        if (bk.IsAllowed(tbLgBet.Text, false, true, false, "€.,") && bk.IsAllowed(tbLgName.Text, true, true, true, ".-,"))
                         {
-                            bk.Connection();
+                            #region Lohngruppe erstellen
+                            string _tmpA = tbLgBet.Text.Replace(",", ".").Replace("€", "").Trim();
+                            string query = string.Format("INSERT INTO Lohngruppen (L_Bez,L_Lohn) VALUES ('{0}',{1});", tbLgName.Text, _tmpA);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
+                            bk.Insert(query);
+                            MessageBox.Show("Die Lohngruppe wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
+                            bk.CloseCon();
+                            //Neu Laden der Forms
+                            tbLgName.Text = "";
+                            tbLgBet.Text = "";
+                            #endregion
+                            #region Form neuladen
                             try
                             {
-                                dr = bk.Select("SELECT last(L_Nr) FROM Lohngruppen");
-                                dr.Read();
-                                Nr_Lohngruppe.Content = dr.GetInt32(0).ToString();
-                                listView_Load();
-                                bk.CloseCon();
+                                bk.Connection();
+                                try
+                                {
+                                    dr = bk.Select("SELECT last(L_Nr) FROM Lohngruppen");
+                                    dr.Read();
+                                    Nr_Lohngruppe.Content = dr.GetInt32(0).ToString();
+                                    listView_Load();
+                                    bk.CloseCon();
+                                }
+                                catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                             }
-                            catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                            #endregion
                         }
-                        catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
-                        #endregion
+                        else MessageBox.Show("Es sind keine Leerzeichen so wie Sonderzeichen erlaubt."); bk.CloseCon();
                     }
-                    else
-                    {
-                        MessageBox.Show(_tmpFehler, "", MessageBoxButton.OK, MessageBoxImage.Error);
-                        bk.CloseCon();
-                    }
-
+                    else MessageBox.Show("Die Felder dürfen nicht Leer sein",""); bk.CloseCon();
                 }
                 catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
             }
-            catch { MessageBox.Show("Verbindung war nicht erfolgreich", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            catch { MessageBox.Show("Verbindung war nicht erfolgreich", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
         }
     }
 }
