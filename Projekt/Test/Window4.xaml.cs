@@ -82,8 +82,8 @@ namespace Test
                                     dr.Read();
                                     try
                                     {
-                                        int _tmpA = dr.GetInt32(0); _tmp += 1;
-                                        Abteilung_Nr.Content = _tmp.ToString();
+                                        int _tmpA = dr.GetInt32(0) + 1;
+                                        Abteilung_Nr.Content = _tmpA.ToString();
                                         listView_Load();
                                         bk.CloseCon();
                                     }

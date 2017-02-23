@@ -96,11 +96,10 @@ namespace Test
                             bk.Insert(query);
                             MessageBox.Show("Die Lohngruppe wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
                             bk.CloseCon();
-                            //Neu Laden der Forms
-                            tbLgName.Text = "";
-                            tbLgBet.Text = "";
                             #endregion
                             #region Form neuladen
+                            tbLgName.Text = "";
+                            tbLgBet.Text = "";
                             try
                             {
                                 bk.Connection();
@@ -108,7 +107,7 @@ namespace Test
                                 {
                                     dr = bk.Select("SELECT last(L_Nr) FROM Lohngruppen");
                                     dr.Read();
-                                    Nr_Lohngruppe.Content = dr.GetInt32(0).ToString();
+                                    Nr_Lohngruppe.Content = (dr.GetInt32(0)+ 1).ToString();//Hab das +1 hizugefügt. Ich hoffe, dass das sinnvoll ist
                                     listView_Load();
                                     bk.CloseCon();
                                 }
