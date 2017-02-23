@@ -56,7 +56,7 @@ namespace Test
                     string _tmp = "";
                     dr1 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}");
                     dr1.Read();
-                    if (dr1.GetBoolean(5) == true) { _tmp = "Gefeuert"; } else _tmp = "Angestellt";
+                    if (dr.GetBoolean(5) == true) { _tmp = "Gefeuert"; } else _tmp = "Angestellt";
                     items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1), pStatus = _tmp });
                 }
             }

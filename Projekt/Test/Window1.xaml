@@ -24,16 +24,16 @@
             <Label Content="Lohnabrechnung" FontSize="28" />
         </StackPanel>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="1" Margin="0,5,0,5">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label Content="Abrechnungsnr:" FontSize="12" />
-                <TextBox x:Name="tbAbrNr" Width="55" Height="20" Margin="27,0,0,0" FontSize="11" IsReadOnly="True"/>
+                <Label Content="" FontSize="12" Margin="100,0,0,0"/>
 
                 <Label Content="Abrechnungsdatum:" Margin="46,0,0,0" FontSize="12" />
-                <TextBox x:Name="tbAbrDat" Width="107" Height="20" FontSize="11" IsReadOnly="True"/>
+                <DatePicker Height="25" Width="160" />
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="2" Margin="0,0,0,5">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
@@ -41,7 +41,7 @@
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
                         <Label Content="Personalnummer:" FontSize="12" />
-                        <TextBox x:Name="tbPnr" Margin="20,0,0,50" Width="80" Height="20" FontSize="11" IsReadOnly="True"/>
+                        <ComboBox x:Name="cbPersonal" Width="120" Height="20" Margin="10,0,0,50"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="20,0,0,0">
                         <StackPanel Orientation="Horizontal">
@@ -54,17 +54,16 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <Label FontSize="12" Content="Abteilung:" />
-                            <TextBox x:Name="tbAbtNr" Margin="40,0,0,0" Width="25" Height="20" FontSize="11" IsReadOnly="True"/>
-                            <TextBox x:Name="tbAbtName" Margin="5,0,0,0" Width="90" Height="20" FontSize="11" IsReadOnly="True"/>
+                            <ComboBox x:Name="cbAbteilung" Width="120" Height="20" Margin="39,0,0,0"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="3" Margin="0,0,0,5">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label FontSize="12" Content="Lohngruppe:" />
-                <TextBox x:Name="tbLgNr" Height="20" Width="80" Margin="45,0,20,0" FontSize="11" IsReadOnly="True"/>
+                <ComboBox Height="20" Width="120" Margin="30,0,25,0" x:Name="cbLohngruppen"/>
                 <Label FontSize="12" Content="Lohngruppenname:" />
                 <TextBox x:Name="tbLgName" Width="110" Height="20" FontSize="11" IsReadOnly="True"/>
                 <Label FontSize="12" Content="Betrag:" Margin="10,0,0,0" />
@@ -72,9 +71,9 @@
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="4" Margin="0,0,0,5">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
                 <Label Content="Arbeitsstunden:" FontSize="12" />
-                <TextBox x:Name="tbAstd" Margin="30,0,0,0" Height="20" Width="80" FontSize="11" IsReadOnly="True"/>
+                <TextBox x:Name="tbAstd" Margin="30,0,0,0" Height="20" Width="100" FontSize="11" IsReadOnly="True"/>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="5" Margin="0,0,0,5">
