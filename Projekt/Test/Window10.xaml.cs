@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.OleDb;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
     /// <summary>
     /// Interaktionslogik für Window10.xaml
     /// </summary>
-    public partial class Window10 : Window
+    public partial class Window10 : MetroWindow
     {
         private int _Nr;
         Basisklasse bk = new Basisklasse();

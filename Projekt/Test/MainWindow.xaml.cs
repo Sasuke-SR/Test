@@ -15,13 +15,14 @@ using System.Windows.Shapes;
 using System.Data.OleDb;
 using System.Collections;
 using System.ComponentModel;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
@@ -56,7 +57,7 @@ namespace Test
                     string _tmp = "";
                     dr1 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}");
                     dr1.Read();
-                    if (dr.GetBoolean(5) == true) { _tmp = "Gefeuert"; } else _tmp = "Angestellt";
+                    if (dr.GetBoolean(5) == true) { _tmp = "Entlassen"; } else _tmp = "Angestellt";
                     items.Add(new Personal() { pNr = dr.GetInt32(0), pVName = dr.GetString(1), pNName = dr.GetString(2), pAbteilung = dr1.GetString(1), pStatus = _tmp });
                 }
             }

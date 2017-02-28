@@ -14,13 +14,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using System.Data.OleDb;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
     /// <summary>
     /// Interaktionslogik für Window8.xaml
     /// </summary>
-    public partial class Window8 : Window
+    public partial class Window8 : MetroWindow
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
