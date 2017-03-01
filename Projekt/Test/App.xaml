@@ -4,11 +4,81 @@
              xmlns:local="clr-namespace:Test"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-        <LinearGradientBrush x:Key="Weiß/Grau" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FF858585" Offset="1"/>
-            <GradientStop Color="#FFF1F1F1"/>
-        </LinearGradientBrush>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="ListViewBackground" Color="#FFBEDCFF"/>
+            <SolidColorBrush x:Key="WindowBackground" Color="#FF14579B"/>
+            <LinearGradientBrush x:Key="Button_Blau" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF0051FF" Offset="0.003"/>
+                <GradientStop Color="#FF002C89" Offset="1"/>
+            </LinearGradientBrush>
+            <LinearGradientBrush x:Key="Button_Background" EndPoint="0.5,1" StartPoint="0.5,0">
+                <GradientStop Color="#FF6093FF" Offset="0.003"/>
+                <GradientStop Color="#FF0C5AFF" Offset="1"/>
+            </LinearGradientBrush>
+            <Style x:Key="NoHover" TargetType="Button">
+                <Setter Property="OverridesDefaultStyle" Value="True" />
+                <Setter Property="Cursor" Value="Hand" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="Button">
+                            <Border Name="border" BorderThickness="0" BorderBrush="Black" Background="{TemplateBinding Background}">
+                                <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" />
+                            </Border>
+                            <ControlTemplate.Triggers>
+                                <Trigger Property="IsMouseOver" Value="True" />
+                            </ControlTemplate.Triggers>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+            <!-- Column Header -->
+            <Style TargetType="{x:Type GridViewColumnHeader}">
+                <Setter Property="Background" Value="#FF003FAC" />
+                <Setter Property="Foreground" Value="#FFDEDCDC" />
+                <Setter Property="FontWeight" Value="Bold" />
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate>
+                            <Grid SnapsToDevicePixels="True">
+                                <Border BorderThickness="0,1,0,1" BorderBrush="{TemplateBinding Border.BorderBrush}" 
+                 Background="{TemplateBinding Panel.Background}" Name="HeaderBorder">
+                                    <Grid>
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition MaxHeight="7" />
+                                            <RowDefinition />
+                                        </Grid.RowDefinitions>
+                                        <Rectangle Fill="#FFE3F7FF" Name="UpperHighlight" Visibility="Collapsed" />
+                                        <Border Padding="{TemplateBinding Control.Padding}" Grid.RowSpan="2">
+                                            <ContentPresenter RecognizesAccessKey="True" Content="{TemplateBinding ContentControl.Content}" 
+                         ContentTemplate="{TemplateBinding ContentControl.ContentTemplate}" 
+                         ContentStringFormat="{TemplateBinding ContentControl.ContentStringFormat}" 
+                         Name="HeaderContent" Margin="0,0,0,1" 
+                         HorizontalAlignment="{TemplateBinding Control.HorizontalContentAlignment}" 
+                         VerticalAlignment="{TemplateBinding Control.VerticalContentAlignment}" 
+                         SnapsToDevicePixels="{TemplateBinding UIElement.SnapsToDevicePixels}" />
+                                        </Border>
+                                    </Grid>
+                                </Border>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+                <Style.Triggers>
+                    <Trigger Property="IsMouseOver" Value="true">
+                        <Setter Property="Background" Value="#FF0255E4" />
+                        <Setter Property="Foreground" Value="#FFDEDCDC" />
+                        <Setter Property="FontFamily" Value="Bold" />
+                    </Trigger>
+                </Style.Triggers>
+            </Style>
+            <!-- ColumnHeader Ende-->
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

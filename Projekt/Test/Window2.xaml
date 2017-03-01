@@ -1,11 +1,12 @@
-﻿<Window x:Class="Test.Window2"
+﻿<Controls:MetroWindow x:Class="Test.Window2"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
-        Title="Neue Lohnabrechnung" Height="800" Width="770" Background="{DynamicResource {x:Static SystemColors.ScrollBarBrushKey}}">
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="Neue Lohnabrechnung" Height="830" Width="770" Background="{StaticResource WindowBackground}" Loaded="Window_Loaded" BorderThickness="1" BorderBrush="Black" ResizeMode="CanMinimize">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -22,60 +23,62 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <StackPanel Grid.Row="0" Orientation="Horizontal" HorizontalAlignment="Center" Margin="256,0">
-            <Label Content="Lohnabrechnung" FontSize="28" />
+            <Label Content="Lohnabrechnung" FontSize="28" Foreground="White"/>
         </StackPanel>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="1" Margin="0,5,0,5">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Abrechnungsnr:" FontSize="12" />
-                <Label FontSize="12" Margin="111,0,0,0" />
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Label Content="Abrechnungsnr:" FontSize="12" Foreground="White"/>
+                <Label Content="   "  FontSize="12" Margin="150,0,0,0" Foreground="White" x:Name="lbPNr"/>
 
-                <Label Content="Abrechnungsdatum:" Margin="46,0,0,0" FontSize="12" />
-                <TextBox x:Name="tbAbrDat" Width="107" Height="20" FontSize="11"/>
+                <Label Content="Abrechnungsdatum:" Margin="25,0,0,0" FontSize="12" Foreground="White"/>
+                <DatePicker x:Name="dpDatum" Width="140" Height="25" DisplayDate="1/1/2016" DisplayDateStart="1/1/2016" Text="" BorderThickness="1" BorderBrush="Black"/>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="2" Margin="0,0,0,5">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" Margin="5">
                 <Grid>
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
                     </Grid.ColumnDefinitions>
                     <StackPanel Grid.Column="0" Orientation="Horizontal">
-                        <Label Content="Personalnummer:" FontSize="12" />
-                        <ComboBox x:Name="cbPnr" Margin="20,0,0,50" Width="120" Height="20"/>
+                        <Label Content="Personalnummer:" FontSize="12" Foreground="White"/>
+                        <ComboBox x:Name="cbPnr" Margin="48,0,0,50" Width="120" Height="15" BorderBrush="Black" BorderThickness="1" SelectionChanged="cbPnr_SelectionChanged"/>
                     </StackPanel>
                     <StackPanel Grid.Column="1" Margin="20,0,0,0">
-                        <StackPanel Orientation="Horizontal">
-                            <Label FontSize="12" Content="Name:"/>
-                            <TextBox x:Name="tbName" Margin="60,0,0,0" Width="120" Height="20" FontSize="11"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                            <Label FontSize="12" Content="Name:" Foreground="White"/>
+                            <TextBox x:Name="tbName" Margin="75,0,0,0" Width="120" Height="15" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label FontSize="12" Content="Nachname:" />
-                            <TextBox x:Name="tbNname" Margin="34,0,0,0" Width="120" Height="20" FontSize="11"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                            <Label FontSize="12" Content="Nachname:" Foreground="White"/>
+                            <TextBox x:Name="tbNname" Margin="50,0,0,0" Width="120" Height="15" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <Label FontSize="12" Content="Abteilung:" />
-                            <TextBox x:Name="tbAbtNr" Margin="40,0,0,0" Width="25" Height="20" FontSize="11"/>
-                            <TextBox x:Name="tbAbrName" Margin="5,0,0,0" Width="90" Height="20" FontSize="11"/>
+                        <StackPanel Orientation="Horizontal" Margin="0,0,0,2">
+                            <Label FontSize="12" Content="Abteilung:" Foreground="White"/>
+                            <TextBox x:Name="tbAbtNr" Margin="55,0,0,0" Width="25" Height="15" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
+                            <TextBox x:Name="tbAbrName" Margin="5,0,0,0" Width="90" Height="15" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                         </StackPanel>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="3" Margin="0,0,0,5">
-            <StackPanel Orientation="Horizontal">
-                <Label FontSize="12" Content="Lohngruppe:" />
-                <ComboBox x:Name="cbLgNr" Height="20" Width="120" Margin="45,0,20,0" />
-                <Label FontSize="12" Content="Lohngruppenname:" />
-                <TextBox x:Name="tbLgName" Width="110" Height="20" FontSize="11"/>
-                <Label FontSize="12" Content="Betrag:" Margin="10,0,0,0" />
-                <TextBox x:Name="tbLgBet" Height="20" Width="100" FontSize="11"/>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Label FontSize="12" Content="Lohngruppe:" Foreground="White"/>
+                <ComboBox x:Name="cbLgNr" Height="15" Width="120" Margin="74,0,20,0" BorderThickness="1" BorderBrush="Black" SelectionChanged="cbLgNr_SelectionChanged"/>
+                
+                <Label FontSize="12" Content="Lohngruppenname:" Foreground="White"/>
+                <TextBox x:Name="tbLgName" Width="120" Height="15" FontSize="11" Margin="5,0,0,0" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
+                
+                <Label FontSize="12" Content="Betrag:" Margin="10,0,0,0" Foreground="White"/>
+                <TextBox x:Name="tbLgBet" Height="15" Width="100" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="4" Margin="0,0,0,5">
-            <StackPanel Orientation="Horizontal">
-                <Label Content="Arbeitsstunden:" FontSize="12" />
-                <TextBox x:Name="tbAstd" Margin="58,0,0,0" Height="20" Width="120" FontSize="11"/>
+            <StackPanel Orientation="Horizontal" Margin="5">
+                <Label Content="Arbeitsstunden:" FontSize="12" Foreground="White"/>
+                <TextBox x:Name="tbAstd" Margin="58,0,0,0" Height="15" Width="120" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="5" Margin="0,0,0,5">
@@ -84,33 +87,29 @@
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Grid.Column="0">
+                <StackPanel Grid.Column="0" Margin="5">
                     <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" Content="Überstundengruppe:" />
-                        <ComboBox x:Name="cbUeStd" Height="20" Width="120" Margin="31,0,0,0"/>
+                        <Label FontSize="12" Content="Überstundengruppe:" Foreground="White"/>
+                        <TextBox x:Name="tbUeStdName" Height="15" Width="120" Margin="31,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" Content="Überstunden:" />
-                        <TextBox x:Name="tbUeStdAnz" Height="20" Width="120"  Margin="70,0,0,0" FontSize="11"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Label FontSize="12" Content="Überstunden:" Foreground="White"/>
+                        <TextBox x:Name="tbUeStdAnz" Height="15" Width="120"  Margin="70,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" Content="Überstundenname:" />
-                        <TextBox x:Name="tbUeStdName" Height="20" Width="120" Margin="40,0,0,0" FontSize="11"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Label FontSize="12" Content="Betrag:" Foreground="White"/>
+                        <TextBox x:Name="tbUeStdBet" Height="15" Width="120" Margin="104,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" Content="Betrag:" />
-                        <TextBox x:Name="tbUeStdBet" Height="20" Width="120" Margin="104,0,0,0" FontSize="11"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" Content="Summe:" />
-                        <TextBox x:Name="tbUeStdSum" Height="20" Width="120"  Margin="98,0,0,0" FontSize="11"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Label FontSize="12" Content="Summe:" Foreground="White"/>
+                        <TextBox x:Name="tbUeStdSum" Height="15" Width="120"  Margin="98,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="160,0,0,10"/>
             </Grid>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="6" Margin="0,0,0,5">
-            <ListView x:Name="lvUeStdGr" Height="200" Width="Auto">
+            <ListView x:Name="lvUeStdGr" Height="190" Width="Auto">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Nr" Width="80" />
@@ -123,43 +122,51 @@
             </ListView>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="7">
-            <Grid>
+            <Grid Margin="5">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="Auto" />
                     <ColumnDefinition Width="Auto" />
                 </Grid.ColumnDefinitions>
-                <StackPanel Orientation="Vertical" Grid.Column="0">
+                <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,0,0,2">
                     <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" Content="Summe der Regelarbeitsstunden:" />
-                        <TextBox x:Name="tbRaStdSum" Height="20" Width="100" Margin="40,0,0,0" />
+                        <Label FontSize="12" Content="Summe der Regelarbeitsstunden:" Foreground="White"/>
+                        <TextBox x:Name="tbRaStdSum" Height="15" Width="100" Margin="40,0,0,0" BorderThickness="1" BorderBrush="Black"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label FontSize="12" Content="Summe der Überstundenvergütung:" />
-                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="20" Margin="25,0,0,0" />
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Label FontSize="12" Content="Summe der Überstundenvergütung:" Foreground="White"/>
+                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="15" Margin="25,0,0,0" BorderThickness="1" BorderBrush="Black"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
                     <StackPanel Orientation="Horizontal">
-                        <Label Content="Brutto Gesamt:" FontSize="12"/>
-                        <TextBox x:Name="tbBrutto" Height="20" Width="100" Margin="35,0,0,0" FontSize="11"/>
+                        <Label Content="Brutto Gesamt:" FontSize="12" Foreground="White"/>
+                        <TextBox x:Name="tbBrutto" Height="15" Width="100" Margin="35,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Bonus" FontSize="12" />
-                        <TextBox x:Name="tbBonusSum" Height="20" Width="100" Margin="81,0,10,0" FontSize="11" />
-                        <TextBox x:Name="tbBonusText" Height="20" Width="150" FontSize="10"/>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Label Content="Bonus" FontSize="12" Foreground="White"/>
+                        <TextBox x:Name="tbBonusSum" Height="15" Width="100" Margin="81,0,10,0" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
+                        <TextBox x:Name="tbBonusText" Height="15" Width="150" FontSize="10" BorderThickness="1" BorderBrush="Black"/>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <Label Content="Endlohnung:" FontSize="12" />
-                        <TextBox x:Name="tbEndLohn" Height="20" Width="100" Margin="47,0,0,0" FontSize="11" />
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Label Content="Endlohnung:" FontSize="12" Foreground="White"/>
+                        <TextBox x:Name="tbEndLohn" Height="15" Width="100" Margin="47,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>
         </Border>
         <StackPanel Grid.Row="8">
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                <Button x:Name="bAbrErs" Width="140" Height="25" Margin="0,10,5,0" Content="Abrechnung erstellen" BorderThickness="1" BorderBrush="Black" Background="{DynamicResource Weiß/Grau}"/>
-                <Button x:Name="bHaupt" Width="140" Height="25" Margin="0,10,0,0" Content="Zurück zum Hauptmenü" BorderThickness="1" BorderBrush="Black" Background="{DynamicResource Weiß/Grau}"/>
+                <StackPanel Orientation="Horizontal" Margin="0,10,5,0">
+                    <Border BorderBrush="Black" BorderThickness="1">
+                        <Button x:Name="bAbrErs" Width="160" Height="25" Content="Abrechnung erstellen" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
+                    <Border BorderBrush="Black" BorderThickness="1">
+                        <Button x:Name="bHaupt" Width="160" Height="25" Content="Zurück zum Hauptmenü" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="bHaupt_Click_1"/>
+                    </Border>
+                </StackPanel>
             </StackPanel>        
         </StackPanel>
     </Grid>
-</Window>
+</Controls:MetroWindow>

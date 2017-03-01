@@ -12,13 +12,14 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.OleDb;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
     /// <summary>
     /// Interaktionslogik für Window3.xaml
     /// </summary>
-    public partial class Window3 : Window
+    public partial class Window3 : MetroWindow
     {
         OleDbDataReader dr;
         Basisklasse bk = new Basisklasse();

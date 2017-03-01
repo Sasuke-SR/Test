@@ -12,13 +12,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.OleDb;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
-    /// <summary>
-    /// Interaktionslogik für Window9.xaml
-    /// </summary>
-    public partial class Window9 : Window
+    public partial class Window9 : MetroWindow
     {
         private int bNr;
         bool BAktivE;

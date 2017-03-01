@@ -13,13 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
 using System.Data.OleDb;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
     /// <summary>
     /// Interaktionslogik für Window7.xaml
     /// </summary>
-    public partial class Window7 : Window
+    public partial class Window7 : MetroWindow
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
@@ -41,7 +42,7 @@ namespace Test
                 bk.Connection();
                 try
                 {
-                    dr = bk.Select("SELECT Last(US_Nr) FROM UStunden;");
+                    dr = bk.Select("SELECT Last(US2_Nr) FROM UStunden_2;");
                     dr.Read();
                     try {lUeStdNr.Content = dr.GetInt32(0) + 1; }
                     catch {lUeStdNr.Content = 1; }
