@@ -1,8 +1,9 @@
 ﻿Bugs:
-- Numerische Text-Felder müssen geprüft werden ob sie keine Numerischen werte enthalten
-- Textfelder dürfen nicht leer gelassen werden
 - TextBoxen schreibschützen
 
 Designs:
 - https://monotone.codeplex.com/
 - http://mahapps.com/guides/styles.html
+
+Weiteres:
+- Beim Bearbeiten von bspw. Lohngruppen sollte geprüft werden ob der Gehalt verändert wurde und falls ja sollte die alte Lohnabrechnung nur deaktiviert und eine neue erstellt werden damit alte Lohnabrechnungen nachvollzogen werden können
