@@ -68,7 +68,7 @@ namespace Test
                 try
                 {
                     bk.Connection();
-                    dr = bk.Select("SELECT Abt_Bez FROM Abteilung;");
+                    dr = bk.Select("SELECT Abt_Bez FROM Abteilung WHERE Abt_Deaktiviert = false;");
                     while (dr.Read())
                     {
                         cbAbtName.Items.Add(dr.GetString(0).ToString());
@@ -82,7 +82,7 @@ namespace Test
                 try
                 {
                     bk.Connection();
-                    dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
+                    dr = bk.Select("SELECT L_Bez FROM Lohngruppen WHERE L_Deaktiviert = false;");
 
                     while (dr.Read()) { cbLgName.Items.Add(dr.GetString(0).ToString()); }
                     cbLgName.Items.Refresh();
@@ -99,12 +99,30 @@ namespace Test
             bk.Connection();
             try
             {
-                if (!String.IsNullOrWhiteSpace(tbName.Text) && !String.IsNullOrWhiteSpace(tbNName.Text))
+                if (!String.IsNullOrWhiteSpace(tbName.Text) && !String.IsNullOrWhiteSpace(tbNName.Text) && !String.IsNullOrWhiteSpace(tbAbtNr.Text) && !String.IsNullOrWhiteSpace(tbLgNr.Text))
                 {
                     if (bk.IsAllowed(tbName.Text, true, false, true, "'.") && bk.IsAllowed(tbNName.Text, true, false, true, "'."))
                     {
                         //Erstellung
-                        string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
+                        if (tbLgNr.Text.Length <= 1)// Methode
+                        {
+                            lAbrNr.Content = lAbrNr.Content.ToString().Replace("Lnr", $"0{tbLgNr.Text}");
+                        }
+                        else
+                        {
+                            lAbrNr.Content = lAbrNr.Content.ToString().Replace("Lnr", $"{tbLgNr.Text}");
+                        }
+                        if (tbAbtNr.Text.Length <= 1)
+                        {
+                            lAbrNr.Content = lAbrNr.Content.ToString().Replace("Arr", $"0{tbAbtNr.Text}");
+                        }
+                        else
+                        {
+                            lAbrNr.Content = lAbrNr.Content.ToString().Replace("Arr", $"{tbAbtNr.Text}");
+                        }
+                        if
+                        string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr, P_Abrech_Nr) VALUES ('{0}', '{1}', {2}, {3}, {4})"
+                                                        , tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
                         bk.Insert(_tmpQuery);
                         string _tmpName = string.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
                         MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -168,6 +186,14 @@ namespace Test
                     catch { MessageBox.Show("Fehler Suchen der ALohngruppe", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
                 }
                 catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            }
+        }
+
+        private void formateNumber(string inputText, string outputText, string toBeReplaced)//Hier wird gearbeitet
+        {
+            if (inputText.Length == 2)
+            {
+                outputText 
             }
         }
     }

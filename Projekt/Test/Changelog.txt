@@ -7,3 +7,5 @@ Designs:
 
 Weiteres:
 - Beim Bearbeiten von bspw. Lohngruppen sollte geprüft werden ob der Gehalt verändert wurde und falls ja sollte die alte Lohnabrechnung nur deaktiviert und eine neue erstellt werden damit alte Lohnabrechnungen nachvollzogen werden können
+- Abrechnung muss vor Überstunden erstellt werden
+- P_Abrech_Nr = P_Lg_Nr(zweistellig)P_Abt_Nr(zweistellig)P_Nr(zweistellig) bspw: P_Lg_Nr = 2, P_Abt_Nr = 4, P_nr = 16 => P_Abrech_Nr = 020416
