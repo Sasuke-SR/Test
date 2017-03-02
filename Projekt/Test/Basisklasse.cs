@@ -102,6 +102,45 @@ namespace Test
         }
         #endregion IsAllowed
 
+        #region FormateNumber
+        public string FormateNumber(string inputNumber, string outputText, int toBeReplacedff)
+        {
+            char[] _tmpca = outputText.ToCharArray();
+
+            if (inputNumber.Length == 3)
+            {
+                return inputNumber;
+            }
+            else if (inputNumber.Length == 2)
+            {
+                _tmpca[toBeReplacedff] = '0';
+                _tmpca[toBeReplacedff + 1] = inputNumber[0];
+                _tmpca[toBeReplacedff + 2] = inputNumber[1];
+            }
+            else //inputText.Length == 1
+            {
+                _tmpca[toBeReplacedff] = '0';
+                _tmpca[toBeReplacedff + 1] = '0';
+                _tmpca[toBeReplacedff + 2] = inputNumber[0];
+            }
+            return new string(_tmpca);
+        }
+
+        //public string FormateNumber(string[] inputNumbers, string outputText, string[] toBeReplaced) //inputNrs.Length == toBeReplaced.Length|= true
+        //{
+        //    for (int count = 0; count >= inputNumbers.Length; count++)
+        //    {
+        //        if (inputNumbers[count].Length == 3)
+        //        { }
+        //        else if (inputNumbers[count].Length == 2)
+        //        { outputText = outputText.Replace(toBeReplaced[count], $"0{inputNumbers[count]}"); }
+        //        else //inputText.Length == 1
+        //        { outputText = outputText.Replace(toBeReplaced[count], $"00{inputNumbers[count]}"); }
+        //    }
+        //    return outputText;
+        //}
+        #endregion formateNumber
+
         public void TheInevitableMethodOfIndefiniteRecursion()
         {
             TheInevitableMethodOfIndefiniteRecursion();
