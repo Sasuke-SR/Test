@@ -85,11 +85,11 @@
                         <Button Width="200" Height="30" FontSize="12" Content="Überstundengruppen erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_4" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
                     </Border>
                 </StackPanel>
-                <StackPanel Margin="0,5,0,0">
+                <!-- <StackPanel Margin="0,5,0,0">
                     <Border BorderThickness="1" BorderBrush="Black">
                         <Button Width="200" Height="30" FontSize="12" Content="Überstunden erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_5" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
                     </Border>
-                </StackPanel>
+                </StackPanel> -->
                 <StackPanel Margin="0,5,0,0">
                     <Border BorderThickness="1" BorderBrush="Black">
                         <Button Width="200" Height="30" FontSize="12" Content="Bonus erstellen" VerticalAlignment="Center" HorizontalAlignment="Center"  Click="Button_Click_6" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>

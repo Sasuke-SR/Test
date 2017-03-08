@@ -28,9 +28,9 @@
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="1" Margin="0,5,0,5">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label Content="Abrechnungsnr:" FontSize="12" Foreground="White"/>
-                <Label Content="   "  FontSize="12" Margin="150,0,0,0" Foreground="White" x:Name="lbPNr"/>
+                <Label Content="000000000"  FontSize="12" Margin="110,0,0,0" Foreground="White" x:Name="lbPNr"/>
 
-                <Label Content="Abrechnungsdatum:" Margin="25,0,0,0" FontSize="12" Foreground="White"/>
+                <Label Content="Abrechnungsdatum:" Margin="20,0,0,0" FontSize="12" Foreground="White"/>
                 <DatePicker x:Name="dpDatum" Width="140" Height="25" DisplayDate="1/1/2016" DisplayDateStart="1/1/2016" Text="" BorderThickness="1" BorderBrush="Black"/>
             </StackPanel>
         </Border>
@@ -78,7 +78,7 @@
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="4" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label Content="Arbeitsstunden:" FontSize="12" Foreground="White"/>
-                <TextBox x:Name="tbAstd" Margin="58,0,0,0" Height="15" Width="120" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
+                <TextBox x:Name="tbAstd" Margin="58,0,0,0" Height="15" Width="120" FontSize="11" BorderThickness="1" BorderBrush="Black" PreviewTextInput="tbAstd_PreviewTextInput" TextChanged="tbAstd_TextChanged"/>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="5" Margin="0,0,0,5">
@@ -90,32 +90,36 @@
                 <StackPanel Grid.Column="0" Margin="5">
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Überstundengruppe:" Foreground="White"/>
-                        <TextBox x:Name="tbUeStdName" Height="15" Width="120" Margin="31,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                        <Label FontSize="12" Content="Überstunden:" Foreground="White"/>
-                        <TextBox x:Name="tbUeStdAnz" Height="15" Width="120"  Margin="70,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
+                        <ComboBox x:Name="cbUGruppe" Width="120" Height="20" BorderBrush="Black" BorderThickness="1" Margin="31,0,0,0" SelectionChanged="cbUGruppe_SelectionChanged"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label FontSize="12" Content="Betrag:" Foreground="White"/>
-                        <TextBox x:Name="tbUeStdBet" Height="15" Width="120" Margin="104,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
+                        <TextBox x:Name="tbUeStdBet" Height="15" Width="120" Margin="104,0,0,0" FontSize="12" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                        <Label FontSize="12" Content="Summe:" Foreground="White"/>
-                        <TextBox x:Name="tbUeStdSum" Height="15" Width="120"  Margin="98,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
+                        <Label FontSize="12" Content="Überstunden Zeit:" Foreground="White"/>
+                        <TextBox x:Name="tbUeStdAnz" Height="15" Width="120"  Margin="46,0,0,0" FontSize="12" BorderThickness="1" BorderBrush="Black" PreviewTextInput="tbUeStdAnz_PreviewTextInput"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                        <Label FontSize="12" Content="Datum:" Foreground="White" />
+                        <DatePicker x:Name="dpUDatum" Width="120" Height="25" DisplayDate="1/1/2016" DisplayDateStart="1/1/2016" Text="" BorderThickness="1" BorderBrush="Black" Margin="103,0,0,0" GotMouseCapture="dpUDatum_GotMouseCapture" SelectedDateChanged="dpUDatum_SelectedDateChanged"/>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="160,0,0,10"/>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="120,0,0,10">
+                    <Border BorderThickness="1" BorderBrush="Black">
+                        <Button Width="200" Height="30" FontSize="12" Content="Überstunden erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click"/>
+                    </Border>
+                </StackPanel>
             </Grid>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="6" Margin="0,0,0,5">
             <ListView x:Name="lvUeStdGr" Height="190" Width="Auto">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Nr" Width="80" />
+                        <GridViewColumn Header="Datum" Width="120" />
                         <GridViewColumn Header="Gruppe" Width="120" />
-                        <GridViewColumn Header="Anzahl der Stunden" Width="140" />
                         <GridViewColumn Header="Stundensatz" Width="100" />
+                        <GridViewColumn Header="Anzahl der Stunden" Width="140" />
                         <GridViewColumn Header="Gesammt Betag" Width="140" />
                     </GridView>
                 </ListView.View>
