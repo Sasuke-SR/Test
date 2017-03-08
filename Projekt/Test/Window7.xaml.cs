@@ -13,13 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data;
 using System.Data.OleDb;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
     /// <summary>
     /// Interaktionslogik für Window7.xaml
     /// </summary>
-    public partial class Window7 : Window
+    public partial class Window7 : MetroWindow
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
@@ -41,7 +42,7 @@ namespace Test
                 bk.Connection();
                 try
                 {
-                    dr = bk.Select("SELECT Last(US_Nr) FROM UStunden;");
+                    dr = bk.Select("SELECT Last(US2_Nr) FROM UStunden_2;");
                     dr.Read();
                     try {lUeStdNr.Content = dr.GetInt32(0) + 1; }
                     catch {lUeStdNr.Content = 1; }
@@ -84,7 +85,7 @@ namespace Test
             catch (Exception ex) { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex); }
         }
 
-        private void bUeStdErs_Click(object sender, RoutedEventArgs e)//Hier wird gearbeitet // Sollte so gehen, konnte aufgrund des Fehles der richtigen DB noch nicht getestet werden
+        private void bUeStdErs_Click(object sender, RoutedEventArgs e)//Hier wird gearbeitet // Kann aufgrund nichtfunktionaler DB nicht getestet werden
         {
             if (!string.IsNullOrWhiteSpace(cbPer.Text) && !string.IsNullOrWhiteSpace(cbUeStdGr.Text) && !string.IsNullOrWhiteSpace(tbUeStd.Text) && !string.IsNullOrWhiteSpace(dpDat.Text))
             {
@@ -97,6 +98,8 @@ namespace Test
                         bk.Connection();
                         try
                         {
+                            //bk.Insert($"INSERT INTO Abrechnung_Datum (Dat_Datum, Ab_AStunden, Ab_Personal_Nr, Ab_Bonus_Nr) VALUES ({DateTime.Parse(dpDat.Text).ToString("yyyy-MM-dd")}, )" +
+                            //          $"{tbUeStd.Text}, {tmpPer}");//Hier wird gearbeitet // ''nicht vergessen
                             bk.Insert($"INSERT INTO UStunden_2(US2_Datum, US2_Stunden, US2_Personal_Nr, US2_UStunden_Nr) VALUES ({DateTime.Parse(dpDat.Text).ToString("yyyy-MM-dd")}, {tbUeStd.Text}, " +
                                   $"{tmpPer}, {tmpUeGr});");
                         }
