@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Test
 {
@@ -48,7 +49,7 @@ namespace Test
                     bk.CloseCon();
                 }
                 catch
-                { MessageBox.Show("Fehler beim bestimmen der Überstundengruppennummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                { this.ShowMessageAsync("Fehler", "Beim bestimmen der Überstundengruppennummer ist ein fehler aufgetreten."); bk.CloseCon(); return; } //MessageBox.Show("Fehler beim bestimmen der Überstundengruppennummer", "", MessageBoxButton.OK, MessageBoxImage.Error)
 
                 try
                 {
@@ -57,12 +58,12 @@ namespace Test
                     {
                         fillLv();
                     }
-                    catch { MessageBox.Show("Fehler beim bestimmen existierender Überstundengruppen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                    catch { this.ShowMessageAsync("Fehler", "Beim bestimmen existierender Überstundengruppen ist ein Fehler aufgetreten."); bk.CloseCon(); return; } //MessageBox.Show("Fehler beim bestimmen existierender Überstundengruppen", "", MessageBoxButton.OK, MessageBoxImage.Error)
                     bk.CloseCon();
                 }
-                catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
@@ -74,7 +75,7 @@ namespace Test
         {
             if (bk.IsAllowed(tbUeBez.Text, true, true, true) && bk.IsAllowed(tbUeBet.Text, false, true, false, ",.€"))
             {
-                if (!String.IsNullOrWhiteSpace(tbUeBet.Text) && !String.IsNullOrWhiteSpace(tbUeBez.Text))
+                if (!string.IsNullOrWhiteSpace(tbUeBet.Text) && !string.IsNullOrWhiteSpace(tbUeBez.Text))
                 {
                     try
                     {
@@ -82,7 +83,8 @@ namespace Test
                         try
                         {
                             bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.').Replace("€", "").Trim()});");
-                            MessageBox.Show("Die Überstundengruppe wurde erfolgreich erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                            this.ShowMessageAsync("Fehler", "Die Überstundengruppe wurde erfolgreich erstellt.");
+                            //MessageBox.Show("Die Überstundengruppe wurde erfolgreich erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                             try
                             {
                                 lvUeGr.ItemsSource = null;
@@ -91,7 +93,7 @@ namespace Test
                                 tbUeBez.Text = "";
                                 figureOutNr();
                                 bk.CloseCon();
-                            }
+                            }//Hier wird gerade dran gaerbeitet
                             catch { MessageBox.Show("Es ist ein Fehler aufgetreten","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
                         }
                         catch { MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
