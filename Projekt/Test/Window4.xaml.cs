@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.OleDb;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Test
 {
@@ -51,62 +52,54 @@ namespace Test
         {
             try
             {
-                int _tmp = 0;
-                string _tmpFehler = "";
-                if (String.IsNullOrWhiteSpace(textBox_Name.Text))
+                if (!string.IsNullOrWhiteSpace(textBox_Name.Text))
                 {
-                    _tmpFehler += "Die Felder dürfen nicht leer sein.";
-                }
-                else
-                    _tmp = 1;
-
-                bk.Connection();
-                try
-                {
-                    if (_tmp == 1)
+                    try
                     {
-                        if (bk.IsAllowed(textBox_Name.Text, true, true, true, "-.,"))
+                        bk.Connection();
+                        try
                         {
-                            string query = string.Format("INSERT INTO Abteilung (Abt_Bez) VALUES ('{0}');", textBox_Name.Text);// = $"INSERT INTO Abteilung (Abt_Bez) Values ({textBox_Name.Text});"
-                            bk.Insert(query);
-                            MessageBox.Show("Die Abteilung wurde erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Exclamation);
-                            bk.CloseCon();
-                            //Neu Laden der Forms
-                            textBox_Name.Text = "";
-                            #region Form neuladen
-                            try
+                            if (bk.IsAllowed(textBox_Name.Text, true, true, true, "-.,"))
                             {
-                                bk.Connection();
+                                bk.Insert($"INSERT INTO Abteilung (Abt_Bez) VALUES ('{textBox_Name.Text}');");
+                                this.ShowMessageAsync("", "Die Abteilung wurde erstellt.");
+                                bk.CloseCon();
+
+                                #region Form neuladen
+                                textBox_Name.Text = "";
                                 try
                                 {
-                                    dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
-                                    dr.Read();
+                                    bk.Connection();
                                     try
                                     {
-                                        int _tmpA = dr.GetInt32(0) + 1;
-                                        Abteilung_Nr.Content = _tmpA.ToString();
-                                        listView_Load();
-                                        bk.CloseCon();
+                                        dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
+                                        dr.Read();
+                                        try
+                                        {
+                                            int _tmpA = dr.GetInt32(0) + 1;
+                                            Abteilung_Nr.Content = _tmpA.ToString();
+                                            listView_Load();
+                                            bk.CloseCon();
+                                        }
+                                        catch
+                                        {
+                                            Abteilung_Nr.Content = "1";
+                                            listView_Load();
+                                            bk.CloseCon();
+                                        }
                                     }
-                                    catch
-                                    {
-                                        Abteilung_Nr.Content = "1";
-                                        listView_Load();
-                                        bk.CloseCon();
-                                    }
+                                    catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); bk.CloseCon(); }/*MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();*/
                                 }
-                                catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); bk.CloseCon(); }/*MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();*/
+                                #endregion
                             }
-                            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
-                            #endregion
+                            else { this.ShowMessageAsync("Fehler", "Es dürfen keine Sonderzeichen eingegeben werden."); bk.CloseCon(); }/*MessageBox.Show("Es dürfen keine Sonderzeichen eingegeben werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);*/
                         }
-                        else MessageBox.Show("Es dürfen keine Sonderzeichen eingegeben werden.","",MessageBoxButton.OK,MessageBoxImage.Error);
+                        catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); bk.CloseCon(); }/*MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();*/
                     }
-                    else
-                        MessageBox.Show(_tmpFehler, "", MessageBoxButton.OK, MessageBoxImage.Error);
-                    bk.CloseCon();
+                    catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } 
                 }
-                catch { MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                else { this.ShowMessageAsync("Fehler", "Es muss ein Name angegeben werden."); }
             }
             catch { MessageBox.Show("Verbindung war nicht erfolgreich", "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
@@ -118,26 +111,26 @@ namespace Test
                 bk.Connection();
                 try
                 {
-                        dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
-                        dr.Read();
-                        try
-                        {
-                            int _tmp = dr.GetInt32(0); _tmp += 1;
-                            Abteilung_Nr.Content = _tmp.ToString();
-                            listView_Load();
-                            bk.CloseCon();
-                        }
-                        catch
-                        {
-                            int _tmp = 1;
-                            Abteilung_Nr.Content = _tmp.ToString();
-                            listView_Load();
-                            bk.CloseCon();
-                        }
+                    dr = bk.Select("SELECT last(Abt_Nr) FROM Abteilung");
+                    dr.Read();
+                    try
+                    {
+                        int _tmp = dr.GetInt32(0) + 1;
+                        Abteilung_Nr.Content = _tmp.ToString();
+                        listView_Load();
+                        bk.CloseCon();
+                    }
+                    catch
+                    {
+                        int _tmp = 1;
+                        Abteilung_Nr.Content = _tmp.ToString();
+                        listView_Load();
+                        bk.CloseCon();
+                    }
                 }
-                catch { MessageBox.Show("Fehler","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+                catch { this.ShowMessageAsync("Fehler", "Es ist ein fehler aufgetreten."); bk.CloseCon(); }/*MessageBox.Show("Fehler","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon();*/
             }
-            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); this.Close(); }
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung konnte nicht hergestellt werden."); bk.CloseCon(); this.Close(); }/*MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); this.Close();*/
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)
