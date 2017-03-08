@@ -4,11 +4,16 @@
              xmlns:local="clr-namespace:Test"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-
-        <LinearGradientBrush x:Key="Weiß/Grau" EndPoint="0.5,1" StartPoint="0.5,0">
-            <GradientStop Color="#FF858585" Offset="1"/>
-            <GradientStop Color="#FFF1F1F1"/>
-        </LinearGradientBrush>
-
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Colors.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/Blue.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Accents/BaseLight.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <SolidColorBrush x:Key="ListViewBackground" Color="#FFBEDCFF"/>
+            <SolidColorBrush x:Key="WindowBackground" Color="#FF14579B"/>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

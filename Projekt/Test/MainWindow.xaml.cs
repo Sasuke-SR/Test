@@ -15,13 +15,14 @@ using System.Windows.Shapes;
 using System.Data.OleDb;
 using System.Collections;
 using System.ComponentModel;
+using MahApps.Metro.Controls;
 
 namespace Test
 {
     /// <summary>
     /// Interaktionslogik für MainWindow.xaml
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class MainWindow : MetroWindow
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
