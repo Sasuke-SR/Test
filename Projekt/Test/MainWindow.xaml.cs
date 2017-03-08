@@ -16,6 +16,7 @@ using System.Data.OleDb;
 using System.Collections;
 using System.ComponentModel;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Test
 {
@@ -141,7 +142,7 @@ namespace Test
                 catch
                 { MessageBox.Show("Die Listen konnten nicht geladen werden.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
             }
-            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            catch { this.ShowMessageAsync("Titel", "Die Liste konnte nicht geldaden werden."); /*MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);*/ }
         }
 
         private void Button_Click_1(object sender, RoutedEventArgs e)

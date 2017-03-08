@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Data.OleDb;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Test
 {
@@ -40,13 +41,13 @@ namespace Test
                     // Letzten Personal Datensatz auslesen
                     dr = bk.Select("SELECT last(P_Nr) FROM Personal");
                     dr.Read();
-                    try { lAbtNr.Content = dr.GetInt32(0) + 1; }
-                    catch { lAbtNr.Content = "1"; }
+                    try { lPerNr.Content = dr.GetInt32(0) + 1; }
+                    catch { lPerNr.Content = "1"; }
                     bk.CloseCon();
                 }
-                catch { MessageBox.Show("Es ist ein Problem aufgetretten.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                catch { this.ShowMessageAsync("Fehler", "Es ist ein Problem aufgetretten."); bk.CloseCon(); } /*MessageBox.Show("Es ist ein Problem aufgetretten.", "", MessageBoxButton.OK, MessageBoxImage.Error);*/
             }
-            catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }/*MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();*/
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -58,12 +59,12 @@ namespace Test
                 {
                     dr = bk.Select("SELECT Last(P_Nr) FROM Personal;");
                     dr.Read();
-                    try { lAbtNr.Content = dr.GetInt32(0) + 1; }
-                    catch { lAbtNr.Content = "1"; }
+                    try { lPerNr.Content = dr.GetInt32(0) + 1; }
+                    catch { lPerNr.Content = "1"; }
 
                     bk.CloseCon();
                 }
-                catch { MessageBox.Show("Fehler beim bestimmen der Personal Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                catch { this.ShowMessageAsync("Fehler", "Fehler beim bestimmen der Personal Nummer") ; bk.CloseCon(); return; } //MessageBox.Show("Fehler beim bestimmen der Personal Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error)
 
                 try
                 {
@@ -77,7 +78,7 @@ namespace Test
                     bk.CloseCon();
 
                 }
-                catch { MessageBox.Show("Fehler beim Bestimmen der Abteilungen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                catch { this.ShowMessageAsync("Fehler", "Beim Bestimmen der Abteilung ist ein Fehler aufgetreten."); bk.CloseCon(); return; } //MessageBox.Show("Fehler beim Bestimmen der Abteilungen", "", MessageBoxButton.OK, MessageBoxImage.Error)
 
                 try
                 {
@@ -88,10 +89,12 @@ namespace Test
                     cbLgName.Items.Refresh();
                     bk.CloseCon();
                 }
-                catch { MessageBox.Show("Fehler beim Bestimmen der Abteilungen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                catch { this.ShowMessageAsync("Fehler", "Beim Bestimmen der Abteilungen ist ein Fehler aufgetreten."); bk.CloseCon(); return; } //MessageBox.Show("Fehler beim Bestimmen der Abteilungen", "", MessageBoxButton.OK, MessageBoxImage.Error)
+
+                lAbrNr.Content = bk.FormateNumber(lPerNr.Content.ToString(), lAbrNr.Content.ToString(), 6);
 
             }
-            catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }/*MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);*/
         }
 
         private void bPers_Click(object sender, RoutedEventArgs e)
@@ -99,29 +102,31 @@ namespace Test
             bk.Connection();
             try
             {
-                if (!String.IsNullOrWhiteSpace(tbName.Text) && !String.IsNullOrWhiteSpace(tbNName.Text))
+                if (!string.IsNullOrWhiteSpace(tbName.Text) && !string.IsNullOrWhiteSpace(tbNName.Text) && !string.IsNullOrWhiteSpace(tbAbtNr.Text) && !string.IsNullOrWhiteSpace(tbLgNr.Text))
                 {
                     if (bk.IsAllowed(tbName.Text, true, false, true, "'.") && bk.IsAllowed(tbNName.Text, true, false, true, "'."))
                     {
                         //Erstellung
-                        string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr) VALUES ('{0}', '{1}', {2}, {3})", tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text);
+                        string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr, P_Abrech_Nr) VALUES ('{0}', '{1}', {2}, {3}, {4})"
+                                                        , tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text, lAbrNr.Content.ToString());
                         bk.Insert(_tmpQuery);
-                        string _tmpName = string.Format("Die Person {0}, {1} wurde erstellt.", tbNName.Text, tbName.Text);
-                        MessageBox.Show(_tmpName, "", MessageBoxButton.OK, MessageBoxImage.Information);
+                        this.ShowMessageAsync("", $"Die Person {tbNName.Text}, {tbName.Text} wurde erstellt.");
                         bk.CloseCon();
                         // Neuladen der Maske
+                        #region Maske neuladen
                         Mask_Load();
                         tbLgNr.Text = ""; tbName.Text = ""; tbNName.Text = ""; tbAbtNr.Text = ""; tbLgNr.Text = "";
                         cbAbtName.Text = ""; cbLgName.Text = ""; cbAbtName.SelectedItem = null; cbLgName.SelectedItem = null;
+                        #endregion Maske neuladen
                     }
-                    else { bk.CloseCon(); MessageBox.Show("Es dürfen keine Sonderzeichen so wie Numerische Werte eingegeben werden", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                    else { this.ShowMessageAsync("Fehler", "Es dürfen keine Sonderzeichen so wie Numerische Werte eingegeben werden."); bk.CloseCon(); }// MessageBox.Show("Es dürfen keine Sonderzeichen so wie Numerische Werte eingegeben werden", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else MessageBox.Show("Die Felder dürfen nicht Leer sein","");
+                else { this.ShowMessageAsync("Fehler", "Die Felder dürfen nicht leer gelassen werden."); bk.CloseCon(); }//MessageBox.Show("Die Felder dürfen nicht Leer sein","");
 
             }
             catch
             {
-                MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.ShowMessageAsync("Fehler", "Beim Einfügen der Person ist ein Fehler aufgetreten.");//MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 bk.CloseCon();
             }
         }
@@ -144,10 +149,11 @@ namespace Test
                         dr.Read();
                         tbAbtNr.Text = dr.GetValue(0).ToString();
                         bk.CloseCon();
+                        lAbrNr.Content = bk.FormateNumber(tbAbtNr.Text, lAbrNr.Content.ToString(), 3);
                     }
-                    catch { MessageBox.Show("Fehler Suchen der Abteilung", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                    catch { this.ShowMessageAsync("Fehler", "Beim Suchen der Abteilung ist ein Fehler aufgetreten."); bk.CloseCon(); }//MessageBox.Show("Fehler Suchen der Abteilung", "", MessageBoxButton.OK, MessageBoxImage.Error)
                 }
-                catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden.") }//MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -164,10 +170,11 @@ namespace Test
                         dr.Read();
                         tbLgNr.Text = dr.GetValue(0).ToString(); ;
                         bk.CloseCon();
+                        lAbrNr.Content = bk.FormateNumber(tbLgNr.Text, lAbrNr.Content.ToString(), 0);
                     }
-                    catch { MessageBox.Show("Fehler Suchen der ALohngruppe", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
+                    catch { this.ShowMessageAsync("Fehler", "Beim Suchen der Lohngruppe ist ein Fehler aufgetreten."); bk.CloseCon(); }//MessageBox.Show("Fehler Suchen der ALohngruppe", "", MessageBoxButton.OK, MessageBoxImage.Error)
                 }
-                catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }//MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
