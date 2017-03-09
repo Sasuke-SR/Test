@@ -31,7 +31,7 @@
                 <Label Content="000000000"  FontSize="12" Margin="110,0,0,0" Foreground="White" x:Name="lbPNr"/>
 
                 <Label Content="Abrechnungsdatum:" Margin="20,0,0,0" FontSize="12" Foreground="White"/>
-                <DatePicker x:Name="dpDatum" Width="140" Height="25" DisplayDate="1/1/2016" DisplayDateStart="1/1/2016" Text="" BorderThickness="1" BorderBrush="Black"/>
+                <DatePicker x:Name="dpDatum" Width="140" Height="25" DisplayDate="1/1/2016" DisplayDateStart="1/1/2016" Text="" BorderThickness="1" BorderBrush="Black" SelectedDateChanged="dpDatum_SelectedDateChanged"/>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="2" Margin="0,0,0,5">
@@ -139,22 +139,22 @@
                 <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,0,0,2">
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Summe der Regelarbeitsstunden:" Foreground="White"/>
-                        <TextBox x:Name="tbRaStdSum" Height="15" Width="100" Margin="40,0,0,0" BorderThickness="1" BorderBrush="Black"/>
+                        <TextBox x:Name="tbRaStdSum" Height="15" Width="100" Margin="40,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbRaStdSum_TextChanged"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label FontSize="12" Content="Summe der Überstundenvergütung:" Foreground="White"/>
-                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="15" Margin="25,0,0,0" BorderThickness="1" BorderBrush="Black"/>
+                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="15" Margin="25,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbUeStdSum2_TextChanged"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Brutto Gesamt:" FontSize="12" Foreground="White"/>
-                        <TextBox x:Name="tbBrutto" Height="15" Width="100" Margin="35,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
+                        <TextBox x:Name="tbBrutto" Height="15" Width="100" Margin="35,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" TextChanged="tbBrutto_TextChanged"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label Content="Bonus" FontSize="12" Foreground="White"/>
                         <TextBox x:Name="tbBonusSum" Height="15" Width="100" Margin="81,0,10,0" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
-                        <TextBox x:Name="tbBonusText" Height="15" Width="150" FontSize="10" BorderThickness="1" BorderBrush="Black"/>
+                        <TextBox x:Name="tbBonusText" Height="15" Width="150" FontSize="12" BorderThickness="1" BorderBrush="Black"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label Content="Endlohnung:" FontSize="12" Foreground="White"/>
@@ -167,7 +167,7 @@
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <StackPanel Orientation="Horizontal" Margin="0,10,5,0">
                     <Border BorderBrush="Black" BorderThickness="1">
-                        <Button x:Name="bAbrErs" Width="160" Height="25" Content="Abrechnung erstellen" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
+                        <Button x:Name="bAbrErs" Width="160" Height="25" Content="Abrechnung erstellen" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="bAbrErs_Click"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,10,0,0">
