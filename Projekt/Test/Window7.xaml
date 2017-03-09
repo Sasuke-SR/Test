@@ -45,7 +45,12 @@
         <ListView x:Name="lvUeStd" Width="Auto" Height="220" Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
             <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="Nr" Width="100" />
+                    <GridViewColumn Header="Nr" Width="30" DisplayMemberBinding="{Binding uNr}">
+                    </GridViewColumn>
+                    <GridViewColumn Header="Personal" Width="90" DisplayMemberBinding="{Binding uPersonal}"/>
+                    <GridViewColumn Header="Stunden" Width="70" DisplayMemberBinding="{Binding uStunden}"/>
+                    <GridViewColumn Header="Gruppe" Width="80" DisplayMemberBinding="{Binding uGruppe}"/>
+                    <GridViewColumn Header="Stundensatz" Width="95" DisplayMemberBinding="{Binding uGStunden}"/>
                 </GridView>
             </ListView.View>
         </ListView>

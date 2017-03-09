@@ -23,18 +23,20 @@ namespace Test
     /// 
     public partial class Window2 : MetroWindow
     {
-        List<UStunden> items = new List<UStunden>();
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
 
         #region Class
-        public class UStunden
+        public class uStunden
         {
-            public int ugNr;
-            public string ugBetrag;
-            public int uStunden;
-            public DateTime uDatum;
+            public string uGruppe { get; set; }
+            public double ugBetrag { get; set;  }
+            public int uAStunden { get; set; }
+            public DateTime uDatum { get; set; }
+            public double uSumme { get; set; }
+            public int uPersonalNr { get; set; }
         }
+        List<uStunden> items = new List<uStunden>();
 
         #endregion
 
@@ -199,10 +201,39 @@ namespace Test
         {
             if (cbPnr.SelectedItem != null)
             {
-                string _tmp = cbUGruppe.SelectedItem.Text;
-                items.Add(new UStunden() { ugNr = cbUGruppe.});
+                if (cbUGruppe.SelectedItem != null)
+                {
+                    if (!String.IsNullOrWhiteSpace(tbUeStdAnz.Text))
+                    {
+                        if (!String.IsNullOrEmpty(dpUDatum.Text))
+                        {
+                            lvUeStdGr.ItemsSource = null;
+                            try
+                            {
+                                lvUeStdGr.ItemsSource = null;
+                                string _bet = tbUeStdBet.Text;
+                                items.Add(new uStunden() { uGruppe = cbUGruppe.SelectedItem.ToString(), ugBetrag = double.Parse(_bet.Replace("€", "")), uAStunden = int.Parse(tbUeStdAnz.Text), uDatum = DateTime.Parse(dpUDatum.Text), uSumme = double.Parse(tbUeStdAnz.Text) * double.Parse(_bet.Replace("€", "")), uPersonalNr = int.Parse(lbPNr.Content.ToString()) });
+                            }
+                            catch (Exception a) { throw a; }
+                            lvUeStdGr.ItemsSource = items;
+                            tbUeStdAnz.Text = ""; tbUeStdSum2.Text = ""; tbUeStdBet.Text = ""; cbUGruppe.SelectedItem = null; dpUDatum.Text = "";
+                        }
+                        else this.ShowMessageAsync("Fehler","Sie haben kein Datum ausgewählt");
+                    }
+                    else this.ShowMessageAsync("Fehler", "Sie haben keine Stundenanzahl eingegeben.");
+                }
+                else this.ShowMessageAsync("Fehler", "Sie haben keine Überstundengruppe ausgewählt.");
             }
             else this.ShowMessageAsync("Fehler", "Personal wurde nicht ausgewählt");
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            if (lvUeStdGr.SelectedItem != null)
+            {
+
+            }
+            else this.ShowMessageAsync("Fehler","Sie haben keine Überstunden ausgewählt zum Löschen");
         }
     }
 }

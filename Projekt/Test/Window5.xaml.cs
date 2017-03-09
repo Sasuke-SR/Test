@@ -153,7 +153,7 @@ namespace Test
                     }
                     catch { this.ShowMessageAsync("Fehler", "Beim Suchen der Abteilung ist ein Fehler aufgetreten."); bk.CloseCon(); }//MessageBox.Show("Fehler Suchen der Abteilung", "", MessageBoxButton.OK, MessageBoxImage.Error)
                 }
-                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden.") }//MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }//MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
