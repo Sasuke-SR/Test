@@ -27,7 +27,6 @@ namespace Test
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
         private bool status;
-        private bool BDeaktiviert; // Ob Bonus Existiert oder nicht
         #region Timer
         private bool BlinkOn = false;
         private void timer_Tick(object sender, EventArgs e)
@@ -99,8 +98,8 @@ namespace Test
             try { bk.Connection(); try { ListViewLoad(); bk.CloseCon(); } catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); } }
             catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden"); bk.CloseCon(); } //MessageBox.Show("Verbindung konnte nicht hergestellt werden", "", MessageBoxButton.OK, MessageBoxImage.Error);
             //ComboBox (Status)
-            cbBStatus.Items.Insert(0, "Aktiviert");
-            cbBStatus.Items.Insert(1, "Deaktiviert");
+            cbBStatus.Items.Insert(0, "Deaktiviert");
+            cbBStatus.Items.Insert(1, "Aktiviert");
             //ComboBox (Monat)
             cbBMonat.Items.Insert(0, "Januar");
             cbBMonat.Items.Insert(1, "Februar");
@@ -128,12 +127,11 @@ namespace Test
 
         private void bUeStdErs_Click(object sender, RoutedEventArgs e)
         {
-            string _Error = "";
-            if (!string.IsNullOrWhiteSpace(tbBBez.Text) && !string.IsNullOrWhiteSpace(tbBSatz.Text))//hier wird gearbeitet 
+            if (!string.IsNullOrWhiteSpace(tbBBez.Text) && !string.IsNullOrWhiteSpace(tbBSatz.Text))
             {
                 if (cbBStatus.SelectedItem != null || cbBMonat.SelectedItem != null)
                 {
-                    if (bk.IsAllowed(tbBSatz.Text,true,true,false,"%,."))
+                    if (bk.IsAllowed(tbBSatz.Text, true, true, false, "%,."))
                     {
                         try
                         {
@@ -141,37 +139,20 @@ namespace Test
                             try
                             {
                                 // Ob ein Aktiver Bonus Existiert
-                                dr = bk.Select("SELECT * FROM Bonus");
+                                dr = bk.Select($"SELECT * FROM Bonus WHERE B_Aktiv = true AND B_Monat={cbBMonat.SelectedIndex + 1}");
                                 dr.Read();
                                 try
                                 {
-                                    BDeaktiviert = dr.GetBoolean(4);
-                                }
-                                catch { BDeaktiviert = false; }
-                                //Eintrag in die Datenbank
-                                if (BDeaktiviert == false)
-                                {
-                                    int _mon = cbBMonat.SelectedIndex + 1;
-                                    switch (cbBStatus.SelectedIndex) { case 0: status = false; break; case 1: status = true; break; }
-                                    string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(".", ",").Trim();
-                                    bk.Insert($"INSERT INTO Bonus(B_Bez,B_Zuschlag,B_Monat,B_Deaktiviert) VALUES ('{tbBBez.Text}',{double.Parse(_tmpstring1)},{_mon},{status})");
-                                    this.ShowMessageAsync("", "Der Bonus wurde erfolgreich erstellt!");
-                                    //MessageBox.Show("Der Bonus wurde erfolgreich erstellt", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
-                                    lvBonus.ItemsSource = null;
-                                    lvBonus.Items.Clear();
-                                    ListViewLoad();
-                                    tbBBez.Text = ""; tbBSatz.Text = ""; cbBMonat.Text = ""; cbBStatus.Text = "";
-                                    bk.CloseCon();
-                                }
-                                else
-                                {
-                                    if (cbBStatus.SelectedIndex == 0)
+                                    if(dr.HasRows)
                                     {
-                                        int _mon = cbBMonat.SelectedIndex + 1;
+                                        this.ShowMessageAsync("Fehler", "In diesem Monat ist bereits ein Monat aktiv.");
+                                    }
+                                    else
+                                    {
                                         switch (cbBStatus.SelectedIndex) { case 0: status = false; break; case 1: status = true; break; }
-                                        string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(",", ".").Trim();
-                                        bk.Insert($"INSERT INTO Bonus(B_Bez,B_Zuschlag,B_Monat,B_Deaktiviert) VALUES ('{tbBBez.Text}',{_tmpstring1},{_mon},{status})");
-                                        this.ShowMessageAsync("", "Der Bonus wurde erfolgreich erstellt");
+                                        string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(".", ",").Trim();
+                                        bk.Insert($"INSERT INTO Bonus(B_Bez,B_Zuschlag,B_Monat,B_Aktiv) VALUES ('{tbBBez.Text}',{double.Parse(_tmpstring1)},{cbBMonat.SelectedIndex + 1},{status})");
+                                        this.ShowMessageAsync("", "Der Bonus wurde erfolgreich erstellt!");
                                         //MessageBox.Show("Der Bonus wurde erfolgreich erstellt", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                                         lvBonus.ItemsSource = null;
                                         lvBonus.Items.Clear();
@@ -179,25 +160,25 @@ namespace Test
                                         tbBBez.Text = ""; tbBSatz.Text = ""; cbBMonat.Text = ""; cbBStatus.Text = "";
                                         bk.CloseCon();
                                     }
-                                    else { this.ShowMessageAsync("Fehler", "Es existiert schon ein aktiver Bonus in diesem Monat."); bk.CloseCon(); } //MessageBox.Show("Es existiert schon ein Aktiver Bonus", "", MessageBoxButton.OK, MessageBoxImage.Error);
                                 }
+                                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten"); }
                             }
                             catch { this.ShowMessageAsync("Fehler", "Der Bonus konnte nicht erstellt werden."); bk.CloseCon(); } //MessageBox.Show("Dieser Bonus konnte nicht erstellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
                         catch { this.ShowMessageAsync("", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); bk.CloseCon(); } //MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-                    else _Error += "Der Prozentsatz muss Numerisch sein\n";
+                    else { this.ShowMessageAsync("Fehler", "Im Prozentsatz-Feld dürfen nur numerische werte eigetragen sein."); }
                 }
-                else _Error += "Die ComboBoxen dürfen nicht leer sein\n";
+                else { this.ShowMessageAsync("Fehler", "Die ComboBoxen dürfen nicht leer gelassen werden."); }
             }
-            else { _Error += "Die Textfelder dürfen nicht leer sein"; MessageBox.Show(_Error, "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            else { this.ShowMessageAsync("Fehler", "Die Textfelder dürfen nicht leer gelassen werden"); }
         }
 
         private void lvBonus_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             if (lvBonus.SelectedItem != null)
             {
-                int _tmpNr = Convert.ToInt32(lvBonus.SelectedIndex) + 1;
+                int _tmpNr = Convert.ToInt32((lvBonus.SelectedItem as Bonus).bNr);
                 Window9 aB = new Window9(_tmpNr);
                 aB.ShowDialog();
                 try
@@ -206,7 +187,7 @@ namespace Test
                     try { ListViewLoad(); bk.CloseCon(); }
                     catch { bk.CloseCon(); }
                 }
-                catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
     }
