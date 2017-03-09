@@ -17,19 +17,39 @@ using MahApps.Metro.Controls;
 
 namespace Test
 {
-    /// <summary>
-    /// Interaktionslogik für Window7.xaml
-    /// </summary>
     public partial class Window7 : MetroWindow
     {
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
-        private class Person
+        OleDbDataReader dr2;
+        OleDbDataReader dr3;
+
+        public class UStunden
         {
-            public int pNr { get; set; }
-            public string vName { get; set; }
-            public string nName { get; set; }
+            public string uNr { get; set; }
+            public string uPersonal { get; set; }
+            public string uStunden { get; set; }
+            public string uGruppe { get; set; }
+            public string uGStunden { get; set; }
         }
+
+        public void ListView_Load()
+        {
+            dr = bk.Select($"SELECT * FROM UStunden_2");
+            List<UStunden> items = new List<UStunden>();
+            try
+            {
+                while(dr.Read())
+                {
+                    dr2 = bk.Select($"SELECT * FROM Personal WHERE {dr.GetInt32(2)}"); dr2.Read();
+                    dr3 = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {dr.GetInt32(3)}"); dr3.Read();
+                    items.Add(new UStunden() { uNr = dr.GetInt32(0).ToString(), uPersonal = dr2.GetString(1) + ", " + dr2.GetString(2), uStunden = dr.GetInt32(4).ToString(), uGruppe = dr3.GetString(1), uGStunden = dr3.GetDouble(2).ToString() + " €"});
+                }
+            }
+            catch (Exception a) { throw a; }
+            lvUeStd.ItemsSource = items;
+        }
+
         public Window7()
         {
             InitializeComponent();
@@ -46,46 +66,15 @@ namespace Test
                     dr.Read();
                     try {lUeStdNr.Content = dr.GetInt32(0) + 1; }
                     catch {lUeStdNr.Content = 1; }
+                    ListView_Load();
                     bk.CloseCon();
                 }
                 catch (Exception ex1) { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen-Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex1); return; }
-
-                try
-                {
-                    bk.Connection();
-                    dr = bk.Select("SELECT US_NR, US_Bez FROM UStunden;");
-                    while (dr.Read())
-                    {
-                        cbUeStdGr.Items.Add($"{dr.GetInt32(0)} - {dr.GetString(1)}");
-                    }
-                    cbUeStdGr.Items.Refresh();
-                    bk.CloseCon();
-
-                }
-                catch (Exception ex2) { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex2); return; }
-
-                try
-                {
-                    bk.Connection();
-                    try
-                    {
-                        dr = bk.Select("SELECT P_Nr, P_VName, P_NName FROM Personal;");
-                        while (dr.Read())
-                        {
-                            cbPer.Items.Add($"{dr.GetInt32(0)} - {dr.GetString(2)}, {dr.GetString(1)}");
-                        }
-                    }
-                    catch (Exception ex3) { MessageBox.Show("Fehler beim bestimmen der Personen", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex3); return; }
-                    cbPer.Items.Refresh();
-                    bk.CloseCon();
-                }
-                catch (Exception ex4) {MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex4); bk.CloseCon();}
-
             }
             catch (Exception ex) { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex); }
         }
 
-        private void bUeStdErs_Click(object sender, RoutedEventArgs e)//Hier wird gearbeitet // Kann aufgrund nichtfunktionaler DB nicht getestet werden
+        private void bUeStdErs_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(cbPer.Text) && !string.IsNullOrWhiteSpace(cbUeStdGr.Text) && !string.IsNullOrWhiteSpace(tbUeStd.Text) && !string.IsNullOrWhiteSpace(dpDat.Text))
             {
@@ -98,8 +87,6 @@ namespace Test
                         bk.Connection();
                         try
                         {
-                            //bk.Insert($"INSERT INTO Abrechnung_Datum (Dat_Datum, Ab_AStunden, Ab_Personal_Nr, Ab_Bonus_Nr) VALUES ({DateTime.Parse(dpDat.Text).ToString("yyyy-MM-dd")}, )" +
-                            //          $"{tbUeStd.Text}, {tmpPer}");//Hier wird gearbeitet // ''nicht vergessen
                             bk.Insert($"INSERT INTO UStunden_2(US2_Datum, US2_Stunden, US2_Personal_Nr, US2_UStunden_Nr) VALUES ({DateTime.Parse(dpDat.Text).ToString("yyyy-MM-dd")}, {tbUeStd.Text}, " +
                                   $"{tmpPer}, {tmpUeGr});");
                         }

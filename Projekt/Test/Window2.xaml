@@ -106,9 +106,14 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="120,0,0,10">
-                    <Border BorderThickness="1" BorderBrush="Black">
-                        <Button Width="200" Height="30" FontSize="12" Content="Überstunden erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click"/>
-                    </Border>
+                    <StackPanel Orientation="Vertical">
+                        <Border BorderThickness="1" BorderBrush="Black">
+                            <Button Width="200" Height="30" FontSize="12" Content="Überstunden erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click"/>
+                        </Border>
+                        <Border BorderThickness="1" BorderBrush="Black" Margin="0,10,0,0">
+                            <Button Width="200" Height="30" FontSize="12" Content="Überstunden löschen" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click_1"/>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
             </Grid>
         </Border>
@@ -116,11 +121,11 @@
             <ListView x:Name="lvUeStdGr" Height="190" Width="Auto">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Datum" Width="120" />
-                        <GridViewColumn Header="Gruppe" Width="120" />
-                        <GridViewColumn Header="Stundensatz" Width="100" />
-                        <GridViewColumn Header="Anzahl der Stunden" Width="140" />
-                        <GridViewColumn Header="Gesammt Betag" Width="140" />
+                        <GridViewColumn Header="Datum" Width="120" DisplayMemberBinding="{Binding uDatum}"/>
+                        <GridViewColumn Header="Gruppe" Width="140" DisplayMemberBinding="{Binding uGruppe}"/>
+                        <GridViewColumn Header="Stundensatz" Width="100" DisplayMemberBinding="{Binding ugBetrag}"/>
+                        <GridViewColumn Header="Anzahl der Stunden" Width="140" DisplayMemberBinding="{Binding uAStunden}"/>
+                        <GridViewColumn Header="Gesammt Betag" Width="140" DisplayMemberBinding="{Binding uSumme}"/>
                     </GridView>
                 </ListView.View>
             </ListView>
