@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using System.Data;
 using System.Data.OleDb;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Test
 {
@@ -43,7 +44,7 @@ namespace Test
                 {
                     dr2 = bk.Select($"SELECT * FROM Personal WHERE {dr.GetInt32(2)}"); dr2.Read();
                     dr3 = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {dr.GetInt32(3)}"); dr3.Read();
-                    items.Add(new UStunden() { uNr = dr.GetInt32(0).ToString(), uPersonal = dr2.GetString(1) + ", " + dr2.GetString(2), uStunden = dr.GetInt32(4).ToString(), uGruppe = dr3.GetString(1), uGStunden = dr3.GetDouble(2).ToString() + " €"});
+                    items.Add(new UStunden() { uNr = dr.GetInt32(0).ToString(), uPersonal = dr2.GetString(1) + ", " + dr2.GetString(2), uStunden = dr.GetInt32(4).ToString(), uGruppe = dr3.GetString(1), uGStunden = dr3.GetDouble(2).ToString("C")});
                 }
             }
             catch (Exception a) { throw a; }
@@ -69,9 +70,9 @@ namespace Test
                     ListView_Load();
                     bk.CloseCon();
                 }
-                catch (Exception ex1) { MessageBox.Show("Fehler beim bestimmen der Überstundengruppen-Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); Console.WriteLine(ex1); return; }
+                catch (Exception ex1) { this.ShowMessageAsync("Fehler", "Beim bestimmen der Überstundengruppen-Nummer ist ein Fehler aufgetreten."); bk.CloseCon(); Console.WriteLine(ex1); return; } //MessageBox.Show("Fehler beim bestimmen der Überstundengruppen-Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch (Exception ex) { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex); }
+            catch (Exception ex) { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); Console.WriteLine(ex); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void bUeStdErs_Click(object sender, RoutedEventArgs e)
@@ -91,14 +92,14 @@ namespace Test
                                   $"{tmpPer}, {tmpUeGr});");
                         }
                         catch (Exception ex5)
-                        { MessageBox.Show("Fehler beim Einfügen in die Datenbank.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex5); bk.CloseCon(); }
+                        { this.ShowMessageAsync("Fehler", "Beim Einfügen in die Datenbank ist ein Fehler aufgetreten."); Console.WriteLine(ex5); bk.CloseCon(); } // MessageBox.Show("Fehler beim Einfügen in die Datenbank.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
                     catch (Exception ex6)
-                    { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); Console.WriteLine(ex6); }
+                    { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); Console.WriteLine(ex6); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else { MessageBox.Show("Das Überstundenfeld enhält ungültige Zeichen.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                else { this.ShowMessageAsync("Fehler", "Das Überstundenfeld enhält ungültige Zeichen."); } //MessageBox.Show("Das Überstundenfeld enhält ungültige Zeichen.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else { MessageBox.Show("Bitte alle Felder ausfüllen.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            else { this.ShowMessageAsync("Fehler", "Es sind nicht alle Felder ausgefüllt."); } //MessageBox.Show("Bitte alle Felder ausfüllen.", "", MessageBoxButton.OK, MessageBoxImage.Error);
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
