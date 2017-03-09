@@ -23,6 +23,7 @@ namespace Test
     /// 
     public partial class Window2 : MetroWindow
     {
+        List<UStunden> items = new List<UStunden>();
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
 
@@ -31,8 +32,8 @@ namespace Test
         {
             public int ugNr;
             public string ugBetrag;
-            public int ugStunden;
-            public DateTime ugDatum;
+            public int uStunden;
+            public DateTime uDatum;
         }
 
         #endregion
@@ -83,6 +84,7 @@ namespace Test
                 try
                 {
                     Load_ComboBox();
+                    lvUeStdGr.ItemsSource = items;
                     bk.CloseCon();
                 }
                 catch (Exception a) { bk.CloseCon(); throw a; }
@@ -196,7 +198,10 @@ namespace Test
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (cbPnr.SelectedItem != null)
-            { }
+            {
+                string _tmp = cbUGruppe.SelectedItem.Text;
+                items.Add(new UStunden() { ugNr = cbUGruppe.});
+            }
             else this.ShowMessageAsync("Fehler", "Personal wurde nicht ausgewählt");
         }
     }
