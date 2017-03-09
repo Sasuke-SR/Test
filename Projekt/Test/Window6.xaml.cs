@@ -93,16 +93,16 @@ namespace Test
                                 tbUeBez.Text = "";
                                 figureOutNr();
                                 bk.CloseCon();
-                            }//Hier wird gerade dran gaerbeitet
-                            catch { MessageBox.Show("Es ist ein Fehler aufgetreten","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+                            }
+                            catch { this.ShowMessageAsync("Fehler", "Es ist Fehler aufgetreten."); bk.CloseCon(); } //MessageBox.Show("Es ist ein Fehler aufgetreten","",MessageBoxButton.OK,MessageBoxImage.Error);
                         }
-                        catch { MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); return; }
+                        catch { this.ShowMessageAsync("Fehler", "Beim Einfügen in die Datenbank ist ein Fehler aufgetreten."); bk.CloseCon(); return; } //MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error);
                     }
-                    catch { MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                    catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else MessageBox.Show("Die Eingabe Felder dürfen nicht Leer sein.\n", "");
+                else { this.ShowMessageAsync("Fehler", "Die Eingabe Felder dürfen nicht Leer gelassen werden."); }//MessageBox.Show("Die Eingabe Felder dürfen nicht Leer sein.\n", "");
             }
-            else {MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden.", ""); }
+            else { this.ShowMessageAsync("Fehler", "In der Bezeichnung oder dem Betrag befinden sich unzulässige Zeichen.") } //MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden.", "");
 
 
         }
