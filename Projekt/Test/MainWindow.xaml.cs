@@ -28,6 +28,8 @@ namespace Test
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
         OleDbDataReader dr1;
+        OleDbDataReader dr2;
+        OleDbDataReader dr3;
 
         #region Public Klassen
         public class Personal
@@ -44,9 +46,58 @@ namespace Test
             public int aNr {get;set;}
             public string aName { get; set; }
         }
+
+        public class Lohnabrechnung
+        {
+            public string laDatum { get; set; }
+            public int laNr { get; set; }
+            public string laPerson { get; set; }
+            public string laBrutto { get; set; }
+            public string laEndlohn { get; set; }
+        }
         #endregion
 
         #region ListView's
+        private void laListView_Load()
+        {
+            dr = bk.Select("SELECT * FROM Abrechnung_Datum");
+            List<Lohnabrechnung> LA = new List<Lohnabrechnung>();
+            try
+            {
+                while (dr.Read())
+                {
+                    if (dr.HasRows)
+                    {
+                        dr1 = bk.Select($"SELECT * FROM Personal WHERE P_Abrech_Nr = {dr.GetInt32(3)}");
+                        dr2 = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {dr.GetInt32(4)}");
+                        dr1.Read(); dr2.Read();
+                        double brutto = Convert.ToDouble(dr.GetInt32(1)) * dr2.GetDouble(2); Console.WriteLine(brutto);
+                        double endlohn = 0;
+                        double uSumme = 0;
+                        dr2.Close();
+                        //Endlohn -> Rechnung -> Anfang
+                        DateTime datum = dr.GetDateTime(0);
+                        dr2 = bk.Select($"SELECT * FROM UStunden2 WHERE YEAR(US2_Datum) = '{datum.Year}' AND MONTH(US2_Datum) = '{datum.Month}' AND US2_Abrech_Nr = {dr.GetInt32(3)}");
+                        while (dr2.Read())
+                        {
+                            if (dr2.HasRows)
+                            {
+                                dr3 = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {dr2.GetInt32(1)}"); dr3.Read();
+                                uSumme += dr3.GetDouble(2) * Convert.ToDouble(dr2.GetInt32(2));
+                                Console.WriteLine(uSumme);
+                            }
+                            else uSumme += 0;
+                        }
+                        endlohn = uSumme + brutto;
+                        //Endlohn -> Rechnung -> Ende
+                        LA.Add(new Lohnabrechnung() { laDatum = dr.GetDateTime(0).ToString(), laNr = dr.GetInt32(3), laPerson = dr1.GetString(2) + ", " + dr1.GetString(1), laBrutto = brutto.ToString("C"), laEndlohn = endlohn.ToString("C") });
+                    }
+                }
+            }
+            catch (Exception a) { throw a; }
+            list.ItemsSource = LA;
+        }
+
         private void pListView_Load()
         {
             dr = bk.Select("SELECT * FROM Personal");
@@ -137,6 +188,7 @@ namespace Test
                 try
                 {
                     pListView_Load();
+                    laListView_Load();
                     bk.CloseCon();
                 }
                 catch { this.ShowMessageAsync("Fehler", "Die Listen konnten nicht geladen werden"); bk.CloseCon(); }

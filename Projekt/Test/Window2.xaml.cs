@@ -379,7 +379,8 @@ namespace Test
                                         else
                                         {
                                             // Lohnabrechnung erstellen
-                                            bk.Insert($"INSERT INTO Abrechnung_Datum(Ab_Datum, Ab_AStunden, Ab_Bonus_Nr, Ab_Abrech_Nr) VALUES('{Datum}',{int.Parse(tbAstd.Text)},{aMonth},{int.Parse(lbPNr.Content.ToString())})");
+                                            string _tmp = cbLgNr.SelectedItem.ToString();
+                                            bk.Insert($"INSERT INTO Abrechnung_Datum(Ab_Datum, Ab_AStunden, Ab_Bonus_Nr, Ab_Abrech_Nr, Ab_Lohngruppen_Nr) VALUES('{Datum}',{int.Parse(tbAstd.Text)},{aMonth},{int.Parse(lbPNr.Content.ToString())},{_tmp.Substring(0,_tmp.IndexOf("-")).Trim()})");
                                             try
                                             {
                                                 Console.WriteLine("Überstunden erstellt");
@@ -388,7 +389,6 @@ namespace Test
                                                     //Überstunden in die Datenbank eintragen
                                                     foreach (uStunden ustd in items)
                                                     {
-                                                        string _tmp = ustd.uGruppe;
                                                         bk.Insert($"INSERT INTO UStunden2 (US2_Datum,US2_US_Nr,US2_Stunden,US2_Abrech_Nr) VALUES ('{DateTime.Parse(ustd.uDatum)}',{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},{ustd.uAStunden},{ustd.uPersonalNr})");
                                                         try { Console.WriteLine("Überstunden erstellt"); this.ShowMessageAsync("Erfolgreich", "Die Lohnabrechnung konnte hergestellt werden"); bk.CloseCon(); }
                                                         catch (Exception a) { bk.CloseCon(); throw a; }
