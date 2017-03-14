@@ -139,8 +139,7 @@ namespace Test
                     pListView_Load();
                     bk.CloseCon();
                 }
-                catch
-                { MessageBox.Show("Die Listen konnten nicht geladen werden.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+                catch { this.ShowMessageAsync("Fehler", "Die Listen konnten nicht geladen werden"); bk.CloseCon(); }
             }
             catch { this.ShowMessageAsync("Titel", "Die Liste konnte nicht geldaden werden."); /*MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);*/ }
         }

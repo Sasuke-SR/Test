@@ -78,7 +78,6 @@ namespace Test
 
         private void bSave_Click(object sender, RoutedEventArgs e)
         {
-            string _Error = "";
             if (!string.IsNullOrWhiteSpace(tbBez.Text) && !string.IsNullOrWhiteSpace(tbBP.Text))
             {
                 if (bk.IsAllowed(tbBP.Text, false, true, true, "%,."))
