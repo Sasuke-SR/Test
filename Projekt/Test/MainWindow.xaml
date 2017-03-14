@@ -24,11 +24,11 @@
                 <ListView x:Name="list" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Datum" Width="100"/>
-                            <GridViewColumn Header="Abrechnungs-Nr" Width="120"/>
-                            <GridViewColumn Header="Personal" Width="140" />
-                            <GridViewColumn Header="Brutto Gesamt" Width="130" />
-                            <GridViewColumn Header="Endlohnung" Width="120" />
+                            <GridViewColumn Header="Datum" Width="100" DisplayMemberBinding="{Binding laDatum}"/>
+                            <GridViewColumn Header="Abrechnungs-Nr" Width="120" DisplayMemberBinding="{Binding laNr}"/>
+                            <GridViewColumn Header="Personal" Width="140" DisplayMemberBinding="{Binding laPerson}"/>
+                            <GridViewColumn Header="Brutto Gesamt" Width="130" DisplayMemberBinding="{Binding laBrutto}"/>
+                            <GridViewColumn Header="Endlohnung" Width="120" DisplayMemberBinding="{Binding laEndlohn}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>

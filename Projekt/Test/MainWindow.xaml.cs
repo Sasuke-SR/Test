@@ -60,7 +60,7 @@ namespace Test
         #region ListView's
         private void laListView_Load()
         {
-            dr = bk.Select("SELECT * FROM Abrechnung_Datum");
+            dr = bk.Select("SELECT * FROM Abrechnung_Datum ORDER BY Ab_Datum ASC");
             List<Lohnabrechnung> LA = new List<Lohnabrechnung>();
             try
             {
@@ -90,7 +90,7 @@ namespace Test
                         }
                         endlohn = uSumme + brutto;
                         //Endlohn -> Rechnung -> Ende
-                        LA.Add(new Lohnabrechnung() { laDatum = dr.GetDateTime(0).ToString(), laNr = dr.GetInt32(3), laPerson = dr1.GetString(2) + ", " + dr1.GetString(1), laBrutto = brutto.ToString("C"), laEndlohn = endlohn.ToString("C") });
+                        LA.Add(new Lohnabrechnung() { laDatum = dr.GetDateTime(0).ToString("dd/MM/yyyy"), laNr = dr.GetInt32(3), laPerson = dr1.GetString(2) + ", " + dr1.GetString(1), laBrutto = brutto.ToString("C"), laEndlohn = endlohn.ToString("C") });
                     }
                 }
             }
