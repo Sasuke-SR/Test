@@ -37,7 +37,11 @@
                 <ListView x:Name="list2" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0">
                     <ListView.View>
                         <GridView>
-                            <GridViewColumn Header="Nr" />
+                            <GridViewColumn Header="Datum" Width="100" DisplayMemberBinding="{Binding uDatum}"/>
+                            <GridViewColumn Header="Gruppe" Width="120" DisplayMemberBinding="{Binding uGruppe}"/>
+                            <GridViewColumn Header="Personal" Width="140" DisplayMemberBinding="{Binding uPersonal}"/>
+                            <GridViewColumn Header="Stunden" Width="130" DisplayMemberBinding="{Binding uStd}"/>
+                            <GridViewColumn Header="Gesammt Summe" Width="120" DisplayMemberBinding="{Binding uGesamt}"/>
                         </GridView>
                     </ListView.View>
                 </ListView>

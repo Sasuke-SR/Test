@@ -55,9 +55,37 @@ namespace Test
             public string laBrutto { get; set; }
             public string laEndlohn { get; set; }
         }
+
+        public class UStunden
+        {
+            public string uDatum { get; set; }
+            public string uGruppe { get; set; }
+            public int uStd { get; set; }
+            public string uPersonal { get; set; }
+            public string uGesamt { get; set; }
+        }
         #endregion
 
         #region ListView's
+        private void uListView_Load()
+        {
+            dr = bk.Select("SELECT * FROM UStunden2 ORDER BY US2_Datum ASC");
+            List<UStunden> US = new List<UStunden>();
+            try
+            {
+                while (dr.Read())
+                {
+                    dr2 = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {dr.GetInt32(1)}"); dr2.Read();
+                    dr3 = bk.Select($"SELECT * FROM Personal WHERE P_Abrech_Nr = {dr.GetInt32(3)}"); dr3.Read();
+                    DateTime datum = dr.GetDateTime(0);
+                    double gesamt = Convert.ToDouble(dr.GetInt32(2)) * dr2.GetDouble(2);
+                    US.Add(new UStunden() { uDatum = datum.ToString("dd/MM/yyyy"), uGruppe = dr2.GetString(1), uStd = dr.GetInt32(1), uPersonal = $"{dr3.GetInt32(0).ToString()} - {dr3.GetString(2)}, {dr3.GetString(1)}", uGesamt = gesamt.ToString("C")});
+                }
+            }
+            catch(Exception a) { throw a; }
+            list2.ItemsSource = US;
+        }
+
         private void laListView_Load()
         {
             dr = bk.Select("SELECT * FROM Abrechnung_Datum ORDER BY Ab_Datum ASC");
@@ -189,6 +217,7 @@ namespace Test
                 {
                     pListView_Load();
                     laListView_Load();
+                    uListView_Load();
                     bk.CloseCon();
                 }
                 catch { this.ShowMessageAsync("Fehler", "Die Listen konnten nicht geladen werden"); bk.CloseCon(); }
