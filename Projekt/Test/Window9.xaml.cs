@@ -13,13 +13,13 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.OleDb;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Test
 {
     public partial class Window9 : MetroWindow
     {
         private int bNr;
-        bool BAktivE;
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
         public Window9(int nr)
@@ -58,13 +58,12 @@ namespace Test
                         cBStatus.IsChecked = true;
                     else
                         cBStatus.IsChecked = false;
-                    int _index = dr.GetInt32(3) - 1;
-                    checkMonat.SelectedIndex = _index;
+                    checkMonat.SelectedIndex = dr.GetInt32(3) - 1;
                     bk.CloseCon();
                 }
-                catch { MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); } //MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error)
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
@@ -79,7 +78,6 @@ namespace Test
 
         private void bSave_Click(object sender, RoutedEventArgs e)
         {
-            string _Error = "";
             if (!string.IsNullOrWhiteSpace(tbBez.Text) && !string.IsNullOrWhiteSpace(tbBP.Text))
             {
                 if (bk.IsAllowed(tbBP.Text, false, true, true, "%,."))
@@ -91,39 +89,42 @@ namespace Test
                             bk.Connection();
                             try
                             {
-                                int _tmp = checkMonat.SelectedIndex + 1; bool _tmpb;
+                                bool _tmpb;
                                 if (cBStatus.IsChecked != false)
                                     _tmpb = true;
                                 else _tmpb = false;
                                 // Ob ein Aktiver Bonus Existiert
-                                dr = bk.Select("SELECT * FROM Bonus WHERE B_Aktiv = true");
+                                dr = bk.Select($"SELECT * FROM Bonus WHERE B_Aktiv = true AND B_Monat = {checkMonat.SelectedIndex + 1}");
                                 dr.Read();
                                 try
                                 {
-                                    if (dr.GetBoolean(4) == true)
-                                        BAktivE = true;
-                                    else BAktivE = false;
+                                    if (dr.HasRows)
+                                    {
+                                        this.ShowMessageAsync("", "Es existiert bereits ein Bonus in diesem Monat;");
+                                    }
+                                    else
+                                    {
+                                        string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
+                                        bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text}',B_Zuschlag={_tmpBP},B_Monat={checkMonat.SelectedIndex + 1},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
+                                        MessageBox.Show("Dieser Bonus wurde erfolgreich geändert", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                                        bk.CloseCon();
+                                        this.Close();
+                                    }
+                                    //if (dr.GetBoolean(4) == true)
+                                    //    BAktivE = true;
+                                    //else BAktivE = false;
                                 }
-                                catch { }
-                                if (BAktivE != true && cBStatus.IsChecked == false)
-                                {
-                                    string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
-                                    bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text}',B_Zuschlag={_tmpBP},B_Monat={_tmp},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
-                                    MessageBox.Show("Dieser Bonus wurde erfolgreich geändert", "", MessageBoxButton.OK, MessageBoxImage.Error);
-                                    bk.CloseCon();
-                                    this.Close();
-                                }
-                                else MessageBox.Show("Es besteht schon eine Aktivierten Bonus", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); bk.CloseCon(); }
                             }
-                            catch { MessageBox.Show("Es ist ein Fehler aufgetretten", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                            catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetretten."); }
                         }
-                        catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
+                        catch { this.ShowMessageAsync("Fehler", "Die Verbindungzur Datenbank konnte nicht hergestellt werden."); }
                     }
-                    else _Error += "Es muss ein Monat ausgewählt werden";
+                    else { this.ShowMessageAsync("Fehler", "Es muss ein Monat ausgewählt werden."); }
                 }
-                else _Error += "Der Prozentsatz muss Numerisch sein";
+                else { this.ShowMessageAsync("Fehler", "Der Prozentsatz darf ausschließlich Numerisch sein."); }
             }
-            else { _Error += "Die Textfelder dürfen nicht Leer sein"; MessageBox.Show(_Error, "", MessageBoxButton.OK, MessageBoxImage.Error); }
+            else { this.ShowMessageAsync("Fehler", "Die Textfelder dürfen nicht Leer gelassen werden."); }
         }
     }
 }

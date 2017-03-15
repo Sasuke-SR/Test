@@ -48,7 +48,7 @@ namespace Test
         {
             try
             {
-                dr = bk.Select($"SELECT * FROM Bonus WHERE B_Deaktiviert = true");
+                dr = bk.Select($"SELECT * FROM Bonus WHERE B_Aktiv = true");
                 dr.Read();
                 try
                 {
@@ -233,17 +233,43 @@ namespace Test
                     {
                         if (!String.IsNullOrEmpty(dpUDatum.Text))
                         {
-                            lvUeStdGr.ItemsSource = null;
-                            try
+                            if (!String.IsNullOrEmpty(dpDatum.Text))
                             {
-                                lvUeStdGr.ItemsSource = null;
-                                string _bet = tbUeStdBet.Text; double a = double.Parse(tbUeStdAnz.Text) * double.Parse(_bet.Replace("€", ""));
-                                items.Add(new uStunden() { uGruppe = cbUGruppe.SelectedItem.ToString(), ugBetrag = _bet, uAStunden = int.Parse(tbUeStdAnz.Text), uDatum = DateTime.Parse(dpUDatum.Text).ToString("dd/MM/yyyy"), uSumme = a.ToString("C"), uPersonalNr = int.Parse(lbPNr.Content.ToString()) });
+                                DateTime UDatum = Convert.ToDateTime(dpUDatum.Text);
+                                DateTime Datum = Convert.ToDateTime(dpDatum.Text);
+                                if (UDatum.Month == Datum.Month && UDatum.Year == Datum.Year)
+                                {
+                                    bool _bTmp = false;
+                                    if (items.Count != 0)
+                                    {
+                                        foreach (uStunden ustd in items)
+                                        {
+                                            DateTime _dp = DateTime.Parse(ustd.uDatum);
+                                            if (_dp == UDatum) { _bTmp = true; break; }
+                                            else { _bTmp = false; }
+                                        }
+                                    }
+                                    else _bTmp = false;
+
+                                    if (_bTmp == false)
+                                    {
+                                        lvUeStdGr.ItemsSource = null;
+                                        try
+                                        {
+                                            lvUeStdGr.ItemsSource = null;
+                                            string _bet = tbUeStdBet.Text; double a = double.Parse(tbUeStdAnz.Text) * double.Parse(_bet.Replace("€", ""));
+                                            items.Add(new uStunden() { uGruppe = cbUGruppe.SelectedItem.ToString(), ugBetrag = _bet, uAStunden = int.Parse(tbUeStdAnz.Text), uDatum = DateTime.Parse(dpUDatum.Text).ToString("dd/MM/yyyy"), uSumme = a.ToString("C"), uPersonalNr = int.Parse(lbPNr.Content.ToString()) });
+                                        }
+                                        catch (Exception a) { throw a; }
+                                        lvUeStdGr.ItemsSource = items;
+                                        tbUeStdAnz.Text = ""; tbUeStdSum2.Text = ""; tbUeStdBet.Text = ""; cbUGruppe.SelectedItem = null; dpUDatum.Text = "";
+                                        tbUeStdSum2.Text = Calculate_uSumme().ToString("C");
+                                    }
+                                    else this.ShowMessageAsync("Fehler", "Es darf nur eine Überstunde pro Tag erfolgen");
+                                }
+                                else this.ShowMessageAsync("Fehler", "Sie dürfen nur die Überstunden im selben Monat und Jahr wie im Abrechnungs Datum nutzen");
                             }
-                            catch (Exception a) { throw a; }
-                            lvUeStdGr.ItemsSource = items;
-                            tbUeStdAnz.Text = ""; tbUeStdSum2.Text = ""; tbUeStdBet.Text = ""; cbUGruppe.SelectedItem = null; dpUDatum.Text = "";
-                            tbUeStdSum2.Text = Calculate_uSumme().ToString("C");
+                            else this.ShowMessageAsync("Fehler", "Sie haben kein Abrechnungs Datum ausgewählt");
                         }
                         else this.ShowMessageAsync("Fehler","Sie haben kein Datum ausgewählt");
                     }
@@ -344,34 +370,41 @@ namespace Test
                                 bk.Connection();
                                 try
                                 {
-                                    dr = bk.Select($"SELECT * FROM Abrechnung_Datum WHERE Ab_Datum = '{/*DateTime.Parse*/(dpDatum.Text)/*.ToString("dd/MM/yyyy")*/}' AND Ab_Abrech_Nr = {lbPNr.Content}");
+                                    DateTime Datum = DateTime.Parse(dpDatum.Text);
+                                    dr = bk.Select($"SELECT * FROM Abrechnung_Datum WHERE YEAR(Ab_Datum)='{Datum.Year}' AND MONTH(Ab_Datum) = '{Datum.Month}' AND Ab_Abrech_Nr = {lbPNr.Content}");
                                     dr.Read();
                                     try
                                     {
-                                        if (dr.HasRows) { this.ShowMessageAsync("Fehler", "Es wurde eine Abrechnung mit der gleichen AbrechnungsNr und dem gleichen Monat gefunden");}
+                                        if (dr.HasRows) { bk.CloseCon(); this.ShowMessageAsync("Fehler", "Es wurde eine Abrechnung mit der gleichen AbrechnungsNr und dem gleichen Monat gefunden");}
                                         else
                                         {
                                             // Lohnabrechnung erstellen
-                                            bk.Insert($"INSERT INTO Abrechnung_Datum(Ab_Datum, Ab_AStunden, Ab_Bonus_Nr, Ab_Abrech_Nr) VALUES('{DateTime.Parse(dpDatum.Text)}',{int.Parse(tbAstd.Text)},{aMonth},{int.Parse(lbPNr.Content.ToString())})");
+                                            string _tmp = cbLgNr.SelectedItem.ToString();
+                                            bk.Insert($"INSERT INTO Abrechnung_Datum(Ab_Datum, Ab_AStunden, Ab_Bonus_Nr, Ab_Abrech_Nr, Ab_Lohngruppen_Nr) VALUES('{Datum}',{int.Parse(tbAstd.Text)},{aMonth},{int.Parse(lbPNr.Content.ToString())},{_tmp.Substring(0,_tmp.IndexOf("-")).Trim()})");
                                             try
                                             {
-                                                //Überstunden in die Datenbank eintragen
-                                                foreach (uStunden ustd in items)
+                                                Console.WriteLine("Überstunden erstellt");
+                                                try
                                                 {
-                                                    string _tmp = ustd.uGruppe;
-                                                    bk.Insert($"INSERT INTO UStunden2 (US2_Datum,US2_US_Nr,US2_Stunden,US2_Abrech_Nr) VALUES ('{DateTime.Parse(ustd.uDatum)}',{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},{ustd.uAStunden},{ustd.uPersonalNr})");
-                                                    try { this.ShowMessageAsync("Erfolgreich", "Die Lohnabrechnung konnte hergestellt werden"); }
-                                                    catch (Exception a) { throw a; }
+                                                    //Überstunden in die Datenbank eintragen
+                                                    foreach (uStunden ustd in items)
+                                                    {
+                                                        bk.Insert($"INSERT INTO UStunden2 (US2_Datum,US2_US_Nr,US2_Stunden,US2_Abrech_Nr) VALUES ('{DateTime.Parse(ustd.uDatum)}',{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},{ustd.uAStunden},{ustd.uPersonalNr})");
+                                                        try { Console.WriteLine("Überstunden erstellt"); this.ShowMessageAsync("Erfolgreich", "Die Lohnabrechnung konnte hergestellt werden"); bk.CloseCon(); }
+                                                        catch (Exception a) { bk.CloseCon(); throw a; }
+                                                    }
                                                 }
+                                                catch(Exception a) { throw a; }
                                             }
-                                            catch { bk.CloseCon(); this.ShowMessageAsync("Fehler", "Die Lohnabrechnung konnte nicht erstellt werden"); }
+                                            //catch { this.ShowMessageAsync("Fehler", "Die Lohnabrechnung konnte nicht erstellt werden"); }
+                                            catch (Exception a) { bk.CloseCon(); throw a; }
                                         }
                                     }
                                     catch (Exception a) { bk.CloseCon(); throw a; }
                                 }
                                 catch (Exception a) { bk.CloseCon(); throw a; }
                             }
-                            catch { this.ShowMessageAsync("Fehler","Es konnte keine Verbindung hergestellt werden"); }
+                            catch {  this.ShowMessageAsync("Fehler","Es konnte keine Verbindung hergestellt werden"); }
                         }
                         else this.ShowMessageAsync("Fehler","Es wurden nicht alle Felder ausgefüllt");
                     }
