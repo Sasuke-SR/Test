@@ -34,7 +34,9 @@
                         <ComboBox x:Name="cbBStatus" Height="15" Width="120" Margin="99,0,0,0" BorderBrush="Black" BorderThickness="1"/>
                     </StackPanel>
                 </StackPanel>
-                <Label x:Name="tlWarning" Content="Es kann nur ein Bonus Aktiv sein !!" FontSize="14" Background="Red" Margin="35,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="White" BorderThickness="1" BorderBrush="Black"/>
+                <Label x:Name="tlWarning" FontSize="14" Background="Red" Margin="75,0,0,0" VerticalAlignment="Center" HorizontalAlignment="Center" FontWeight="Bold" Foreground="White" BorderThickness="1" BorderBrush="Black">
+                    <TextBlock>Es darf nur ein Bonus<LineBreak /> pro Monat Aktiv sein !!</TextBlock>
+                </Label>
             </StackPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">

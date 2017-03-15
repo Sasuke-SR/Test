@@ -139,18 +139,16 @@ namespace Test
                             try
                             {
                                 // Ob ein Aktiver Bonus Existiert
-                                dr = bk.Select($"SELECT * FROM Bonus WHERE B_Aktiv = true AND B_Monat={cbBMonat.SelectedIndex + 1}");
+                                dr = bk.Select($"SELECT * FROM Bonus WHERE B_Aktiv = True AND B_Monat={cbBMonat.SelectedIndex + 1}");
                                 dr.Read();
+                                int bMon = 0;
                                 try
                                 {
-                                    if(dr.HasRows)
-                                    {
-                                        this.ShowMessageAsync("Fehler", "In diesem Monat ist bereits ein Monat aktiv.");
-                                    }
-                                    else
+                                    if (dr.HasRows) { bMon = dr.GetInt32(3); } else bMon = 0;
+                                    if(bMon != cbBMonat.SelectedIndex + 1)
                                     {
                                         switch (cbBStatus.SelectedIndex) { case 0: status = false; break; case 1: status = true; break; }
-                                        string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(".", ",").Trim();
+                                        string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(",", ".").Trim();
                                         bk.Insert($"INSERT INTO Bonus(B_Bez,B_Zuschlag,B_Monat,B_Aktiv) VALUES ('{tbBBez.Text}',{double.Parse(_tmpstring1)},{cbBMonat.SelectedIndex + 1},{status})");
                                         this.ShowMessageAsync("", "Der Bonus wurde erfolgreich erstellt!");
                                         //MessageBox.Show("Der Bonus wurde erfolgreich erstellt", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
@@ -160,8 +158,10 @@ namespace Test
                                         tbBBez.Text = ""; tbBSatz.Text = ""; cbBMonat.Text = ""; cbBStatus.Text = "";
                                         bk.CloseCon();
                                     }
+                                    else this.ShowMessageAsync("Fehler", "In diesem Monat ist bereits ein Monat aktiv."); bk.CloseCon();
                                 }
                                 catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten"); }
+                                //catch(Exception a) { throw a; }
                             }
                             catch { this.ShowMessageAsync("Fehler", "Der Bonus konnte nicht erstellt werden."); bk.CloseCon(); } //MessageBox.Show("Dieser Bonus konnte nicht erstellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
