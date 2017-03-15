@@ -73,36 +73,40 @@ namespace Test
 
         private void bGrErs_Click(object sender, RoutedEventArgs e)
         {
-            if (bk.IsAllowed(tbUeBez.Text, true, true, true) && bk.IsAllowed(tbUeBet.Text, false, true, false, ",.€"))
+            if (!string.IsNullOrWhiteSpace(tbUeBet.Text) && !string.IsNullOrWhiteSpace(tbUeBez.Text))
             {
-                if (!string.IsNullOrWhiteSpace(tbUeBet.Text) && !string.IsNullOrWhiteSpace(tbUeBez.Text))
+                if (bk.IsAllowed(tbUeBez.Text, true, true, true))
                 {
-                    try
+                    if(bk.IsAllowed(tbUeBet.Text, false, true, false, ",.€"))
                     {
-                        bk.Connection();
                         try
                         {
-                            bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.').Replace("€", "").Trim()});");
-                            this.ShowMessageAsync("Fehler", "Die Überstundengruppe wurde erfolgreich erstellt.");
-                            //MessageBox.Show("Die Überstundengruppe wurde erfolgreich erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                            bk.Connection();
                             try
                             {
-                                lvUeGr.ItemsSource = null;
-                                fillLv();
-                                tbUeBet.Text = "";
-                                tbUeBez.Text = "";
-                                figureOutNr();
-                                bk.CloseCon();
+                                bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.').Replace("€", "").Trim()});");
+                                this.ShowMessageAsync("Fehler", "Die Überstundengruppe wurde erfolgreich erstellt.");
+                                //MessageBox.Show("Die Überstundengruppe wurde erfolgreich erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Information);
+                                try
+                                {
+                                    lvUeGr.ItemsSource = null;
+                                    fillLv();
+                                    tbUeBet.Text = "";
+                                    tbUeBez.Text = "";
+                                    figureOutNr();
+                                    bk.CloseCon();
+                                }
+                                catch { this.ShowMessageAsync("Fehler", "Es ist Fehler aufgetreten."); bk.CloseCon(); }
                             }
-                            catch { this.ShowMessageAsync("Fehler", "Es ist Fehler aufgetreten."); bk.CloseCon(); } //MessageBox.Show("Es ist ein Fehler aufgetreten","",MessageBoxButton.OK,MessageBoxImage.Error);
+                            catch { this.ShowMessageAsync("Fehler", "Beim Einfügen in die Datenbank ist ein Fehler aufgetreten."); bk.CloseCon(); return; }
                         }
-                        catch { this.ShowMessageAsync("Fehler", "Beim Einfügen in die Datenbank ist ein Fehler aufgetreten."); bk.CloseCon(); return; } //MessageBox.Show("Fehler beim Einfügen in die Datenbank", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                        catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }
                     }
-                    catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else { this.ShowMessageAsync("Fehler", "Im Betrag dürfen keine Buchstaben oder Sonderzeichen enthalten sein."); }
                 }
-                else { this.ShowMessageAsync("Fehler", "Die Eingabe Felder dürfen nicht Leer gelassen werden."); }//MessageBox.Show("Die Eingabe Felder dürfen nicht Leer sein.\n", "");
+                else { this.ShowMessageAsync("Fehler", "In der Bezeichnung dürfen keine Sonderzeichen enthalten sein."); }
             }
-            else { this.ShowMessageAsync("Fehler", "In der Bezeichnung oder dem Betrag befinden sich unzulässige Zeichen."); } //MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden.", "");
+            else { this.ShowMessageAsync("Fehler", "Die Eingabe Felder dürfen nicht Leer gelassen werden."); }
 
 
         }
