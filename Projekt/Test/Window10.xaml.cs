@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Data.OleDb;
 using MahApps.Metro.Controls;
+using MahApps.Metro.Controls.Dialogs;
 
 namespace Test
 {
@@ -66,14 +67,14 @@ namespace Test
                     }
                     bk.CloseCon();
                 }
-                catch { MessageBox.Show("Es ist ein Fehler aufgetreten", ""); bk.CloseCon(); }
+                catch { this.ShowMessageAsync("", "Es ist ein Fehler aufgetretetn."); bk.CloseCon(); }
             }
-            catch { MessageBox.Show("Die Verbindung konnte nicht geöffnet werden",""); bk.CloseCon(); }
+            catch { this.ShowMessageAsync("", "Die Verbindung konnte nicht geöffnet werden."); bk.CloseCon(); }
         }
 
         private void bSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(tbNName.Text) && !String.IsNullOrWhiteSpace(tbVName.Text))
+            if (!string.IsNullOrWhiteSpace(tbNName.Text) && !string.IsNullOrWhiteSpace(tbVName.Text))
             {
                 if (bk.IsAllowed(tbNName.Text, true, false, false, ".-") && bk.IsAllowed(tbVName.Text, true, false, false, ".-"))
                 {
@@ -87,19 +88,19 @@ namespace Test
                                 bool _tmp;
                                 if (CheckFired.IsChecked == true) { _tmp = true; } else _tmp = false;
                                 bk.Update($"UPDATE Personal SET P_VName='{tbVName.Text}',P_NName='{tbNName.Text}',P_Abteilungs_Nr={cbAb.SelectedIndex + 1},P_Lohngruppen_Nr={cbLG.SelectedIndex + 1},P_Fired={_tmp} WHERE P_Nr = {_Nr}");
-                                MessageBox.Show("Die Person wurde erfolgreich gespeichert.","",MessageBoxButton.OK,MessageBoxImage.Information);
+                                MessageBox.Show("Die Person wurde erfolgreich gespeichert.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                                 bk.CloseCon();
                                 this.Close();
                             }
-                            catch { MessageBox.Show("Die Veränderung konnte nicht gespeichert werden", ""); bk.CloseCon(); }
+                            catch { this.ShowMessageAsync("", "Die Veränderung konnte nicht gespeichert werden."); bk.CloseCon(); }
                         }
-                        catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden",""); bk.CloseCon(); }
+                        catch { this.ShowMessageAsync("", "Die Verbindung konnte nicht hergestellt werden."); bk.CloseCon(); }
                     }
-                    else MessageBox.Show("Die Person muss einer Abteilung und Lohngruppe zugeordnet werden", "");
+                    else this.ShowMessageAsync("", "Die Person muss einer Abteilung und Lohngruppe zugeordnet werden.");
                 }
-                else MessageBox.Show("Es sind keine Sonderzeichen & Zahlen erlaubt","");
+                else this.ShowMessageAsync("", "Es sind keine Sonderzeichen & Zahlen in den Namensfeldern erlaubt.");
             }
-            else MessageBox.Show("Die Felder dürfen nicht Leer gelassen werden", "");
+            else this.ShowMessageAsync("", "Die Felder dürfen nicht Leer gelassen werden.");
         }
     }
 }
