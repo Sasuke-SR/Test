@@ -47,7 +47,7 @@
                 </ListView>
             </TabItem>
             <TabItem x:Name="tcPersonal" Header="Personal">
-                <ListView x:Name="list3" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0" SelectionChanged="list3_SelectionChanged" Background="{DynamicResource ListViewBackground}">
+                <ListView x:Name="list3" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0" SelectionChanged="list3_SelectionChanged">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Nr" Width="40" DisplayMemberBinding="{Binding pNr}" />

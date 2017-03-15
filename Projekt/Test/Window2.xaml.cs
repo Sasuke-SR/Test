@@ -297,6 +297,7 @@ namespace Test
                     if (String.IsNullOrWhiteSpace(tbRaStdSum.Text)) { a = 0; } else a = double.Parse(tbRaStdSum.Text.Replace("€", "").Trim());
                     double _tmp = double.Parse(tbUeStdSum2.Text.Replace("€", "").Trim()) + a;
                     tbBrutto.Text = _tmp.ToString("C");
+                    tbUeStdSum2.Text = Calculate_uSumme().ToString("C");
                 }
                 catch (Exception a) { throw a; }
             }
@@ -379,13 +380,13 @@ namespace Test
                                     dr.Read();
                                     try
                                     {
-                                        if (dr.HasRows) { bk.CloseCon(); this.ShowMessageAsync("Fehler", "Es wurde eine Abrechnung mit der gleichen AbrechnungsNr und dem gleichen Monat gefunden");}
+                                        if (dr.HasRows) { bk.CloseCon(); this.ShowMessageAsync("Fehler", "Es wurde eine Abrechnung mit der gleichen AbrechnungsNr und dem gleichen Monat gefunden"); }
                                         else
                                         {
                                             // Lohnabrechnung erstellen
                                             string _tmp = cbLgNr.SelectedItem.ToString();
-                                            dr = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {_tmp.Substring(0,_tmp.IndexOf("-")).Trim()}"); dr.Read();
-                                            bk.Insert($"INSERT INTO Abrechnung_Datum(Ab_Datum, Ab_AStunden, Ab_Bonus_Nr, Ab_Abrech_Nr, Ab_Lohngruppe_Nr, Ab_Lohngruppe_Satz) VALUES('{Datum}',{int.Parse(tbAstd.Text)},{aMonth},{int.Parse(lbPNr.Content.ToString())},{_tmp.Substring(0,_tmp.IndexOf("-")).Trim()},{dr.GetDouble(2)})");
+                                            dr = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {_tmp.Substring(0, _tmp.IndexOf("-")).Trim()}"); dr.Read();
+                                            bk.Insert($"INSERT INTO Abrechnung_Datum(Ab_Datum, Ab_AStunden, Ab_Bonus_Nr, Ab_Abrech_Nr, Ab_Lohngruppe_Nr, Ab_Lohngruppe_Satz) VALUES('{Datum}',{int.Parse(tbAstd.Text)},{aMonth},{int.Parse(lbPNr.Content.ToString())},{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},'{dr.GetDouble(2)}')");
                                             try
                                             {
                                                 Console.WriteLine("Lohnabrechnung erstellt");
@@ -396,12 +397,13 @@ namespace Test
                                                     {
                                                         string _tmp2 = ustd.uGruppe.ToString(); Console.WriteLine(_tmp2);
                                                         dr = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {int.Parse(_tmp2.Substring(0, _tmp2.IndexOf("-")).Trim())}"); dr.Read();
-                                                        bk.Insert($"INSERT INTO UStunden2 (US2_Datum,US2_US_Nr,US2_Stunden,US2_Abrech_Nr,US2_US_Satz) VALUES ('{DateTime.Parse(ustd.uDatum)}',{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},{ustd.uAStunden},{ustd.uPersonalNr},{dr.GetDouble(2)})");
-                                                        try { Console.WriteLine("Überstunden erstellt"); this.ShowMessageAsync("Erfolgreich", "Die Lohnabrechnung konnte hergestellt werden"); bk.CloseCon(); }
+                                                        bk.Insert($"INSERT INTO UStunden2 (US2_Datum,US2_US_Nr,US2_Stunden,US2_Abrech_Nr,US2_US_Satz) VALUES ('{DateTime.Parse(ustd.uDatum)}',{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},{ustd.uAStunden},{ustd.uPersonalNr},'{dr.GetDouble(2)}')");
+                                                        try { Console.WriteLine("Überstunden erstellt"); }
                                                         catch (Exception a) { bk.CloseCon(); throw a; }
                                                     }
+                                                    this.ShowMessageAsync("Erfolgreich", "Die Lohnabrechnung konnte hergestellt werden");
                                                 }
-                                                catch(Exception a) { throw a; }
+                                                catch (Exception a) { throw a; }
                                             }
                                             //catch { this.ShowMessageAsync("Fehler", "Die Lohnabrechnung konnte nicht erstellt werden"); }
                                             catch (Exception a) { bk.CloseCon(); throw a; }
@@ -411,7 +413,8 @@ namespace Test
                                 }
                                 catch (Exception a) { bk.CloseCon(); throw a; }
                             }
-                            catch {  this.ShowMessageAsync("Fehler","Es konnte keine Verbindung hergestellt werden"); }
+                            //catch {  this.ShowMessageAsync("Fehler","Es konnte keine Verbindung hergestellt werden"); }
+                            catch (Exception a) { this.ShowMessageAsync("", a.ToString()); Console.WriteLine(a); }
                         }
                         else this.ShowMessageAsync("Fehler","Es wurden nicht alle Felder ausgefüllt");
                     }
