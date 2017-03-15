@@ -78,7 +78,7 @@ namespace Test
                     dr2 = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {dr.GetInt32(1)}"); dr2.Read();
                     dr3 = bk.Select($"SELECT * FROM Personal WHERE P_Abrech_Nr = {dr.GetInt32(3)}"); dr3.Read();
                     DateTime datum = dr.GetDateTime(0);
-                    double gesamt = Convert.ToDouble(dr.GetInt32(2)) * dr2.GetDouble(2);
+                    double gesamt = Convert.ToDouble(dr.GetInt32(2)) * dr.GetDouble(4);
                     US.Add(new UStunden() { uDatum = datum.ToString("dd/MM/yyyy"), uGruppe = dr2.GetString(1), uStd = dr.GetInt32(1), uPersonal = $"{dr3.GetInt32(0).ToString()} - {dr3.GetString(2)}, {dr3.GetString(1)}", uGesamt = gesamt.ToString("C")});
                 }
             }
@@ -110,8 +110,7 @@ namespace Test
                         {
                             if (dr2.HasRows)
                             {
-                                dr3 = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {dr2.GetInt32(1)}"); dr3.Read();
-                                uSumme += dr3.GetDouble(2) * Convert.ToDouble(dr2.GetInt32(2));
+                                uSumme += dr2.GetDouble(4) * Convert.ToDouble(dr2.GetInt32(2));
                                 Console.WriteLine(uSumme);
                             }
                             else uSumme += 0;
@@ -206,6 +205,18 @@ namespace Test
         {
             Window2 nAbrechnung = new Window2();
             nAbrechnung.ShowDialog();
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    laListView_Load();
+                    uListView_Load();
+                    bk.CloseCon();
+                }
+                catch(Exception a) { throw a; }
+            }
+            catch(Exception a) { throw a; }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
