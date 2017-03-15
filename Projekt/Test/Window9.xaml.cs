@@ -61,9 +61,9 @@ namespace Test
                     checkMonat.SelectedIndex = dr.GetInt32(3) - 1;
                     bk.CloseCon();
                 }
-                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); } //MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); bk.CloseCon(); } //MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error)
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); bk.CloseCon();  } //MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error)
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
@@ -100,13 +100,15 @@ namespace Test
                                 {
                                     if (dr.HasRows)
                                     {
-                                        this.ShowMessageAsync("", "Es existiert bereits ein Bonus in diesem Monat;");
+                                        if(dr.GetInt32(0) != Convert.ToInt32(laNr.Content.ToString()))
+                                        { this.ShowMessageAsync("", "Es existiert bereits ein Bonus in diesem Monat;"); }
+                                        //else { //Alles ok!}
                                     }
                                     else
                                     {
                                         string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
                                         bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text}',B_Zuschlag={_tmpBP},B_Monat={checkMonat.SelectedIndex + 1},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
-                                        MessageBox.Show("Dieser Bonus wurde erfolgreich geändert", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                                        this.ShowMessageAsync("", "Dieser Bonus wurde erfolgreich geändert.");
                                         bk.CloseCon();
                                         this.Close();
                                     }
@@ -118,7 +120,7 @@ namespace Test
                             }
                             catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetretten."); }
                         }
-                        catch { this.ShowMessageAsync("Fehler", "Die Verbindungzur Datenbank konnte nicht hergestellt werden."); }
+                        catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }
                     }
                     else { this.ShowMessageAsync("Fehler", "Es muss ein Monat ausgewählt werden."); }
                 }

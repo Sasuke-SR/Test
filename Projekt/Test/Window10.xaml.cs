@@ -69,7 +69,7 @@ namespace Test
                 }
                 catch { this.ShowMessageAsync("", "Es ist ein Fehler aufgetretetn."); bk.CloseCon(); }
             }
-            catch { this.ShowMessageAsync("", "Die Verbindung konnte nicht geöffnet werden"); bk.CloseCon(); }
+            catch { this.ShowMessageAsync("", "Die Verbindung konnte nicht geöffnet werden."); bk.CloseCon(); }
         }
 
         private void bSave_Click(object sender, RoutedEventArgs e)
@@ -92,15 +92,15 @@ namespace Test
                                 bk.CloseCon();
                                 this.Close();
                             }
-                            catch { this.ShowMessageAsync("", "Die Veränderung konnte nicht gespeichert werden"); bk.CloseCon(); }
+                            catch { this.ShowMessageAsync("", "Die Veränderung konnte nicht gespeichert werden."); bk.CloseCon(); }
                         }
-                        catch { this.ShowMessageAsync("", "Die Verbindung konnte nicht hergestellt werden"); bk.CloseCon(); }
+                        catch { this.ShowMessageAsync("", "Die Verbindung konnte nicht hergestellt werden."); bk.CloseCon(); }
                     }
-                    else this.ShowMessageAsync("", "Die Person muss einer Abteilung und Lohngruppe zugeordnet werden");
+                    else this.ShowMessageAsync("", "Die Person muss einer Abteilung und Lohngruppe zugeordnet werden.");
                 }
                 else this.ShowMessageAsync("", "Es sind keine Sonderzeichen & Zahlen in den Namensfeldern erlaubt.");
             }
-            else this.ShowMessageAsync("", "Die Felder dürfen nicht Leer gelassen werden");
+            else this.ShowMessageAsync("", "Die Felder dürfen nicht Leer gelassen werden.");
         }
     }
 }
