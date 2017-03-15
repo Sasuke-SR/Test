@@ -344,14 +344,11 @@ namespace Test
                                 bk.Connection();
                                 try
                                 {
-                                    dr = bk.Select($"SELECT * FROM Abrechnung_Datum WHERE Ab_Datum = '{DateTime.Parse(dpDatum.Text).ToString("dd/MM/yyyy")}' AND Ab_Abrech_Nr = {lbPNr.Content}");
+                                    dr = bk.Select($"SELECT * FROM Abrechnung_Datum WHERE Ab_Datum = '{/*DateTime.Parse*/(dpDatum.Text)/*.ToString("dd/MM/yyyy")*/}' AND Ab_Abrech_Nr = {lbPNr.Content}");
                                     dr.Read();
                                     try
                                     {
-                                        if (dr.HasRows)
-                                        {
-                                            this.ShowMessageAsync("Fehler", "Es wurde eine Abrechnung mit der gleichen AbrechnungsNr und dem gleichen Monat gefunden");
-                                        }
+                                        if (dr.HasRows) { this.ShowMessageAsync("Fehler", "Es wurde eine Abrechnung mit der gleichen AbrechnungsNr und dem gleichen Monat gefunden");}
                                         else
                                         {
                                             // Lohnabrechnung erstellen
@@ -359,7 +356,6 @@ namespace Test
                                             try
                                             {
                                                 //Überstunden in die Datenbank eintragen
-                                                int i = items.Count();
                                                 foreach (uStunden ustd in items)
                                                 {
                                                     string _tmp = ustd.uGruppe;
@@ -368,12 +364,12 @@ namespace Test
                                                     catch (Exception a) { throw a; }
                                                 }
                                             }
-                                            catch { this.ShowMessageAsync("Fehler", "Die Lohnabrechnung konnte nicht erstellt werden"); }
+                                            catch { bk.CloseCon(); this.ShowMessageAsync("Fehler", "Die Lohnabrechnung konnte nicht erstellt werden"); }
                                         }
                                     }
-                                    catch (Exception a) { throw a; }
+                                    catch (Exception a) { bk.CloseCon(); throw a; }
                                 }
-                                catch (Exception a) { throw a; }
+                                catch (Exception a) { bk.CloseCon(); throw a; }
                             }
                             catch { this.ShowMessageAsync("Fehler","Es konnte keine Verbindung hergestellt werden"); }
                         }

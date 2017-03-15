@@ -102,7 +102,7 @@ namespace Test
                 }
                 else { this.ShowMessageAsync("Fehler", "Die Eingabe Felder dürfen nicht Leer gelassen werden."); }//MessageBox.Show("Die Eingabe Felder dürfen nicht Leer sein.\n", "");
             }
-            else { this.ShowMessageAsync("Fehler", "In der Bezeichnung oder dem Betrag befinden sich unzulässige Zeichen.") } //MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden.", "");
+            else { this.ShowMessageAsync("Fehler", "In der Bezeichnung oder dem Betrag befinden sich unzulässige Zeichen."); } //MessageBox.Show("In der Bezeichnung oder dem Betrag sind unzulässige Zeichen vorhanden.", "");
 
 
         }
