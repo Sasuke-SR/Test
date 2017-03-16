@@ -92,7 +92,7 @@ namespace Test
                     {
                         if (bk.IsAllowed(tbLgBet.Text.Trim(), false, true, false, "€.,"))
                         {
-                            if (bk.IsAllowed(tbLgName.Text, true, true, true, ".-,"))
+                            if (bk.IsAllowed(tbLgName.Text.Trim(), true, true, true, ".-,"))
                             {
                                 #region Lohngruppe erstellen
                                 string _tmpA = tbLgBet.Text.Replace(",", ".").Replace("€", "").Trim();
@@ -111,24 +111,24 @@ namespace Test
                                     {
                                         dr = bk.Select("SELECT last(L_Nr) FROM Lohngruppen");
                                         dr.Read();
-                                        Nr_Lohngruppe.Content = (dr.GetInt32(0) + 1).ToString();//Hab das +1 hizugefügt. Ich hoffe, dass das sinnvoll ist
+                                        Nr_Lohngruppe.Content = (dr.GetInt32(0) + 1).ToString();
                                         listView_Load();
                                         bk.CloseCon();
                                     }
-                                    catch { this.ShowMessageAsync("Fehler", "Fehler beim bestimmen der Lohngruppennummer."); bk.CloseCon(); }/*MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();*/
+                                    catch { this.ShowMessageAsync("Fehler", "Fehler beim bestimmen der Lohngruppennummer."); bk.CloseCon(); }
                                 }
-                                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } /*MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);*/
+                                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }
                                 #endregion
                             }
                             else { this.ShowMessageAsync("Fehler", "Der Lohngruppenname darf keine Sonderzeichen enthalten."); bk.CloseCon(); }
                         }
-                        else { this.ShowMessageAsync("Fehler", "Der Stundensatz darf keine Buchstaben, Leerzeichen oder Sonderzeichen enthalten."); bk.CloseCon(); }/*MessageBox.Show("Es sind keine Leerzeichen so wie Sonderzeichen erlaubt."); bk.CloseCon();*/
+                        else { this.ShowMessageAsync("Fehler", "Der Stundensatz darf keine Buchstaben, Leerzeichen oder Sonderzeichen enthalten."); bk.CloseCon(); }
                     }
-                    else { this.ShowMessageAsync("Fehler", "Die Felder dürfen nicht Leer sein"); bk.CloseCon(); }/*MessageBox.Show("Die Felder dürfen nicht Leer sein",""); bk.CloseCon();*/
+                    else { this.ShowMessageAsync("Fehler", "Die Felder dürfen nicht Leer sein"); bk.CloseCon(); }
                 }
-                catch { this.ShowMessageAsync("Fehler", "");bk.CloseCon(); }/*MessageBox.Show("Fehler", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();*/
+                catch { this.ShowMessageAsync("Fehler", "");bk.CloseCon(); }
             }
-            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }/*MessageBox.Show("Verbindung war nicht erfolgreich", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon();*/
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }
         }
     }
 }

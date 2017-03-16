@@ -59,9 +59,9 @@ namespace Test
                         bk.Connection();
                         try
                         {
-                            if (bk.IsAllowed(textBox_Name.Text, true, true, true, "-.,"))
+                            if (bk.IsAllowed(textBox_Name.Text.Trim(), true, true, true, "-.,"))
                             {
-                                bk.Insert($"INSERT INTO Abteilung (Abt_Bez) VALUES ('{textBox_Name.Text}');");
+                                bk.Insert($"INSERT INTO Abteilung (Abt_Bez) VALUES ('{textBox_Name.Text.Trim()}');");
                                 this.ShowMessageAsync("", "Die Abteilung wurde erstellt.");
                                 bk.CloseCon();
 

@@ -80,9 +80,9 @@ namespace Test
 
         private void bSave_Click(object sender, RoutedEventArgs e)
         {
-            if (!string.IsNullOrWhiteSpace(tbNName.Text) && !string.IsNullOrWhiteSpace(tbVName.Text))
+            if (!string.IsNullOrWhiteSpace(tbNName.Text.Trim()) && !string.IsNullOrWhiteSpace(tbVName.Text.Trim()))
             {
-                if (bk.IsAllowed(tbNName.Text, true, false, false, ".-") && bk.IsAllowed(tbVName.Text, true, false, false, ".-"))
+                if (bk.IsAllowed(tbNName.Text.Trim(), true, false, false, ".-") && bk.IsAllowed(tbVName.Text.Trim(), true, false, false, ".-"))
                 {
                     if (cbAb.SelectedItem != null && cbLG.SelectedItem != null)
                     {
@@ -96,7 +96,7 @@ namespace Test
                                 if (CheckFired.IsChecked == true) { _tmp = true; } else _tmp = false;
                                 string PANR = cbAb.SelectedItem.ToString(); string PLNR = cbLG.SelectedItem.ToString();
                                 //SQL Befehl
-                                bk.Update($"UPDATE Personal SET P_VName='{tbVName.Text}',P_NName='{tbNName.Text}',P_Abteilungs_Nr={int.Parse(PANR.Substring(0, PANR.IndexOf("-")).Trim())}, P_Lohngruppen_Nr={int.Parse(PLNR.Substring(0, PLNR.IndexOf("-")).Trim())},P_Deaktiviert={_tmp} WHERE P_Nr = {_Nr}");
+                                bk.Update($"UPDATE Personal SET P_VName='{tbVName.Text.Trim()}',P_NName='{tbNName.Text.Trim()}',P_Abteilungs_Nr={int.Parse(PANR.Substring(0, PANR.IndexOf("-")).Trim())}, P_Lohngruppen_Nr={int.Parse(PLNR.Substring(0, PLNR.IndexOf("-")).Trim())},P_Deaktiviert={_tmp} WHERE P_Nr = {_Nr}");
                                 MessageBox.Show("Die Person wurde erfolgreich gespeichert.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                                 bk.CloseCon();
                                 this.Close();

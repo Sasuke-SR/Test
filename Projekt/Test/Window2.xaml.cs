@@ -76,7 +76,7 @@ namespace Test
         {
             double _tmp = 0;
             foreach (uStunden item in lvUeStdGr.Items)
-            { _tmp += double.Parse(item.uSumme.Replace("€","")); }
+            { _tmp += double.Parse(item.uSumme.Trim().Replace("€","")); }
             return _tmp;
         }
         public void Load_ComboBox()
@@ -238,11 +238,11 @@ namespace Test
             {
                 if (cbUGruppe.SelectedItem != null)
                 {
-                    if (!String.IsNullOrWhiteSpace(tbUeStdAnz.Text))
+                    if (!string.IsNullOrWhiteSpace(tbUeStdAnz.Text.Trim()))
                     {
-                        if (!String.IsNullOrEmpty(dpUDatum.Text))
+                        if (!string.IsNullOrWhiteSpace(dpUDatum.Text))
                         {
-                            if (!String.IsNullOrEmpty(dpDatum.Text))
+                            if (!string.IsNullOrWhiteSpace(dpDatum.Text))
                             {
                                 DateTime UDatum = Convert.ToDateTime(dpUDatum.Text);
                                 DateTime Datum = Convert.ToDateTime(dpDatum.Text);
@@ -266,8 +266,8 @@ namespace Test
                                         try
                                         {
                                             lvUeStdGr.ItemsSource = null;
-                                            string _bet = tbUeStdBet.Text; double a = double.Parse(tbUeStdAnz.Text) * double.Parse(_bet.Replace("€", ""));
-                                            items.Add(new uStunden() { uGruppe = cbUGruppe.SelectedItem.ToString(), ugBetrag = _bet, uAStunden = int.Parse(tbUeStdAnz.Text), uDatum = DateTime.Parse(dpUDatum.Text).ToString("dd/MM/yyyy"), uSumme = a.ToString("C"), uPersonalNr = int.Parse(lbPNr.Content.ToString()) });
+                                            string _bet = tbUeStdBet.Text.Trim(); double a = double.Parse(tbUeStdAnz.Text.Trim()) * double.Parse(_bet.Replace("€", "").Trim());
+                                            items.Add(new uStunden() { uGruppe = cbUGruppe.SelectedItem.ToString(), ugBetrag = _bet, uAStunden = int.Parse(tbUeStdAnz.Text.Trim()), uDatum = DateTime.Parse(dpUDatum.Text.Trim()).ToString("dd/MM/yyyy"), uSumme = a.ToString("C"), uPersonalNr = int.Parse(lbPNr.Content.ToString().Trim()) });
                                         }
                                         catch (Exception a) { throw a; }
                                         lvUeStdGr.ItemsSource = items;
@@ -299,7 +299,7 @@ namespace Test
                 try
                 {
                     double a;
-                    if (String.IsNullOrWhiteSpace(tbRaStdSum.Text)) { a = 0; } else a = double.Parse(tbRaStdSum.Text.Replace("€", "").Trim());
+                    if (string.IsNullOrWhiteSpace(tbRaStdSum.Text)) { a = 0; } else a = double.Parse(tbRaStdSum.Text.Replace("€", "").Trim());
                     double _tmp = double.Parse(tbUeStdSum2.Text.Replace("€", "").Trim()) + a;
                     tbBrutto.Text = _tmp.ToString("C");
                     tbUeStdSum2.Text = Calculate_uSumme().ToString("C");
@@ -311,12 +311,12 @@ namespace Test
 
         private void tbRaStdSum_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(tbRaStdSum.Text))
+            if (!string.IsNullOrWhiteSpace(tbRaStdSum.Text))
             {
                 try
                 {
                     double a;
-                    if (String.IsNullOrWhiteSpace(tbUeStdSum2.Text)) { a = 0; } else a = double.Parse(tbUeStdSum2.Text.Replace("€", "").Trim());
+                    if (string.IsNullOrWhiteSpace(tbUeStdSum2.Text)) { a = 0; } else a = double.Parse(tbUeStdSum2.Text.Replace("€", "").Trim());
                     double _tmp = double.Parse(tbRaStdSum.Text.Replace("€", "").Trim()) + a;
                     tbBrutto.Text = _tmp.ToString("C");
                 }
@@ -326,12 +326,12 @@ namespace Test
 
         private void tbUeStdSum2_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(tbUeStdSum2.Text))
+            if (!string.IsNullOrWhiteSpace(tbUeStdSum2.Text))
             {
                 try
                 {
                     double a;
-                    if (String.IsNullOrWhiteSpace(tbRaStdSum.Text)) { a = 0; } else a = double.Parse(tbRaStdSum.Text.Replace("€", "").Trim());
+                    if (string.IsNullOrWhiteSpace(tbRaStdSum.Text)) { a = 0; } else a = double.Parse(tbRaStdSum.Text.Replace("€", "").Trim());
                     double _tmp = double.Parse(tbUeStdSum2.Text.Replace("€", "").Trim()) + a;
                     tbBrutto.Text = _tmp.ToString("C");
                 }
@@ -360,7 +360,7 @@ namespace Test
 
         private void tbBrutto_TextChanged(object sender, TextChangedEventArgs e)
         {
-            if (!String.IsNullOrWhiteSpace(tbBonusSum.Text) && !String.IsNullOrWhiteSpace(tbBrutto.Text))
+            if (!string.IsNullOrWhiteSpace(tbBonusSum.Text) && !string.IsNullOrWhiteSpace(tbBrutto.Text))
             {
                 try
                 {
@@ -378,11 +378,11 @@ namespace Test
             {
                 if (cbLgNr.SelectedItem != null)
                 {
-                    if (!String.IsNullOrWhiteSpace(dpDatum.Text))
+                    if (!string.IsNullOrWhiteSpace(dpDatum.Text))
                     {
-                        if (!String.IsNullOrWhiteSpace(tbEndLohn.Text))
+                        if (!string.IsNullOrWhiteSpace(tbEndLohn.Text))
                         {
-                            if (!String.IsNullOrWhiteSpace(tbAstd.Text))
+                            if (!string.IsNullOrWhiteSpace(tbAstd.Text))
                             {
                                 //Abfrage ob die Abrechnung in der Datenbank existiert
                                 try
