@@ -66,8 +66,8 @@
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="3" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label FontSize="12" Content="Lohngruppe:" Foreground="White"/>
-                <ComboBox x:Name="cbLgNr" Height="15" Width="120" Margin="74,0,20,0" BorderThickness="1" BorderBrush="Black" SelectionChanged="cbLgNr_SelectionChanged"/>
-                
+                <ComboBox x:Name="cbLgNr" Height="15" Width="120" Margin="74,0,20,0" BorderThickness="1" BorderBrush="Black" SelectionChanged="cbLgNr_SelectionChanged" AllowDrop="False"  IsEditable="False" IsHitTestVisible="False" Focusable="False" />
+
                 <Label FontSize="12" Content="Lohngruppenname:" Foreground="White"/>
                 <TextBox x:Name="tbLgName" Width="120" Height="15" FontSize="11" Margin="5,0,0,0" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                 

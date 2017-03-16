@@ -402,6 +402,7 @@ namespace Test
                                                 string _tmp = cbLgNr.SelectedItem.ToString();
                                                 dr = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {_tmp.Substring(0, _tmp.IndexOf("-")).Trim()}"); dr.Read();
                                                 bk.Insert($"INSERT INTO Abrechnung_Datum(Ab_Datum, Ab_AStunden, Ab_Bonus_Nr, Ab_Abrech_Nr, Ab_Lohngruppe_Nr, Ab_Lohngruppe_Satz) VALUES('{Datum}',{int.Parse(tbAstd.Text)},{bNr},{int.Parse(lbPNr.Content.ToString())},{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},'{dr.GetDouble(2)}')");
+                                                System.Threading.Thread.Sleep(500);
                                                 try
                                                 {
                                                     Console.WriteLine("Lohnabrechnung erstellt");
@@ -410,27 +411,29 @@ namespace Test
                                                         //Überstunden in die Datenbank eintragen
                                                         foreach (uStunden ustd in items)
                                                         {
-                                                            string _tmp2 = ustd.uGruppe.ToString(); Console.WriteLine(_tmp2);
+                                                            string _tmp2 = ustd.uGruppe.ToString(); Console.WriteLine(_tmp2); Console.WriteLine(ustd.uDatum);
                                                             dr = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {int.Parse(_tmp2.Substring(0, _tmp2.IndexOf("-")).Trim())}"); dr.Read();
-                                                            bk.Insert($"INSERT INTO UStunden2 (US2_Datum,US2_US_Nr,US2_Stunden,US2_Abrech_Nr,US2_US_Satz) VALUES ('{DateTime.Parse(ustd.uDatum)}',{int.Parse(_tmp.Substring(0, _tmp.IndexOf("-")).Trim())},{ustd.uAStunden},{ustd.uPersonalNr},'{dr.GetDouble(2)}')");
+                                                            bk.Insert($"INSERT INTO UStunden2 (US2_Datum,US2_US_Nr,US2_Stunden,US2_Abrech_Nr,US2_US_Satz) VALUES ('{Datum}',{int.Parse(_tmp2.Substring(0, _tmp2.IndexOf("-")).Trim())},{ustd.uAStunden},{int.Parse(lbPNr.Content.ToString())}, '{dr.GetDouble(2)}')");
+
                                                             try { Console.WriteLine("Überstunden erstellt"); }
                                                             catch (Exception a) { bk.CloseCon(); throw a; }
                                                         }
                                                         this.ShowMessageAsync("Erfolgreich", "Die Lohnabrechnung konnte erstellt werden");
                                                         bk.CloseCon();
+                                                        this.Close();
                                                     }
-                                                    catch (Exception a) { bk.CloseCon(); throw a; }
+                                                    catch (Exception a) { bk.CloseCon(); Console.WriteLine(a); throw a; } // {"Der Datensatz kann nicht hinzugefügt oder geändert werden, da ein Datensatz in der Tabelle 'Abrechnung_Datum' mit diesem Datensatz in Beziehung stehen muss."}
                                                 }
-                                                //catch { this.ShowMessageAsync("Fehler", "Die Lohnabrechnung konnte nicht erstellt werden"); }
-                                                catch (Exception a) { bk.CloseCon(); throw a; }
+                                                catch { this.ShowMessageAsync("Fehler", "Die Lohnabrechnung konnte nicht erstellt werden"); }
+                                                //catch (Exception a) { bk.CloseCon(); throw a; }
                                             }
                                         }
                                         catch (Exception a) { bk.CloseCon(); throw a; }
                                     }
                                     catch (Exception a) { bk.CloseCon(); throw a; }
                                 }
-                                //catch {  this.ShowMessageAsync("Fehler","Es konnte keine Verbindung hergestellt werden"); }
-                                catch (Exception a) { this.ShowMessageAsync("", a.ToString()); Console.WriteLine(a); }
+                                catch {  this.ShowMessageAsync("Fehler","Es konnte keine Verbindung hergestellt werden"); }
+                                //catch (Exception a) { this.ShowMessageAsync("", a.ToString()); Console.WriteLine(a); }
                             }
                             else this.ShowMessageAsync("Fehler","Es müssen Arbeits Stunden angegeben werden");
                         }

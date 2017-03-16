@@ -153,7 +153,7 @@ namespace Test
                                     {
                                         switch (cbBStatus.SelectedIndex) { case 0: status = false; break; case 1: status = true; break; }
                                         string _tmpstring1 = tbBSatz.Text.Replace("%", "").Replace(".",",").Trim();
-                                        bk.Insert($"INSERT INTO Bonus(B_Nr,B_Bez,B_Zuschlag,B_Monat,B_Aktiv) VALUES ({dr1.GetInt32(0)},'{tbBBez.Text}','{double.Parse(_tmpstring1)}',{cbBMonat.SelectedIndex + 1},{status})");
+                                        bk.Insert($"INSERT INTO Bonus(B_Nr,B_Bez,B_Zuschlag,B_Monat,B_Aktiv) VALUES ({dr1.GetInt32(0)},'{tbBBez.Text.Trim()}','{double.Parse(_tmpstring1)}',{cbBMonat.SelectedIndex + 1},{status})");
                                         this.ShowMessageAsync("", "Der Bonus wurde erfolgreich erstellt!");
                                         //MessageBox.Show("Der Bonus wurde erfolgreich erstellt", "", MessageBoxButton.OK, MessageBoxImage.Asterisk);
                                         lvBonus.ItemsSource = null;
