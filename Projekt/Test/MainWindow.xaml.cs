@@ -100,9 +100,9 @@ namespace Test
                         dr2 = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {dr.GetInt32(4)}");
                         dr1.Read(); dr2.Read();
                         double brutto = Convert.ToDouble(dr.GetInt32(1)) * dr2.GetDouble(2); Console.WriteLine(brutto);
-                        double endlohn = 0;
-                        double uSumme = 0;
+                        double endlohn = 0; double uSumme = 0; double pSatz = 0;
                         dr2.Close();
+                        dr2 = bk.Select($"SELECT * FROM Bonus WHERE B_Nr = {dr.GetInt32(2)}"); dr2.Read(); pSatz = dr2.GetDouble(2); dr2.Close();
                         //Endlohn -> Rechnung -> Anfang
                         DateTime datum = dr.GetDateTime(0);
                         dr2 = bk.Select($"SELECT * FROM UStunden2 WHERE YEAR(US2_Datum) = '{datum.Year}' AND MONTH(US2_Datum) = '{datum.Month}' AND US2_Abrech_Nr = {dr.GetInt32(3)}");
@@ -115,7 +115,8 @@ namespace Test
                             }
                             else uSumme += 0;
                         }
-                        endlohn = uSumme + brutto;
+                        double BSumme = (brutto / 100) * pSatz; double bGesamt = brutto + BSumme;
+                        endlohn = uSumme + bGesamt;
                         //Endlohn -> Rechnung -> Ende
                         LA.Add(new Lohnabrechnung() { laDatum = dr.GetDateTime(0).ToString("dd/MM/yyyy"), laNr = dr.GetInt32(3), laPerson = dr1.GetString(2) + ", " + dr1.GetString(1), laBrutto = brutto.ToString("C"), laEndlohn = endlohn.ToString("C") });
                     }
@@ -378,6 +379,8 @@ namespace Test
                     try
                     {
                         pListView_Load();
+                        uListView_Load();
+                        laListView_Load();
                         bk.CloseCon();
                     }
                     catch { MessageBox.Show("Die ListView konnte nicht geladen werden", ""); bk.CloseCon(); }

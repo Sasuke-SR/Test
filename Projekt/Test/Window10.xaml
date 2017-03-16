@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-       Title="Personal bearbeiten" Height="270" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
+       Title="Personal bearbeiten" Height="290" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -20,12 +20,16 @@
                     <Label x:Name="laNr" FontSize="12" Content="Nr" Margin="195,0,0,0"  Foreground="White"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <Label FontSize="12" Content="Abrechnungs Nr" Foreground="White" />
+                    <Label x:Name="abrechNR" FontSize="12" Content="000000000" Margin="126,0,0,0" Foreground="White" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <Label FontSize="12" Content="Nachname" Foreground="White"/>
                     <TextBox x:Name="tbNName" Height="20" Width="120" Margin="105,0,0,0" FontSize="11" BorderBrush="Black" BorderThickness="1"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                     <Label FontSize="12" Content="Vorname" Foreground="White"/>
-                    <TextBox FontSize="11" Height="20" Width="120" Margin="115,0,0,0" x:Name="tbVName" BorderBrush="Black" BorderThickness="1"/>
+                    <TextBox FontSize="11" Height="20" Width="120" Margin="114,0,0,0" x:Name="tbVName" BorderBrush="Black" BorderThickness="1"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                     <Label FontSize="12" Content="Abteilung" Foreground="White"/>

@@ -102,7 +102,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label FontSize="12" Content="Datum:" Foreground="White" />
-                        <DatePicker x:Name="dpUDatum" Width="120" Height="25" DisplayDate="1/1/2016" DisplayDateStart="1/1/2016" Text="" BorderThickness="1" BorderBrush="Black" Margin="103,0,0,0" GotMouseCapture="dpUDatum_GotMouseCapture" SelectedDateChanged="dpUDatum_SelectedDateChanged"/>
+                        <DatePicker x:Name="dpUDatum" Width="120" Height="25" DisplayDate="1/1/2016" DisplayDateStart="1/1/2016" Text="" BorderThickness="1" BorderBrush="Black" Margin="103,0,0,0" SelectedDateChanged="dpUDatum_SelectedDateChanged"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Grid.Column="1" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="120,0,0,10">
