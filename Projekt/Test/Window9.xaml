@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-       Title="Bonus" Height="240" Width="600" Loaded="Window_Loaded" Unloaded="Window_Unloaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
+       Title="Bonus" Height="240" Width="600" Loaded="Window_Loaded" Unloaded="Window_Unloaded" ResizeMode="CanMinimize" Background="{DynamicResource Button_Blau}" BorderThickness="1" BorderBrush="Black">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
