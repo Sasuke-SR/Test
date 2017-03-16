@@ -75,16 +75,16 @@ namespace Test
         {
             if (!string.IsNullOrWhiteSpace(tbUeBet.Text) && !string.IsNullOrWhiteSpace(tbUeBez.Text))
             {
-                if (bk.IsAllowed(tbUeBez.Text, true, true, true))
+                if (bk.IsAllowed(tbUeBez.Text.Trim(), true, true, true))
                 {
-                    if(bk.IsAllowed(tbUeBet.Text, false, true, false, ",.€"))
+                    if(bk.IsAllowed(tbUeBet.Text.Trim(), false, true, false, ",.€"))
                     {
                         try
                         {
                             bk.Connection();
                             try
                             {
-                                bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text}', {tbUeBet.Text.Replace(',', '.').Replace("€", "").Trim()});");
+                                bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text.Trim()}', {tbUeBet.Text.Replace(',', '.').Replace("€", "").Trim()});");
                                 this.ShowMessageAsync("Fehler", "Die Überstundengruppe wurde erfolgreich erstellt.");
                                 //MessageBox.Show("Die Überstundengruppe wurde erfolgreich erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                                 try

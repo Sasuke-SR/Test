@@ -104,13 +104,13 @@ namespace Test
             {
                 if (!string.IsNullOrWhiteSpace(tbName.Text) && !string.IsNullOrWhiteSpace(tbNName.Text) && !string.IsNullOrWhiteSpace(tbAbtNr.Text) && !string.IsNullOrWhiteSpace(tbLgNr.Text))
                 {
-                    if (bk.IsAllowed(tbName.Text, true, false, true, "'.") && bk.IsAllowed(tbNName.Text, true, false, true, "'."))
+                    if (bk.IsAllowed(tbName.Text.Trim(), true, false, true, "'.") && bk.IsAllowed(tbNName.Text.Trim(), true, false, true, "'."))
                     {
                         //Erstellung
                         string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr, P_Abrech_Nr) VALUES ('{0}', '{1}', {2}, {3}, {4})"
-                                                        , tbName.Text, tbNName.Text, tbAbtNr.Text, tbLgNr.Text, lAbrNr.Content.ToString());
+                                                        , tbName.Text.Trim(), tbNName.Text.Trim(), tbAbtNr.Text, tbLgNr.Text, lAbrNr.Content.ToString());
                         bk.Insert(_tmpQuery);
-                        this.ShowMessageAsync("", $"Die Person {tbNName.Text}, {tbName.Text} wurde erstellt.");
+                        this.ShowMessageAsync("", $"Die Person {tbNName.Text.Trim()}, {tbName.Text.Trim()} wurde erstellt.");
                         bk.CloseCon();
                         // Neuladen der Maske
                         #region Maske neuladen
@@ -119,14 +119,14 @@ namespace Test
                         cbAbtName.Text = ""; cbLgName.Text = ""; cbAbtName.SelectedItem = null; cbLgName.SelectedItem = null;
                         #endregion Maske neuladen
                     }
-                    else { this.ShowMessageAsync("Fehler", "Es dürfen keine Sonderzeichen so wie Numerische Werte eingegeben werden."); bk.CloseCon(); }// MessageBox.Show("Es dürfen keine Sonderzeichen so wie Numerische Werte eingegeben werden", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    else { this.ShowMessageAsync("Fehler", "Es dürfen keine Sonderzeichen so wie Numerische Werte eingegeben werden."); bk.CloseCon(); }
                 }
-                else { this.ShowMessageAsync("Fehler", "Die Felder dürfen nicht leer gelassen werden."); bk.CloseCon(); }//MessageBox.Show("Die Felder dürfen nicht Leer sein","");
+                else { this.ShowMessageAsync("Fehler", "Die Felder dürfen nicht leer gelassen werden."); bk.CloseCon(); }
 
             }
             catch
             {
-                this.ShowMessageAsync("Fehler", "Beim Einfügen der Person ist ein Fehler aufgetreten.");//MessageBox.Show("Fehler beim Einfügen der Person", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                this.ShowMessageAsync("Fehler", "Beim Einfügen der Person ist ein Fehler aufgetreten.");
                 bk.CloseCon();
             }
         }
@@ -151,9 +151,9 @@ namespace Test
                         bk.CloseCon();
                         lAbrNr.Content = bk.FormateNumber(tbAbtNr.Text, lAbrNr.Content.ToString(), 3);
                     }
-                    catch { this.ShowMessageAsync("Fehler", "Beim Suchen der Abteilung ist ein Fehler aufgetreten."); bk.CloseCon(); }//MessageBox.Show("Fehler Suchen der Abteilung", "", MessageBoxButton.OK, MessageBoxImage.Error)
+                    catch { this.ShowMessageAsync("Fehler", "Beim Suchen der Abteilung ist ein Fehler aufgetreten."); bk.CloseCon(); }
                 }
-                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }//MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }
             }
         }
 
@@ -172,9 +172,9 @@ namespace Test
                         bk.CloseCon();
                         lAbrNr.Content = bk.FormateNumber(tbLgNr.Text, lAbrNr.Content.ToString(), 0);
                     }
-                    catch { this.ShowMessageAsync("Fehler", "Beim Suchen der Lohngruppe ist ein Fehler aufgetreten."); bk.CloseCon(); }//MessageBox.Show("Fehler Suchen der ALohngruppe", "", MessageBoxButton.OK, MessageBoxImage.Error)
+                    catch { this.ShowMessageAsync("Fehler", "Beim Suchen der Lohngruppe ist ein Fehler aufgetreten."); bk.CloseCon(); }
                 }
-                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }//MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }
             }
         }
     }
