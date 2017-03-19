@@ -70,16 +70,16 @@ namespace Test
                     ListView_Load();
                     bk.CloseCon();
                 }
-                catch (Exception ex1) { this.ShowMessageAsync("Fehler", "Beim bestimmen der Überstundengruppen-Nummer ist ein Fehler aufgetreten."); bk.CloseCon(); Console.WriteLine(ex1); return; } //MessageBox.Show("Fehler beim bestimmen der Überstundengruppen-Nummer", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch (Exception ex1) { this.ShowMessageAsync("Fehler", "Beim bestimmen der Überstundengruppen-Nummer ist ein Fehler aufgetreten."); bk.CloseCon(); Console.WriteLine(ex1); return; }
             }
-            catch (Exception ex) { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); Console.WriteLine(ex); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+            catch (Exception ex) { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); Console.WriteLine(ex); }
         }
 
         private void bUeStdErs_Click(object sender, RoutedEventArgs e)
         {
             if (!string.IsNullOrWhiteSpace(cbPer.Text) && !string.IsNullOrWhiteSpace(cbUeStdGr.Text) && !string.IsNullOrWhiteSpace(tbUeStd.Text) && !string.IsNullOrWhiteSpace(dpDat.Text))
             {
-                if (bk.IsAllowed(tbUeStd.Text, false, true, false))
+                if (bk.IsAllowed(tbUeStd.Text.Trim(), false, true, false))
                 {
                     string tmpPer = cbPer.Text.Split('-')[0].Trim();
                     string tmpUeGr = cbUeStdGr.Text.Split('-')[0].Trim();
@@ -88,18 +88,18 @@ namespace Test
                         bk.Connection();
                         try
                         {
-                            bk.Insert($"INSERT INTO UStunden_2(US2_Datum, US2_Stunden, US2_Personal_Nr, US2_UStunden_Nr) VALUES ({DateTime.Parse(dpDat.Text).ToString("yyyy-MM-dd")}, {tbUeStd.Text}, " +
+                            bk.Insert($"INSERT INTO UStunden_2(US2_Datum, US2_Stunden, US2_Personal_Nr, US2_UStunden_Nr) VALUES ({DateTime.Parse(dpDat.Text).ToString("yyyy-MM-dd")}, {tbUeStd.Text.Trim()}, " +
                                   $"{tmpPer}, {tmpUeGr});");
                         }
                         catch (Exception ex5)
-                        { this.ShowMessageAsync("Fehler", "Beim Einfügen in die Datenbank ist ein Fehler aufgetreten."); Console.WriteLine(ex5); bk.CloseCon(); } // MessageBox.Show("Fehler beim Einfügen in die Datenbank.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                        { this.ShowMessageAsync("Fehler", "Beim Einfügen in die Datenbank ist ein Fehler aufgetreten."); Console.WriteLine(ex5); bk.CloseCon(); }
                     }
                     catch (Exception ex6)
-                    { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); Console.WriteLine(ex6); } //MessageBox.Show("Die Verbindung zur Datenbank konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                    { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); Console.WriteLine(ex6); }
                 }
-                else { this.ShowMessageAsync("Fehler", "Das Überstundenfeld enhält ungültige Zeichen."); } //MessageBox.Show("Das Überstundenfeld enhält ungültige Zeichen.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                else { this.ShowMessageAsync("Fehler", "Das Überstundenfeld enhält ungültige Zeichen."); }
             }
-            else { this.ShowMessageAsync("Fehler", "Es sind nicht alle Felder ausgefüllt."); } //MessageBox.Show("Bitte alle Felder ausfüllen.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+            else { this.ShowMessageAsync("Fehler", "Es sind nicht alle Felder ausgefüllt."); }
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)

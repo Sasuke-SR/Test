@@ -20,6 +20,7 @@ namespace Test
     public partial class Window9 : MetroWindow
     {
         private int bNr;
+        private bool aktiv;
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
         public Window9(int nr)
@@ -52,6 +53,7 @@ namespace Test
                 {
                     dr = bk.Select($"SELECT * FROM Bonus WHERE B_Nr = {bNr}");
                     dr.Read();
+                    aktiv = dr.GetBoolean(4);
                     tbBez.Text = dr.GetString(1);
                     tbBP.Text = dr.GetDouble(2).ToString();
                     if (dr.GetBoolean(4) == true)
@@ -61,9 +63,9 @@ namespace Test
                     checkMonat.SelectedIndex = dr.GetInt32(3) - 1;
                     bk.CloseCon();
                 }
-                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); } //MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error);
+                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); bk.CloseCon(); } //MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); } //MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error)
+            catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); bk.CloseCon();  } //MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error)
         }
 
         private void bMainWin_Click(object sender, RoutedEventArgs e)
@@ -78,7 +80,6 @@ namespace Test
 
         private void bSave_Click(object sender, RoutedEventArgs e)
         {
-            string _Error = "";
             if (!string.IsNullOrWhiteSpace(tbBez.Text) && !string.IsNullOrWhiteSpace(tbBP.Text))
             {
                 if (bk.IsAllowed(tbBP.Text, false, true, true, "%,."))
@@ -94,32 +95,60 @@ namespace Test
                                 if (cBStatus.IsChecked != false)
                                     _tmpb = true;
                                 else _tmpb = false;
-                                // Ob ein Aktiver Bonus Existiert
-                                dr = bk.Select($"SELECT * FROM Bonus WHERE B_Aktiv = true AND B_Monat = {checkMonat.SelectedIndex + 1}");
-                                dr.Read();
-                                try
+
+
+                                if (aktiv == true && cBStatus.IsChecked == false)
                                 {
-                                    if (dr.HasRows)
-                                    {
-                                        this.ShowMessageAsync("", "Es existiert bereits ein Bonus in diesem Monat;");
-                                    }
-                                    else
-                                    {
-                                        string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
-                                        bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text}',B_Zuschlag={_tmpBP},B_Monat={checkMonat.SelectedIndex + 1},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
-                                        MessageBox.Show("Dieser Bonus wurde erfolgreich geändert", "", MessageBoxButton.OK, MessageBoxImage.Error);
-                                        bk.CloseCon();
-                                        this.Close();
-                                    }
-                                    //if (dr.GetBoolean(4) == true)
-                                    //    BAktivE = true;
-                                    //else BAktivE = false;
+                                    string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
+                                    bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text.Trim()}',B_Zuschlag={_tmpBP},B_Monat={checkMonat.SelectedIndex + 1},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
+                                    this.ShowMessageAsync("", "Dieser Bonus wurde erfolgreich geändert.");
+                                    bk.CloseCon();
+                                    this.Close();
                                 }
-                                catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); bk.CloseCon(); }
+                                else if (aktiv == true && cBStatus.IsChecked == true)
+                                {
+                                    string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
+                                    bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text.Trim()}',B_Zuschlag={_tmpBP},B_Monat={checkMonat.SelectedIndex + 1},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
+                                    this.ShowMessageAsync("", "Dieser Bonus wurde erfolgreich geändert.");
+                                    bk.CloseCon();
+                                    this.Close();
+                                }
+                                else if (aktiv == false && cBStatus.IsChecked == true)
+                                {
+                                    // Ob ein Aktiver Bonus Existiert
+                                    dr = bk.Select($"SELECT * FROM Bonus WHERE B_Aktiv = true AND B_Monat = {checkMonat.SelectedIndex + 1}");
+                                    dr.Read();
+                                    try
+                                    {
+                                        if (dr.HasRows)
+                                        {
+                                            if (dr.GetInt32(0) != Convert.ToInt32(laNr.Content.ToString()))
+                                            { this.ShowMessageAsync("", "Es existiert bereits ein Bonus in diesem Monat;"); }
+                                            //else { //Alles ok!}
+                                        }
+                                        else
+                                        {
+                                            string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
+                                            bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text.Trim()}',B_Zuschlag={_tmpBP},B_Monat={checkMonat.SelectedIndex + 1},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
+                                            this.ShowMessageAsync("", "Dieser Bonus wurde erfolgreich geändert.");
+                                            bk.CloseCon();
+                                            this.Close();
+                                        }
+                                    }
+                                    catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetreten."); bk.CloseCon(); }
+                                }
+                                else
+                                {
+                                    string _tmpBP = tbBP.Text.Replace(',', '.').Replace("%", "").Trim();
+                                    bk.Update($"UPDATE Bonus SET B_Bez='{tbBez.Text.Trim()}',B_Zuschlag={_tmpBP},B_Monat={checkMonat.SelectedIndex + 1},B_Aktiv={_tmpb} WHERE B_Nr = {bNr}");
+                                    this.ShowMessageAsync("", "Dieser Bonus wurde erfolgreich geändert.");
+                                    bk.CloseCon();
+                                    this.Close();
+                                }
                             }
-                            catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetretten."); }
+                            catch { this.ShowMessageAsync("Fehler", "Es ist ein Fehler aufgetretten."); bk.CloseCon(); }
                         }
-                        catch { this.ShowMessageAsync("Fehler", "Die Verbindungzur Datenbank konnte nicht hergestellt werden."); }
+                        catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); bk.CloseCon(); }
                     }
                     else { this.ShowMessageAsync("Fehler", "Es muss ein Monat ausgewählt werden."); }
                 }

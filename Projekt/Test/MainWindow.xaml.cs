@@ -28,6 +28,8 @@ namespace Test
         Basisklasse bk = new Basisklasse();
         OleDbDataReader dr;
         OleDbDataReader dr1;
+        OleDbDataReader dr2;
+        OleDbDataReader dr3;
 
         #region Public Klassen
         public class Personal
@@ -44,9 +46,86 @@ namespace Test
             public int aNr {get;set;}
             public string aName { get; set; }
         }
+
+        public class Lohnabrechnung
+        {
+            public string laDatum { get; set; }
+            public int laNr { get; set; }
+            public string laPerson { get; set; }
+            public string laBrutto { get; set; }
+            public string laEndlohn { get; set; }
+        }
+
+        public class UStunden
+        {
+            public string uDatum { get; set; }
+            public string uGruppe { get; set; }
+            public int uStd { get; set; }
+            public string uPersonal { get; set; }
+            public string uGesamt { get; set; }
+        }
         #endregion
 
         #region ListView's
+        private void uListView_Load()
+        {
+            dr = bk.Select("SELECT * FROM UStunden2 ORDER BY US2_Datum ASC");
+            List<UStunden> US = new List<UStunden>();
+            try
+            {
+                while (dr.Read())
+                {
+                    dr2 = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {dr.GetInt32(1)}"); dr2.Read();
+                    dr3 = bk.Select($"SELECT * FROM Personal WHERE P_Abrech_Nr = {dr.GetInt32(3)}"); dr3.Read();
+                    DateTime datum = dr.GetDateTime(0);
+                    double gesamt = Convert.ToDouble(dr.GetInt32(2)) * dr.GetDouble(4);
+                    US.Add(new UStunden() { uDatum = datum.ToString("dd/MM/yyyy"), uGruppe = dr2.GetString(1), uStd = dr.GetInt32(1), uPersonal = $"{dr3.GetInt32(0).ToString()} - {dr3.GetString(2)}, {dr3.GetString(1)}", uGesamt = gesamt.ToString("C")});
+                }
+            }
+            catch(Exception a) { throw a; }
+            list2.ItemsSource = US;
+        }
+
+        private void laListView_Load()
+        {
+            dr = bk.Select("SELECT * FROM Abrechnung_Datum ORDER BY Ab_Datum ASC");
+            List<Lohnabrechnung> LA = new List<Lohnabrechnung>();
+            try
+            {
+                while (dr.Read())
+                {
+                    if (dr.HasRows)
+                    {
+                        dr1 = bk.Select($"SELECT * FROM Personal WHERE P_Abrech_Nr = {dr.GetInt32(3)}");
+                        dr2 = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {dr.GetInt32(4)}");
+                        dr1.Read(); dr2.Read();
+                        double brutto = Convert.ToDouble(dr.GetInt32(1)) * dr2.GetDouble(2); Console.WriteLine(brutto);
+                        double endlohn = 0; double uSumme = 0; double pSatz = 0;
+                        dr2.Close();
+                        dr2 = bk.Select($"SELECT * FROM Bonus WHERE B_Nr = {dr.GetInt32(2)}"); dr2.Read(); pSatz = dr2.GetDouble(2); dr2.Close();
+                        //Endlohn -> Rechnung -> Anfang
+                        DateTime datum = dr.GetDateTime(0);
+                        dr2 = bk.Select($"SELECT * FROM UStunden2 WHERE YEAR(US2_Datum) = '{datum.Year}' AND MONTH(US2_Datum) = '{datum.Month}' AND US2_Abrech_Nr = {dr.GetInt32(3)}");
+                        while (dr2.Read())
+                        {
+                            if (dr2.HasRows)
+                            {
+                                uSumme += dr2.GetDouble(4) * Convert.ToDouble(dr2.GetInt32(2));
+                                Console.WriteLine(uSumme);
+                            }
+                            else uSumme += 0;
+                        }
+                        double BSumme = (brutto / 100) * pSatz; double bGesamt = brutto + BSumme;
+                        endlohn = uSumme + bGesamt;
+                        //Endlohn -> Rechnung -> Ende
+                        LA.Add(new Lohnabrechnung() { laDatum = dr.GetDateTime(0).ToString("dd/MM/yyyy"), laNr = dr.GetInt32(3), laPerson = dr1.GetString(2) + ", " + dr1.GetString(1), laBrutto = brutto.ToString("C"), laEndlohn = endlohn.ToString("C") });
+                    }
+                }
+            }
+            catch (Exception a) { throw a; }
+            list.ItemsSource = LA;
+        }
+
         private void pListView_Load()
         {
             dr = bk.Select("SELECT * FROM Personal");
@@ -127,6 +206,18 @@ namespace Test
         {
             Window2 nAbrechnung = new Window2();
             nAbrechnung.ShowDialog();
+            try
+            {
+                bk.Connection();
+                try
+                {
+                    laListView_Load();
+                    uListView_Load();
+                    bk.CloseCon();
+                }
+                catch(Exception a) { throw a; }
+            }
+            catch(Exception a) { throw a; }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -137,10 +228,11 @@ namespace Test
                 try
                 {
                     pListView_Load();
+                    laListView_Load();
+                    uListView_Load();
                     bk.CloseCon();
                 }
-                catch
-                { MessageBox.Show("Die Listen konnten nicht geladen werden.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+                catch { this.ShowMessageAsync("Fehler", "Die Listen konnten nicht geladen werden"); bk.CloseCon(); }
             }
             catch { this.ShowMessageAsync("Titel", "Die Liste konnte nicht geldaden werden."); /*MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error);*/ }
         }
@@ -287,6 +379,8 @@ namespace Test
                     try
                     {
                         pListView_Load();
+                        uListView_Load();
+                        laListView_Load();
                         bk.CloseCon();
                     }
                     catch { MessageBox.Show("Die ListView konnte nicht geladen werden", ""); bk.CloseCon(); }
