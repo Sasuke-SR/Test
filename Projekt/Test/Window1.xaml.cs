@@ -22,8 +22,8 @@ namespace Test
     /// </summary>
     public partial class Window1 : MetroWindow
     {
-        private string abDatum;
-        private int abrechNr;
+        string abDatum;
+        int abrechNr;
         OleDbDataReader dr;
         Basisklasse bk = new Basisklasse();
         List<UStunden> items = new List<UStunden>();
@@ -55,7 +55,8 @@ namespace Test
                 bk.Connection();
                 try
                 {
-                    dr = bk.Select($"SELECT * FROM Abrechnung_Datum WHERE Ab_Datum = '{abDatum}' AND Ab_Abrech_Nr = {abrechNr}");
+                    DateTime dp = DateTime.Parse(abDatum);
+                    dr = bk.Select($"SELECT * FROM Abrechnung_Datum WHERE DAY(Ab_Datum) = {dp.Day} AND Month(Ab_Datum) = {dp.Month} AND YEAR(Ab_Datum) = {dp.Year} AND Ab_Abrech_Nr = {abrechNr}");
                     dr.Read();
                     if (dr.HasRows)
                     {
@@ -114,5 +115,7 @@ namespace Test
             }
             catch(Exception a) { bk.CloseCon(); throw a; }
         }
+
+        private void bHaupt_Click_1(object sender, RoutedEventArgs e) => this.Close();
     }
 }

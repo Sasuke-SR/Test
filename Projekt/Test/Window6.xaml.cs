@@ -85,7 +85,7 @@ namespace Test
                             try
                             {
                                 bk.Insert($"INSERT INTO UStunden (US_Bez, US_Betrag) VALUES ('{tbUeBez.Text.Trim()}', {tbUeBet.Text.Replace(',', '.').Replace("€", "").Trim()});");
-                                this.ShowMessageAsync("Fehler", "Die Überstundengruppe wurde erfolgreich erstellt.");
+                                this.ShowMessageAsync("Erfolgreich", "Die Überstundengruppe wurde erfolgreich erstellt.");
                                 //MessageBox.Show("Die Überstundengruppe wurde erfolgreich erstellt.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                                 try
                                 {

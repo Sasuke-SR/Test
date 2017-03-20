@@ -102,11 +102,7 @@
                     </Border>
                 </StackPanel>
             </StackPanel>
-            <StackPanel Grid.Row="1" Margin="0,15,0,0">
-                <Label Content="Suche:" FontSize="15" Foreground="White"/>
-                <TextBox x:Name="tbSuche" Height="15" TextChanged="tbSuche_TextChanged" Width="200" BorderBrush="Black" BorderThickness="1"/>
-                <ComboBox x:Name="cbSuche" Height="23" SelectionChanged="cbSuche_SelectionChanged" Margin="0,4,0,0" Width="200" BorderBrush="Black" BorderThickness="1"/>
-            </StackPanel>
+            <StackPanel Grid.Row="1" Margin="0,15,0,0"/>
         </Grid>
     </Grid>
 </Controls:MetroWindow>

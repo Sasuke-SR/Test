@@ -78,7 +78,7 @@
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="4" Margin="0,0,0,5">
             <StackPanel Orientation="Horizontal" Margin="5">
                 <Label Content="Arbeitsstunden:" FontSize="12" Foreground="White"/>
-                <TextBox x:Name="tbAstd" Margin="58,0,0,0" Height="15" Width="120" FontSize="11" BorderThickness="1" BorderBrush="Black" PreviewTextInput="tbAstd_PreviewTextInput" TextChanged="tbAstd_TextChanged"/>
+                <TextBox x:Name="tbAstd" Margin="58,0,0,0" Height="15" Width="120" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
             </StackPanel>
         </Border>
         <Border BorderBrush="Black" BorderThickness="1px" Grid.Row="5" Margin="0,0,0,5">
@@ -129,17 +129,17 @@
                 <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,0,0,2">
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Summe der Regelarbeitsstunden:" Foreground="White"/>
-                        <TextBox x:Name="tbRaStdSum" Height="15" Width="100" Margin="40,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbRaStdSum_TextChanged" IsReadOnly="True"/>
+                        <TextBox x:Name="tbRaStdSum" Height="15" Width="100" Margin="40,0,0,0" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label FontSize="12" Content="Summe der Überstundenvergütung:" Foreground="White"/>
-                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="15" Margin="25,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbUeStdSum2_TextChanged" IsReadOnly="True"/>
+                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="15" Margin="25,0,0,0" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Brutto Gesamt:" FontSize="12" Foreground="White"/>
-                        <TextBox x:Name="tbBrutto" Height="15" Width="100" Margin="35,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" TextChanged="tbBrutto_TextChanged" IsReadOnly="True"/>
+                        <TextBox x:Name="tbBrutto" Height="15" Width="100" Margin="35,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label Content="Bonus" FontSize="12" Foreground="White"/>
