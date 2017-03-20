@@ -21,7 +21,7 @@
         </Grid.ColumnDefinitions>
         <TabControl Width="700" SelectionChanged="TabControl_SelectionChanged">
             <TabItem x:Name="tcLohnabrechnung" Header="Lohnabrechnungen">
-                <ListView x:Name="list" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0">
+                <ListView x:Name="list" Margin="5" Width="Auto" Height="Auto" BorderThickness="1" BorderBrush="Black" Grid.Column="0" SelectionChanged="list_SelectionChanged">
                     <ListView.View>
                         <GridView>
                             <GridViewColumn Header="Datum" Width="100" DisplayMemberBinding="{Binding laDatum}"/>

@@ -388,5 +388,16 @@ namespace Test
                 catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden", ""); }
             }
         }
+
+        private void list_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (list.SelectedItem != null)
+            {
+                string _tmp = ""; string _tmp2 = "";
+                foreach (Lohnabrechnung item in list.SelectedItems) { _tmp = item.laNr.ToString(); _tmp2 = item.laDatum.ToString(); }
+                Window1 laAnsehen = new Window1(int.Parse(_tmp), _tmp2);
+                laAnsehen.ShowDialog();
+            }
+        }
     }
 }

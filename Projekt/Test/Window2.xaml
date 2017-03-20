@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Neue Lohnabrechnung" Height="830" Width="770" Background="{StaticResource WindowBackground}" Loaded="Window_Loaded" BorderThickness="1" BorderBrush="Black" ResizeMode="CanMinimize">
+        Title="Neue Lohnabrechnung" Height="800" Width="770" Background="{StaticResource WindowBackground}" Loaded="Window_Loaded" BorderThickness="1" BorderBrush="Black" ResizeMode="CanMinimize">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
@@ -139,26 +139,26 @@
                 <StackPanel Orientation="Vertical" Grid.Column="0" Margin="0,0,0,2">
                     <StackPanel Orientation="Horizontal">
                         <Label FontSize="12" Content="Summe der Regelarbeitsstunden:" Foreground="White"/>
-                        <TextBox x:Name="tbRaStdSum" Height="15" Width="100" Margin="40,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbRaStdSum_TextChanged"/>
+                        <TextBox x:Name="tbRaStdSum" Height="15" Width="100" Margin="40,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbRaStdSum_TextChanged" IsReadOnly="True"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label FontSize="12" Content="Summe der Überstundenvergütung:" Foreground="White"/>
-                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="15" Margin="25,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbUeStdSum2_TextChanged"/>
+                        <TextBox x:Name="tbUeStdSum2" Width="100" Height="15" Margin="25,0,0,0" BorderThickness="1" BorderBrush="Black" TextChanged="tbUeStdSum2_TextChanged" IsReadOnly="True"/>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Grid.Column="1" Margin="10,0,0,0">
                     <StackPanel Orientation="Horizontal">
                         <Label Content="Brutto Gesamt:" FontSize="12" Foreground="White"/>
-                        <TextBox x:Name="tbBrutto" Height="15" Width="100" Margin="35,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" TextChanged="tbBrutto_TextChanged"/>
+                        <TextBox x:Name="tbBrutto" Height="15" Width="100" Margin="35,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" TextChanged="tbBrutto_TextChanged" IsReadOnly="True"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label Content="Bonus" FontSize="12" Foreground="White"/>
-                        <TextBox x:Name="tbBonusSum" Height="15" Width="100" Margin="81,0,10,0" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
-                        <TextBox x:Name="tbBonusText" Height="15" Width="150" FontSize="12" BorderThickness="1" BorderBrush="Black"/>
+                        <TextBox x:Name="tbBonusSum" Height="15" Width="100" Margin="81,0,10,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
+                        <TextBox x:Name="tbBonusText" Height="15" Width="150" FontSize="12" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
                         <Label Content="Endlohnung:" FontSize="12" Foreground="White"/>
-                        <TextBox x:Name="tbEndLohn" Height="15" Width="100" Margin="47,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black"/>
+                        <TextBox x:Name="tbEndLohn" Height="15" Width="100" Margin="47,0,0,0" FontSize="11" BorderThickness="1" BorderBrush="Black" IsReadOnly="True"/>
                     </StackPanel>
                 </StackPanel>
             </Grid>

@@ -82,7 +82,7 @@ namespace Test
         public void Load_ComboBox()
         {
             // Personal wird geladen
-            dr = bk.Select("SELECT * FROM Personal");
+            dr = bk.Select("SELECT * FROM Personal WHERE P_Deaktiviert = 0");
             string _tmp = "";
             while (dr.Read())
             {
