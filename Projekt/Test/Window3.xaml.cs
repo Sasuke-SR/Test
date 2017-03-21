@@ -36,7 +36,6 @@ namespace Test
 
         private void listView_Load()
         {
-            lvLg.Items.Clear();
             if (Properties.Settings.Default.Setting == false) { dr = bk.Select("SELECT * FROM Lohngruppen WHERE L_Deaktiviert = false"); }
             else { dr = bk.Select("SELECT * FROM Lohngruppen"); }
             List<Lohngruppe> items = new List<Lohngruppe>();
@@ -48,7 +47,6 @@ namespace Test
                 items.Add(new Lohngruppe() { nr = dr.GetInt32(0), bez = dr.GetString(1), betrag = _tmp2, status = _tmp });
             }
             lvLg.ItemsSource = items;
-            lvLg.Items.Refresh();
         }
 
         public class Lohngruppe
@@ -153,7 +151,6 @@ namespace Test
                         {
                             bk.Update($"UPDATE Lohngruppen SET L_Deaktiviert = true WHERE L_Nr = {lNr}");
                             this.ShowMessageAsync("Erfolgreich", "Die Lohngruppe wurde erfolgreich Aktiviert");
-                            lvLg.ItemsSource = null;
                             listView_Load();
                             bk.CloseCon();
                         }
@@ -182,9 +179,7 @@ namespace Test
                         {
                             bk.Update($"UPDATE Lohngruppen SET L_Deaktiviert = false WHERE L_Nr = {lNr}");
                             this.ShowMessageAsync("Erfolgreich", "Die Lohngruppe wurde erfolgreich Aktiviert");
-                            lvLg.ItemsSource = null;
                             listView_Load();
-                            lvLg.Items.Refresh();
                             bk.CloseCon();
                         }
                         catch (Exception a) { bk.CloseCon(); throw a; }
@@ -194,6 +189,29 @@ namespace Test
                 else this.ShowMessageAsync("Fehler", "Diese Lohngruppe ist schon bereits Aktiv");
             }
             else this.ShowMessageAsync("Fehler", "Sie haben keine Lohngruppe ausgewählt");
+        }
+
+        private void lvLg_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lvLg.SelectedItem != null)
+            {
+                int nr = 0; string bez = ""; double bet = 0;
+                foreach (Lohngruppe item in lvLg.SelectedItems) { nr = item.nr; bez = item.bez; bet = double.Parse(item.betrag.Replace("€", "").Trim()); }
+                Window13 usr = new Window13(nr, bez, bet);
+                usr.ShowDialog();
+                System.Threading.Thread.Sleep(500);
+                try
+                {
+                    bk.Connection();
+                    try
+                    {
+                        listView_Load();
+                        bk.CloseCon();
+                    }
+                    catch (Exception a) { throw a; }
+                }
+                catch (Exception a) { throw a; }
+            }
         }
     }
 }

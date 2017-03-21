@@ -49,7 +49,7 @@
             </StackPanel>
         </Border>
         <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1">
-            <ListView x:Name="lvLg" Width="Auto" Height="200">
+            <ListView x:Name="lvLg" Width="Auto" Height="200" MouseDoubleClick="lvLg_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Nr" Width="50" DisplayMemberBinding="{Binding nr}"/>

@@ -44,6 +44,7 @@ namespace Test
                         {
                             bk.Update($"UPDATE Abteilung SET Abt_Bez = '{tbAb.Text.Trim()}' WHERE Abt_Nr = {ID}");
                             this.ShowMessageAsync("Erfolgreich","Die Abteilung wurde erfolgreich geändert.");
+                            //bk.CloseCon();
                             this.Close();
                         }
                         catch(Exception a) { bk.CloseCon(); throw a; }
