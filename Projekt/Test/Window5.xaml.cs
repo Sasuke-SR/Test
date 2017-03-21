@@ -107,9 +107,10 @@ namespace Test
                     if (bk.IsAllowed(tbName.Text.Trim(), true, false, true, "'.") && bk.IsAllowed(tbNName.Text.Trim(), true, false, true, "'."))
                     {
                         //Erstellung
-                        string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr, P_Abrech_Nr) VALUES ('{0}', '{1}', {2}, {3}, {4})"
-                                                        , tbName.Text.Trim(), tbNName.Text.Trim(), tbAbtNr.Text, tbLgNr.Text, lAbrNr.Content.ToString());
-                        bk.Insert(_tmpQuery);
+                        //string _tmpQuery = string.Format("Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr, P_Abrech_Nr) VALUES ('{0}', '{1}', {2}, {3}, {4})"
+                        //                               , tbName.Text.Trim(), tbNName.Text.Trim(), tbAbtNr.Text, tbLgNr.Text, lAbrNr.Content.ToString());
+                        string s = tbName.Text.Trim(); string v = tbNName.Text.Trim();
+                        bk.Insert($"Insert INTO Personal (P_VName, P_NName, P_Abteilungs_Nr, P_Lohngruppen_Nr, P_Abrech_Nr) VALUES ( '{s}', '{v}', {tbAbtNr.Text}, {tbLgNr.Text}, {lAbrNr.Content.ToString()})");
                         this.ShowMessageAsync("", $"Die Person {tbNName.Text.Trim()}, {tbName.Text.Trim()} wurde erstellt.");
                         bk.CloseCon();
                         // Neuladen der Maske

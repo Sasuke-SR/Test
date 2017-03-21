@@ -38,7 +38,7 @@ namespace Test
                 {
                     if (bk.IsAllowed(tbUSName.Text, true, true, false, "-") != false)
                     {
-                        if (bk.IsAllowed(tbUSBetrag.Text, false, true, false, "€,.") != false)
+                        if (bk.IsAllowed(tbUSBetrag.Text, false, true, true, "€,.") != false)
                         {
                             try
                             {
