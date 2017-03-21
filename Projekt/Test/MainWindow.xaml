@@ -6,11 +6,11 @@
         xmlns:local="clr-namespace:Test"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
         mc:Ignorable="d"
-        Title="Lohnabrechnung Verwaltungs - System" Height="Auto" Width="Auto" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
+        Title="Lohnabrechnung Verwaltungs - System" WindowStartupLocation="CenterScreen" Height="Auto" Width="Auto" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
     <Controls:MetroWindow.RightWindowCommands>
         <Controls:WindowCommands>
             <Controls:WindowCommands>
-                <Button Content="settings" />
+                <Button Content="settings" Click="Button_Click_7" />
             </Controls:WindowCommands>
         </Controls:WindowCommands>
     </Controls:MetroWindow.RightWindowCommands>
@@ -72,23 +72,23 @@
                     </Border>
                 </StackPanel>
                 <StackPanel Margin="0,5,0,0">
-                    <Border BorderBrush="Black" BorderThickness="1">
-                        <Button Width="200" Height="30" FontSize="12" Content="Abteilung erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_2" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
-                    </Border>
-                </StackPanel>
-                <StackPanel>
-                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
-                        <Button Width="200" Height="30" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Lohngruppe erstellen" Click="Button_Click_1" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
-                    </Border>
-                </StackPanel>
-                <StackPanel Margin="0,5,0,0">
                     <Border BorderThickness="1" BorderBrush="Black">
                         <Button Width="200" Height="30" FontSize="12" Content="Personal erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_3" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
                     </Border>
                 </StackPanel>
                 <StackPanel Margin="0,5,0,0">
+                    <Border BorderBrush="Black" BorderThickness="1">
+                        <Button Width="200" Height="30" FontSize="12" Content="Abteilung" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_2" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel>
+                    <Border BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
+                        <Button Width="200" Height="30" FontSize="12" VerticalAlignment="Center" HorizontalAlignment="Center" Content="Lohngruppen" Click="Button_Click_1" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
+                    </Border>
+                </StackPanel>
+                <StackPanel Margin="0,5,0,0">
                     <Border BorderThickness="1" BorderBrush="Black">
-                        <Button Width="200" Height="30" FontSize="12" Content="Überstundengruppen erstellen" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_4" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
+                        <Button Width="200" Height="30" FontSize="12" Content="Überstundengruppen" VerticalAlignment="Center" HorizontalAlignment="Center" Click="Button_Click_4" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
                     </Border>
                 </StackPanel>
                 <!-- <StackPanel Margin="0,5,0,0">
@@ -98,7 +98,7 @@
                 </StackPanel> -->
                 <StackPanel Margin="0,5,0,0">
                     <Border BorderThickness="1" BorderBrush="Black">
-                        <Button Width="200" Height="30" FontSize="12" Content="Bonus erstellen" VerticalAlignment="Center" HorizontalAlignment="Center"  Click="Button_Click_6" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
+                        <Button Width="200" Height="30" FontSize="12" Content="Bonus" VerticalAlignment="Center" HorizontalAlignment="Center"  Click="Button_Click_6" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
                     </Border>
                 </StackPanel>
             </StackPanel>

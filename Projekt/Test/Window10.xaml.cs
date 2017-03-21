@@ -45,37 +45,53 @@ namespace Test
                 try
                 {
                     // ComboBoxen füllen
-                    dr = bk.Select("SELECT * FROM Abteilung");
+                    dr = bk.Select("SELECT * FROM Abteilung WHERE Abt_Deaktiviert = false");
                     while (dr.Read())
                     { cbAb.Items.Add(dr.GetInt32(0).ToString() + " - " + dr.GetString(1)); }
+                    dr.Close();
 
-                    dr = bk.Select("SELECT * FROM Lohngruppen");
+                    dr = bk.Select("SELECT * FROM Lohngruppen WHERE L_Deaktiviert = false");
                     while (dr.Read())
                     { cbLG.Items.Add(dr.GetInt32(0).ToString() + " - " + dr.GetString(1)); }
+                    dr.Close();
                     // Boxen füllen
                     dr = bk.Select($"SELECT * FROM Personal WHERE P_Nr = {_Nr}");
-                    while (dr.Read())
-                    {
-                        OleDbDataReader dr1; OleDbDataReader dr2;
-                        if (dr.GetInt32(4) < 10) { abrechNR.Content = "00" + dr.GetInt32(6).ToString(); }
-                        else if (dr.GetInt32(4) > 10 && dr.GetInt32(4) < 100) { abrechNR.Content = "0" + dr.GetInt32(6).ToString(); }
+                    dr.Read();
 
-                        dr1 = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {dr.GetInt32(4)}"); dr1.Read();
-                        cbLG.SelectedItem = $"{dr.GetInt32(4)} - {dr1.GetString(1)}";
+                    OleDbDataReader dr1; OleDbDataReader dr2; int zahl = 0; // 1 ist Lohngruppe - 2 ist Abteilung - 3 ist beides
+                    if (dr.GetInt32(4) < 10) { abrechNR.Content = "00" + dr.GetInt32(6).ToString(); }
+                    else if (dr.GetInt32(4) > 10 && dr.GetInt32(4) < 100) { abrechNR.Content = "0" + dr.GetInt32(6).ToString(); }
 
-                        dr2 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}"); dr2.Read();
-                        cbAb.SelectedItem = $"{dr.GetInt32(3)} - {dr2.GetString(1)}";
+                    dr1 = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {dr.GetInt32(4)} AND L_Deaktiviert = false");
+                    dr1.Read();
+                    if (dr1.HasRows) { cbLG.SelectedItem = $"{dr.GetInt32(4)} - {dr1.GetString(1)}"; }
+                    else { zahl += 1; cbLG.SelectedIndex = -1; }
 
-                        tbNName.Text = dr.GetString(2);  tbVName.Text = dr.GetString(1);
-                        if (dr.GetBoolean(5) == true)  CheckFired.IsChecked = true;
+                    dr2 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {dr.GetInt32(3)} AND Abt_Deaktiviert = false");
+                    dr2.Read();
+                    if (dr2.HasRows) { cbAb.SelectedItem = $"{dr.GetInt32(3)} - {dr2.GetString(1)}"; }
+                    else { zahl += 2; cbAb.SelectedIndex = -1; }
 
-                        dr1.Close(); dr2.Close();
-                    }
+                    tbNName.Text = dr.GetString(2); tbVName.Text = dr.GetString(1);
+                    if (dr.GetBoolean(5) == true) CheckFired.IsChecked = true;
+
+                    dr1.Close(); dr2.Close();
                     bk.CloseCon();
+
+                    //Fehler Meldung aufgrund der Inaktiven Gruppierung
+                    if (zahl == 1)
+                    { this.ShowMessageAsync("Fehler", "Die Lohngruppe dieser Person ist nicht mehr Aktiv\n Bitte weisen Sie der Person eine neue Lohngruppe zu"); }
+                    else if (zahl == 2)
+                    { this.ShowMessageAsync("Fehler", "Die Abteilung dieser Person ist nicht mehr Aktiv\n Bitte weisen Sie der Person eine neue Abteilung zu"); }
+                    else if (zahl == 3)
+                    { this.ShowMessageAsync("Fehler", "Die Abteilung und Lohngruppe dieser Person ist nicht mehr Aktiv\n Bitte weisen Sie der Person eine neue Abteilung sowie eine neue Lohnegruppe zu"); }
+
                 }
                 catch { this.ShowMessageAsync("", "Es ist ein Fehler aufgetretetn."); bk.CloseCon(); }
+                //catch (Exception a) { bk.CloseCon(); throw a; }
             }
             catch { this.ShowMessageAsync("", "Die Verbindung konnte nicht geöffnet werden."); bk.CloseCon(); }
+            //catch (Exception a) { bk.CloseCon(); throw a; }
         }
 
         private void bSave_Click(object sender, RoutedEventArgs e)

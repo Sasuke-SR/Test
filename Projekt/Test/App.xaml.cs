@@ -8,6 +8,7 @@ using System.Windows;
 
 namespace Test
 {
+
     /// <summary>
     /// Interaktionslogik für "App.xaml"
     /// </summary>

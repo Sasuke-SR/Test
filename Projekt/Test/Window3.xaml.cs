@@ -36,14 +36,19 @@ namespace Test
 
         private void listView_Load()
         {
-            dr = bk.Select("SELECT * FROM Lohngruppen");
+            lvLg.Items.Clear();
+            if (Properties.Settings.Default.Setting == false) { dr = bk.Select("SELECT * FROM Lohngruppen WHERE L_Deaktiviert = false"); }
+            else { dr = bk.Select("SELECT * FROM Lohngruppen"); }
             List<Lohngruppe> items = new List<Lohngruppe>();
             while (dr.Read())
             {
-                string _tmp = string.Format("{0}" + " €", dr.GetDouble(2));
-                items.Add(new Lohngruppe() { nr = dr.GetInt32(0), bez = dr.GetString(1), betrag = _tmp });
+                string _tmp = "";
+                if (dr.GetBoolean(3) == true) { _tmp = "Deaktiviert"; } else { _tmp = "Aktiviert"; }
+                string _tmp2 = string.Format("{0}" + " €", dr.GetDouble(2));
+                items.Add(new Lohngruppe() { nr = dr.GetInt32(0), bez = dr.GetString(1), betrag = _tmp2, status = _tmp });
             }
             lvLg.ItemsSource = items;
+            lvLg.Items.Refresh();
         }
 
         public class Lohngruppe
@@ -51,6 +56,7 @@ namespace Test
             public int nr { get; set; }
             public string bez { get; set; }
             public string betrag { get; set; }
+            public string status { get; set; }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -129,6 +135,65 @@ namespace Test
                 catch { this.ShowMessageAsync("Fehler", "");bk.CloseCon(); }
             }
             catch { this.ShowMessageAsync("Fehler", "Die Verbindung zur Datenbank konnte nicht hergestellt werden."); }
+        }
+
+        private void bDeaktiv_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvLg.SelectedItem != null)
+            {
+                int lNr = 0; string _tmp = "";
+                foreach (Lohngruppe item in lvLg.SelectedItems)
+                { lNr = item.nr; _tmp = item.status.ToString().Trim(); }
+                if (_tmp != "Deaktiviert")
+                {
+                    try
+                    {
+                        bk.Connection();
+                        try
+                        {
+                            bk.Update($"UPDATE Lohngruppen SET L_Deaktiviert = true WHERE L_Nr = {lNr}");
+                            this.ShowMessageAsync("Erfolgreich", "Die Lohngruppe wurde erfolgreich Aktiviert");
+                            lvLg.ItemsSource = null;
+                            listView_Load();
+                            bk.CloseCon();
+                        }
+                        catch (Exception a) { bk.CloseCon(); throw a; }
+                    }
+                    catch (Exception a) { bk.CloseCon(); throw a; }
+                }
+                else this.ShowMessageAsync("Fehler", "Diese Lohngruppe ist schon bereits Deaktiviert");
+            }
+            else this.ShowMessageAsync("Fehler", "Sie haben keine Lohngruppe ausgewählt");
+        }
+
+        private void bAktiv_Click(object sender, RoutedEventArgs e)
+        {
+            if (lvLg.SelectedItem != null)
+            {
+                int lNr = 0; string _tmp = "";
+                foreach (Lohngruppe item in lvLg.SelectedItems)
+                { lNr = item.nr; _tmp = item.status.ToString().Trim(); }
+                if (_tmp != "Aktiviert")
+                {
+                    try
+                    {
+                        bk.Connection();
+                        try
+                        {
+                            bk.Update($"UPDATE Lohngruppen SET L_Deaktiviert = false WHERE L_Nr = {lNr}");
+                            this.ShowMessageAsync("Erfolgreich", "Die Lohngruppe wurde erfolgreich Aktiviert");
+                            lvLg.ItemsSource = null;
+                            listView_Load();
+                            lvLg.Items.Refresh();
+                            bk.CloseCon();
+                        }
+                        catch (Exception a) { bk.CloseCon(); throw a; }
+                    }
+                    catch (Exception a) { bk.CloseCon(); throw a; }
+                }
+                else this.ShowMessageAsync("Fehler", "Diese Lohngruppe ist schon bereits Aktiv");
+            }
+            else this.ShowMessageAsync("Fehler", "Sie haben keine Lohngruppe ausgewählt");
         }
     }
 }

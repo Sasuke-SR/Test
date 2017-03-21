@@ -43,7 +43,7 @@ namespace Test
 
         public class Abteilungen
         {
-            public int aNr {get;set;}
+            public int aNr { get; set; }
             public string aName { get; set; }
         }
 
@@ -79,10 +79,10 @@ namespace Test
                     dr3 = bk.Select($"SELECT * FROM Personal WHERE P_Abrech_Nr = {dr.GetInt32(3)}"); dr3.Read();
                     DateTime datum = dr.GetDateTime(0);
                     double gesamt = Convert.ToDouble(dr.GetInt32(2)) * dr.GetDouble(4);
-                    US.Add(new UStunden() { uDatum = datum.ToString("dd/MM/yyyy"), uGruppe = dr2.GetString(1), uStd = dr.GetInt32(1), uPersonal = $"{dr3.GetInt32(0).ToString()} - {dr3.GetString(2)}, {dr3.GetString(1)}", uGesamt = gesamt.ToString("C")});
+                    US.Add(new UStunden() { uDatum = datum.ToString("dd/MM/yyyy"), uGruppe = dr2.GetString(1), uStd = dr.GetInt32(1), uPersonal = $"{dr3.GetInt32(0).ToString()} - {dr3.GetString(2)}, {dr3.GetString(1)}", uGesamt = gesamt.ToString("C") });
                 }
             }
-            catch(Exception a) { throw a; }
+            catch (Exception a) { throw a; }
             list2.ItemsSource = US;
         }
 
@@ -128,7 +128,8 @@ namespace Test
 
         private void pListView_Load()
         {
-            dr = bk.Select("SELECT * FROM Personal");
+            if (Properties.Settings.Default.Setting == true) { dr = bk.Select("SELECT * FROM Personal");}
+            else { dr = bk.Select("SELECT * FROM Personal WHERE P_Deaktiviert = false"); }
             List<Personal> items = new List<Personal>();
             try
             {
@@ -145,6 +146,7 @@ namespace Test
             list3.ItemsSource = items;
         }
         #endregion
+
 
         public MainWindow()
         {
@@ -164,9 +166,9 @@ namespace Test
                     uListView_Load();
                     bk.CloseCon();
                 }
-                catch(Exception a) { bk.CloseCon(); throw a; }
+                catch (Exception a) { bk.CloseCon(); throw a; }
             }
-            catch(Exception a) { bk.CloseCon(); throw a; }
+            catch (Exception a) { bk.CloseCon(); throw a; }
         }
 
         private void Window_Loaded(object sender, RoutedEventArgs e)
@@ -195,7 +197,7 @@ namespace Test
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
             Window4 nAbteilung = new Window4();
-            nAbteilung.ShowDialog(); 
+            nAbteilung.ShowDialog();
         }
 
         private void Button_Click_3(object sender, RoutedEventArgs e)
@@ -206,7 +208,7 @@ namespace Test
             {
                 bk.Connection();
                 try { pListView_Load(); bk.CloseCon(); }
-                catch { MessageBox.Show("Es ist ein Fehler aufgetreten.","",MessageBoxButton.OK,MessageBoxImage.Error); bk.CloseCon(); }
+                catch { MessageBox.Show("Es ist ein Fehler aufgetreten.", "", MessageBoxButton.OK, MessageBoxImage.Error); bk.CloseCon(); }
             }
             catch { MessageBox.Show("Die Verbindung konnte nicht hergestellt werden.", "", MessageBoxButton.OK, MessageBoxImage.Error); }
         }
@@ -224,7 +226,7 @@ namespace Test
         }
 
         private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {}
+        { }
 
         private void Button_Click_6(object sender, RoutedEventArgs e)
         {
@@ -265,6 +267,31 @@ namespace Test
                 Window1 laAnsehen = new Window1(int.Parse(_tmp), _tmp2);
                 laAnsehen.ShowDialog();
                 list.SelectedItem = null;
+            }
+        }
+
+        private void Button_Click_7(object sender, RoutedEventArgs e)
+        {
+            Window11 settings = new Window11();
+            settings.ShowDialog();
+            try
+            {
+                bk.Connection();
+                try {pListView_Load(); bk.CloseCon(); }
+                catch(Exception a) { bk.CloseCon(); throw a; }
+            }
+            catch(Exception a) { bk.CloseCon(); throw a; }
+        }
+
+
+        protected override void OnClosing(System.ComponentModel.CancelEventArgs e)
+        {
+            e.Cancel = true;
+            if (e.Cancel == true)
+            {
+                Properties.Settings.Default.Save();
+                Console.WriteLine("Config gespeichert");
+                base.OnClosing(e);
             }
         }
     }

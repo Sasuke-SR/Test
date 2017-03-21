@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-       Title="Überstundengruppe erstellen" Height="450" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
+       Title="Überstundengruppe erstellen" Height="450" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -14,20 +14,38 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Border Grid.Row="0" BorderBrush="Black" BorderThickness="1" Margin="0,0,0,5">
-            <StackPanel Orientation="Vertical" Margin="5">
-                <StackPanel Orientation="Horizontal">
-                    <Label FontSize="12" Content="Überstundengruppen Nr:" Foreground="White"/>
-                    <Label x:Name="lUeGrNr" FontSize="12" Content="Nr" Margin="120,0,0,0" Foreground="White"/>
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="Auto" />
+                </Grid.ColumnDefinitions>
+                <StackPanel Orientation="Horizontal" Grid.Column="0">
+                    <StackPanel Orientation="Vertical" Margin="5">
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="12" Content="Überstundengruppen Nr:" Foreground="White"/>
+                            <Label x:Name="lUeGrNr" FontSize="12" Content="Nr" Margin="120,0,0,0" Foreground="White"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <Label FontSize="12" Content="Überstunden Bezeichnung:" Foreground="White"/>
+                            <TextBox x:Name="tbUeBez" Height="15" Width="120" Margin="20,0,0,0" FontSize="11" BorderBrush="Black" BorderThickness="1"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
+                            <Label FontSize="12" Content="Überstunden Betrag:" Foreground="White"/>
+                            <TextBox x:Name="tbUeBet" Height="15" Width="120" Margin="53,0,0,0" FontSize="11" BorderBrush="Black" BorderThickness="1"/>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <Label FontSize="12" Content="Überstunden Bezeichnung:" Foreground="White"/>
-                    <TextBox x:Name="tbUeBez" Height="15" Width="120" Margin="20,0,0,0" FontSize="11" BorderBrush="Black" BorderThickness="1"/>
+                <StackPanel Orientation="Horizontal" Grid.Column="1">
+                    <StackPanel VerticalAlignment="Center" HorizontalAlignment="Center" Margin="50,0,0,0">
+                        <Border BorderBrush="Black" BorderThickness="1">
+                            <Button Content="Gruppe Aktivieren" Height="25" Width="160" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click"/>
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
+                            <Button Content="Gruppe Deaktivieren" Height="25" Width="160" VerticalAlignment="Center" HorizontalAlignment="Center" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click_1"/>
+                        </Border>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="0,2,0,0">
-                    <Label FontSize="12" Content="Überstunden Betrag:" Foreground="White"/>
-                    <TextBox x:Name="tbUeBet" Height="15" Width="120" Margin="53,0,0,0" FontSize="11" BorderBrush="Black" BorderThickness="1"/>
-                </StackPanel>
-            </StackPanel>
+            </Grid>
         </Border>
         <Border  Grid.Row="1">
             <ListView x:Name="lvUeGr" Width="Auto" Height="250" BorderBrush="Black" BorderThickness="1">
@@ -36,6 +54,7 @@
                         <GridViewColumn Width="30" Header="Nr" DisplayMemberBinding="{Binding Nr}"/>
                         <GridViewColumn Width="110" Header="Bezeichnung" DisplayMemberBinding="{Binding Bezeichnung}"/>
                         <GridViewColumn Width="120" Header="Betrag" DisplayMemberBinding="{Binding Betrag}"/>
+                        <GridViewColumn Width="150" Header="Status" DisplayMemberBinding="{Binding Status}" />
                     </GridView>
                 </ListView.View>
             </ListView>

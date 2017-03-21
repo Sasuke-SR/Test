@@ -82,7 +82,7 @@ namespace Test
         public void Load_ComboBox()
         {
             // Personal wird geladen
-            dr = bk.Select("SELECT * FROM Personal WHERE P_Deaktiviert = 0");
+            dr = bk.Select("SELECT * FROM Personal WHERE P_Deaktiviert = false");
             string _tmp = "";
             while (dr.Read())
             {
@@ -92,13 +92,14 @@ namespace Test
                 cbPnr.Items.Add($"{_tmp}" + " - " + $"{dr.GetString(1)}" + " " + $"{dr.GetString(2)}");
             }
             // Überstundengruppen werden geladen
-            dr = bk.Select("SELECT * FROM UStunden");
+            dr = bk.Select("SELECT * FROM UStunden WHERE US_Deaktiviert = false");
             while (dr.Read())
             {
                 if (dr.GetInt32(0) < 10) { _tmp = "0" + dr.GetInt32(0).ToString(); }
                 else { _tmp = dr.GetInt32(0).ToString(); }
                 cbUGruppe.Items.Add($"{_tmp}" + " - " + $"{dr.GetString(1)}");
             }
+
         }
         #endregion
 
@@ -137,19 +138,49 @@ namespace Test
                     bk.Connection();
                     try
                     {
+                        int abtNr = 0; int lNr = 0;
                         cbLgNr.SelectedIndex = -1; cbLgNr.Items.Clear();
                         dr = bk.Select($"SELECT * FROM Personal WHERE P_Nr = {pNr}");
-                        dr.Read(); int lNr = dr.GetInt32(4);
-                        tbName.Text = dr.GetString(1); tbNname.Text = dr.GetString(2); tbAbtNr.Text = dr.GetInt32(3).ToString();
-                        if (dr.GetInt32(4) < 10) { lbPNr.Content = "00" + dr.GetInt32(6).ToString(); } else if (dr.GetInt32(4) > 10 && dr.GetInt32(4) < 100) { lbPNr.Content = "0" + dr.GetInt32(6).ToString(); }
-                        dr = bk.Select($"SELECT * From Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}");
                         dr.Read();
-                        tbAbrName.Text = dr.GetString(1);
-                        dr = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {lNr}");
-                        dr.Read();
-                        cbLgNr.Items.Add($"{dr.GetInt32(0)} - {dr.GetString(1)}");
-                        bk.CloseCon();
-                        cbLgNr.SelectedIndex = 0;
+                        // Überprüfen ob irgendwas Deaktiviert ist
+                        OleDbDataReader dr2;
+                        abtNr = dr.GetInt32(3); lNr = dr.GetInt32(4);
+
+                        dr2 = bk.Select($"SELECT * FROM Abteilung WHERE Abt_Nr = {abtNr} AND Abt_Deaktiviert = false");
+                        dr2.Read();
+                        if (dr2.HasRows != true)
+                        {
+                            this.ShowMessageAsync("Fehler", "Die Person hat eine Abteilung die nicht mehr Aktiv ist");
+                            cbLgNr.SelectedIndex = -1; cbLgNr.Items.Clear();
+                            cbPnr.SelectedIndex = -1;
+                            bk.CloseCon();
+                        }
+                        else
+                        {
+                            dr2 = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {lNr} AND L_Deaktiviert = false");
+                            dr2.Read();
+                            if (dr2.HasRows != true)
+                            {
+                                this.ShowMessageAsync("Fehler", "Die Person hat eine Lohngruppe die nicht mehr Aktiv ist");
+                                cbLgNr.SelectedIndex = -1; cbLgNr.Items.Clear();
+                                cbPnr.SelectedIndex = -1;
+                                bk.CloseCon();
+                            }
+                            else
+                            {
+                                tbName.Text = dr.GetString(1); tbNname.Text = dr.GetString(2); tbAbtNr.Text = dr.GetInt32(3).ToString();
+                                if (dr.GetInt32(4) < 10) { lbPNr.Content = "00" + dr.GetInt32(6).ToString(); } else if (dr.GetInt32(4) > 10 && dr.GetInt32(4) < 100) { lbPNr.Content = "0" + dr.GetInt32(6).ToString(); }
+                                dr = bk.Select($"SELECT * From Abteilung WHERE Abt_Nr = {dr.GetInt32(3)}");
+                                dr.Read();
+                                tbAbrName.Text = dr.GetString(1);
+                                dr = bk.Select($"SELECT * FROM Lohngruppen WHERE L_Nr = {lNr}");
+                                dr.Read();
+                                cbLgNr.Items.Add($"{dr.GetInt32(0)} - {dr.GetString(1)}");
+                                bk.CloseCon();
+                                cbLgNr.SelectedIndex = 0;
+                                bk.CloseCon();
+                            }
+                        }
                     }
                     catch(Exception a) { bk.CloseCon(); throw a; }
                 }

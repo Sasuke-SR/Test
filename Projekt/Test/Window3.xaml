@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Lohngruppe erstellen" Height="390" Width="600" Background="{StaticResource WindowBackground}" ResizeMode="CanMinimize" Loaded="Window_Loaded" BorderBrush="Black" BorderThickness="1">
+        Title="Lohngruppe erstellen" Height="405" Width="600" Background="{StaticResource WindowBackground}" ResizeMode="CanMinimize" Loaded="Window_Loaded" BorderBrush="Black" BorderThickness="1" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -38,6 +38,12 @@
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Button x:Name="bLgErs" Height="25" Width="160" Content="Lohngruppe erstellen" Click="bLgErs_Click" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
                         </Border>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
+                            <Button x:Name="bAktiv" Height="25" Width="160" Content="Lohngruppe Aktivieren" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="bAktiv_Click"/>
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
+                            <Button x:Name="bDeaktiv" Height="25" Width="160" Content="Lohngruppe Deaktivieren" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="bDeaktiv_Click"/>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </StackPanel>
@@ -49,6 +55,7 @@
                         <GridViewColumn Header="Nr" Width="50" DisplayMemberBinding="{Binding nr}"/>
                         <GridViewColumn Header="Bezeichnung" Width="180" DisplayMemberBinding="{Binding bez}"/>
                         <GridViewColumn Header="Lohn/Std" Width="120" DisplayMemberBinding="{Binding betrag}"/>
+                        <GridViewColumn Header="Status" Width="150" DisplayMemberBinding="{Binding status}"/>
                     </GridView>
                 </ListView.View>
             </ListView>

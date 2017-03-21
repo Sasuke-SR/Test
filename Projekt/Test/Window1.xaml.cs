@@ -96,11 +96,14 @@ namespace Test
                         double SummeRegel = lSatz * double.Parse(tbAstd.Text);
                         tbRaStdSum.Text = SummeRegel.ToString("C");
                         _tmpDR.Close();
-                        _tmpDR = bk.Select($"SELECT * FROM UStunden WHERE US2_Datum = {abDatum} AND US2_Abrech_Nr = {abrechNr}");
+                        _tmpDR = bk.Select($"SELECT * FROM UStunden2 WHERE DAY(US2_Datum) = {dp.Day} AND Month(US2_Datum) = {dp.Month} AND YEAR(US2_Datum) = {dp.Year} AND US2_Abrech_Nr = {abrechNr}");
                         double _tmpUG = 0;
                         while (_tmpDR.Read())
                         {
-                            OleDbDataReader ab = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {_tmpDR.GetInt32(1)}"); ab.Read(); double uG = double.Parse(_tmpDR.GetInt32(2).ToString()) * _tmpDR.GetDouble(4); _tmpUG += uG;
+                            OleDbDataReader ab = bk.Select($"SELECT * FROM UStunden WHERE US_Nr = {_tmpDR.GetInt32(1)}");
+                            ab.Read();
+                            double uG = double.Parse(_tmpDR.GetInt32(2).ToString()) * _tmpDR.GetDouble(4);
+                            _tmpUG += uG;
                             items.Add(new UStunden() {uDatum = _tmpDR.GetDateTime(0).ToString("dd/MM/yyyy"), uGruppe = ab.GetString(1), uSatz = _tmpDR.GetDouble(4), uStd = _tmpDR.GetInt32(2), uGesamt = uG.ToString("C")});
                         }
                         tbUeStdSum2.Text = _tmpUG.ToString("C");
@@ -117,5 +120,19 @@ namespace Test
         }
 
         private void bHaupt_Click_1(object sender, RoutedEventArgs e) => this.Close();
+
+        private void lvUeStdGr_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (lvUeStdGr.SelectedItem != null)
+            {
+                foreach (UStunden item in lvUeStdGr.SelectedItems)
+                {
+                    cbUGruppe.Text = item.uGruppe.ToString();
+                    tbUeStdBet.Text = item.uSatz.ToString("C");
+                    tbUeStdAnz.Text = item.uGruppe.ToString();
+                    dpUDatum.Text = item.uDatum.ToString();
+                }
+            }
+        }
     }
 }

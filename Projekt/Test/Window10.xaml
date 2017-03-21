@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-       Title="Personal bearbeiten" Height="290" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
+       Title="Personal bearbeiten" WindowStartupLocation="CenterScreen" Height="290" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-       Title="Bonuszahlungen erstellen" Height="410" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
+       Title="Bonuszahlungen erstellen" Height="410" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black" WindowStartupLocation="CenterScreen">
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />

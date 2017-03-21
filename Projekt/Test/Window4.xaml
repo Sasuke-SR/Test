@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Abteilung erstellen" Height="375" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black">
+        Title="Abteilung erstellen" WindowStartupLocation="CenterScreen" Height="400" Width="600" Loaded="Window_Loaded" ResizeMode="CanMinimize" Background="{DynamicResource WindowBackground}" BorderThickness="1" BorderBrush="Black" >
     <Grid Margin="10">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
         <Border Grid.Row="0"  BorderBrush="Black" BorderThickness="1" >
             <StackPanel Orientation="Horizontal">
-                <Grid Margin="0,0,0,6">
+                <Grid Margin="5">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto" />
                         <ColumnDefinition Width="Auto" />
@@ -34,16 +34,23 @@
                         <Border BorderBrush="Black" BorderThickness="1">
                             <Button Height="25" Width="160" Content="Abteilung erstellen" BorderBrush="Black" BorderThickness="1" Click="Button_Click" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}"/>
                         </Border>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
+                            <Button Height="25" Width="160" Content="Abteilung Aktivieren" BorderBrush="Black" BorderThickness="1" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click_3"/>
+                        </Border>
+                        <Border BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
+                            <Button Height="25" Width="160" Content="Abteilung Deaktivieren" BorderBrush="Black" BorderThickness="1" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click_2"/>
+                        </Border>
                     </StackPanel>
                 </Grid>
             </StackPanel>
         </Border>
-        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,5,0,0">
-            <ListView x:Name="list" Width="Auto" Height="200">
+        <Border Grid.Row="1" BorderBrush="Black" BorderThickness="1" Margin="0,2,0,0" Height="Auto">
+            <ListView x:Name="list" Width="Auto" Height="200" SelectionChanged="list_SelectionChanged" MouseDoubleClick="list_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Header="Nr" Width="50" DisplayMemberBinding="{Binding nr}"/>
                         <GridViewColumn Header="Bezeichnung" Width="300" DisplayMemberBinding="{Binding bez}"/>
+                        <GridViewColumn Header="Status" Width="150" DisplayMemberBinding="{Binding deak}" />
                     </GridView>
                 </ListView.View>
             </ListView>

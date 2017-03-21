@@ -69,7 +69,7 @@ namespace Test
                 try
                 {
                     bk.Connection();
-                    dr = bk.Select("SELECT Abt_Bez FROM Abteilung;");
+                    dr = bk.Select("SELECT Abt_Bez FROM Abteilung WHERE Abt_Deaktiviert = false");
                     while (dr.Read())
                     {
                         cbAbtName.Items.Add(dr.GetString(0).ToString());
@@ -83,7 +83,7 @@ namespace Test
                 try
                 {
                     bk.Connection();
-                    dr = bk.Select("SELECT L_Bez FROM Lohngruppen;");
+                    dr = bk.Select("SELECT L_Bez FROM Lohngruppen WHERE L_Deaktiviert = false;");
 
                     while (dr.Read()) { cbLgName.Items.Add(dr.GetString(0).ToString()); }
                     cbLgName.Items.Refresh();

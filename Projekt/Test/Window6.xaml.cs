@@ -30,7 +30,34 @@ namespace Test
             public int Nr { get; set; }
             public string Bezeichnung { get; set; }
             public string Betrag { get; set; }
+            public string Status { get; set; }
         }
+
+        #region Methoden
+        private void fillLv()
+        {
+            if (Properties.Settings.Default.Setting == true) { dr = bk.Select("SELECT * FROM UStunden;"); }
+            else { dr = bk.Select("SELECT * FROM UStunden WHERE US_Deaktiviert = false"); }
+            List<UStundenGr> usgListe = new List<UStundenGr>();
+            while (dr.Read())
+            {
+                string _tmp = "";
+                if (dr.GetBoolean(3) == true) { _tmp = "Deaktiviert"; } else { _tmp = "Aktiviert"; }
+                UStundenGr UsGr = new UStundenGr() { Nr = dr.GetInt32(0), Bezeichnung = dr.GetString(1), Betrag = dr.GetDouble(2).ToString("C"), Status = _tmp };
+                usgListe.Add(UsGr);
+            }
+            lvUeGr.ItemsSource = usgListe;
+            lvUeGr.Items.Refresh();
+        }
+
+        private void figureOutNr()
+        {
+            dr = bk.Select("SELECT Last(US_Nr) FROM UStunden;");
+            dr.Read();
+            try { lUeGrNr.Content = dr.GetInt32(0) + 1; }
+            catch { lUeGrNr.Content = 1; }
+        }
+        #endregion
 
         public Window6()
         {
@@ -111,31 +138,62 @@ namespace Test
 
         }
 
-        private void fillLv()
+        private void Button_Click(object sender, RoutedEventArgs e)
         {
-            dr = bk.Select("SELECT * FROM UStunden;");
-            List<UStundenGr> usgListe = new List<UStundenGr>();
-            while (dr.Read())
+            if (lvUeGr.SelectedItem != null)
             {
-                UStundenGr UsGr = new UStundenGr() { Nr = dr.GetInt32(0), Bezeichnung = dr.GetString(1), Betrag = dr.GetDouble(2).ToString("C") };
-                usgListe.Add(UsGr);
+                int lNr = 0; string _tmp = "";
+                foreach (UStundenGr item in lvUeGr.SelectedItems)
+                { lNr = item.Nr; _tmp = item.Status.ToString().Trim(); }
+                if (_tmp != "Aktiviert")
+                {
+                    try
+                    {
+                        bk.Connection();
+                        try
+                        {
+                            bk.Update($"UPDATE UStunden SET US_Deaktiviert = false WHERE US_Nr = {lNr}");
+                            this.ShowMessageAsync("Erfolgreich", "Die Überstundengruppe wurde erfolgreich Aktiviert");
+                            lvUeGr.ItemsSource = null;
+                            fillLv();
+                            bk.CloseCon();
+                        }
+                        catch (Exception a) { bk.CloseCon(); throw a; }
+                    }
+                    catch (Exception a) { bk.CloseCon(); throw a; }
+                }
+                else this.ShowMessageAsync("Fehler", "Diese Überstundengruppe ist schon bereits Aktiv");
             }
-            lvUeGr.ItemsSource = usgListe;
-            lvUeGr.Items.Refresh();
+            else this.ShowMessageAsync("Fehler", "Sie haben keine Überstundengruppe ausgewählt");
         }
 
-        private void figureOutNr()
+        private void Button_Click_1(object sender, RoutedEventArgs e)
         {
-            dr = bk.Select("SELECT Last(US_Nr) FROM UStunden;");
-            dr.Read();
-            try
+            if (lvUeGr.SelectedItem != null)
             {
-                lUeGrNr.Content = dr.GetInt32(0) + 1;
+                int lNr = 0; string _tmp = "";
+                foreach (UStundenGr item in lvUeGr.SelectedItems)
+                { lNr = item.Nr; _tmp = item.Status.ToString().Trim(); }
+                if (_tmp != "Deaktiviert")
+                {
+                    try
+                    {
+                        bk.Connection();
+                        try
+                        {
+                            bk.Update($"UPDATE UStunden SET US_Deaktiviert = true WHERE US_Nr = {lNr}");
+                            this.ShowMessageAsync("Erfolgreich", "Die Überstundengruppe wurde erfolgreich Aktiviert");
+                            lvUeGr.ItemsSource = null;
+                            fillLv();
+                            bk.CloseCon();
+                        }
+                        catch (Exception a) { bk.CloseCon(); throw a; }
+                    }
+                    catch (Exception a) { bk.CloseCon(); throw a; }
+                }
+                else this.ShowMessageAsync("Fehler", "Diese Überstundengruppe ist schon bereits Deaktiviert");
             }
-            catch
-            {
-                lUeGrNr.Content = 1;
-            }
+            else this.ShowMessageAsync("Fehler", "Sie haben keine Überstundengruppe ausgewählt");
         }
     }
 }

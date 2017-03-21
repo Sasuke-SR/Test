@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:Test"
         mc:Ignorable="d"
         xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
-        Title="Neue Lohnabrechnung" Height="800" Width="770" Background="{StaticResource WindowBackground}" Loaded="Window_Loaded" BorderThickness="1" BorderBrush="Black" ResizeMode="CanMinimize">
+        Title="Neue Lohnabrechnung" Height="800" Width="770" Background="{StaticResource WindowBackground}" Loaded="Window_Loaded" BorderThickness="1" BorderBrush="Black" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
     <Grid Margin="15">
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>

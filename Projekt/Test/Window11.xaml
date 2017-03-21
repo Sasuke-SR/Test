@@ -1,0 +1,31 @@
+﻿<Controls:MetroWindow x:Class="Test.Window11"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Test"
+        mc:Ignorable="d"
+        xmlns:Controls="http://metro.mahapps.com/winfx/xaml/controls"
+        Title="Settings" Height="160" Width="300" Background="{StaticResource WindowBackground}" BorderThickness="1" BorderBrush="Black" ResizeMode="CanMinimize" WindowStartupLocation="CenterScreen">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+        <Border BorderThickness="1" BorderBrush="Black" Grid.Row="0">
+            <StackPanel Orientation="Vertical">
+                <Label Content="Sollen Deaktivierte Sachen angezeigt werden?" Foreground="White" />
+                <StackPanel Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center">
+                    <Label Content="Ja" Foreground="White" />
+                    <CheckBox x:Name="cbJa" Margin="5,0,0,0" Checked="cbJa_Checked" />
+
+                    <Label Content="Nein" Foreground="White" Margin="20,0,0,0"/>
+                    <CheckBox x:Name="cbNein" Margin="5,0,0,0" Checked="cbNein_Checked" />
+                </StackPanel>
+            </StackPanel>
+        </Border>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1" Margin="0,10,0,0" Height="30" Width="200">
+            <Button Width="200" Height="30" FontSize="12" Content="Settings Speichern" VerticalAlignment="Center" HorizontalAlignment="Center" FontFamily="Arial" Foreground="#FFE2E0E0" Style="{StaticResource NoHover}" Background="{DynamicResource Button_Background}" Click="Button_Click" Loaded="Button_Loaded"/>
+        </Border>
+    </Grid>
+</Controls:MetroWindow>
