@@ -29,14 +29,11 @@ namespace Test
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-        }
+        private void Button_Click(object sender, RoutedEventArgs e) =>this.Close();
 
         private void listView_Load()
         {
-            if (Properties.Settings.Default.Setting == false) { dr = bk.Select("SELECT * FROM Lohngruppen WHERE L_Deaktiviert = false"); }
+            if (Properties.Settings.Default.Setting == false) { dr = bk.Select("SELECT * F ROM Lohngruppen WHERE L_Deaktiviert = false"); }
             else { dr = bk.Select("SELECT * FROM Lohngruppen"); }
             List<Lohngruppe> items = new List<Lohngruppe>();
             while (dr.Read())
@@ -199,7 +196,6 @@ namespace Test
                 foreach (Lohngruppe item in lvLg.SelectedItems) { nr = item.nr; bez = item.bez; bet = double.Parse(item.betrag.Replace("€", "").Trim()); }
                 Window13 usr = new Window13(nr, bez, bet);
                 usr.ShowDialog();
-                System.Threading.Thread.Sleep(500);
                 try
                 {
                     bk.Connection();

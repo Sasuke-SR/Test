@@ -195,5 +195,27 @@ namespace Test
             }
             else this.ShowMessageAsync("Fehler", "Sie haben keine Überstundengruppe ausgewählt");
         }
+
+        private void lvUeGr_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            if (lvUeGr.SelectedItem != null)
+            {
+                int nr = 0; string bez = ""; double bet = 0;
+                foreach (UStundenGr item in lvUeGr.SelectedItems) { nr = item.Nr; bez = item.Bezeichnung; bet = double.Parse(item.Betrag.Replace("€", "").Trim()); }
+                Window14 usr = new Window14(nr, bez, bet);
+                usr.ShowDialog();
+                try
+                {
+                    bk.Connection();
+                    try
+                    {
+                        fillLv();
+                        bk.CloseCon();
+                    }
+                    catch (Exception a) { throw a; }
+                }
+                catch (Exception a) { throw a; }
+            }
+        }
     }
 }

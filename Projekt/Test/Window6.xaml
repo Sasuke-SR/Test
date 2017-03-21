@@ -48,7 +48,7 @@
             </Grid>
         </Border>
         <Border  Grid.Row="1">
-            <ListView x:Name="lvUeGr" Width="Auto" Height="250" BorderBrush="Black" BorderThickness="1">
+            <ListView x:Name="lvUeGr" Width="Auto" Height="250" BorderBrush="Black" BorderThickness="1" MouseDoubleClick="lvUeGr_MouseDoubleClick">
                 <ListView.View>
                     <GridView>
                         <GridViewColumn Width="30" Header="Nr" DisplayMemberBinding="{Binding Nr}"/>

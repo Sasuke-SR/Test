@@ -46,7 +46,7 @@ namespace Test
                                 try
                                 {
                                     bk.Update($"UPDATE Lohngruppen SET L_Bez = '{tbLGName.Text.Trim()}', L_Lohn = {tbLGBetrag.Text.Replace("€", "").Trim().Replace(",", ".")} WHERE L_Nr = {ID}");
-                                    this.ShowMessageAsync("Erfolgreich", "Die Lohngruppe wurde erfolgreich bearbeitet");
+                                    MessageBox.Show("Die Lohngruppe wurde erfolgreich gespeichert.", "", MessageBoxButton.OK, MessageBoxImage.Information);
                                     bk.CloseCon();
                                     this.Close();
                                 }
